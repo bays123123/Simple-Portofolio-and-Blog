@@ -1,11 +1,115 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import profilePhoto from "@/assets/profile-photo.png";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-background">
+      <div className="max-w-3xl mx-auto px-6">
+        <Navbar />
+        
+        <main className="py-8">
+          {/* Hero Section with Photo */}
+          <section className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-8 mb-12 fade-in">
+            <div className="flex-1">
+              <h1 className="text-heading font-display text-4xl md:text-5xl font-bold mb-6">
+                Michael Mandic
+              </h1>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-6">
+                I'm a software engineer based in Belgrade, and a citizen of Serbia and the EU. I've loved computers since I was a kid, and that curiosity grew into a drive to learn, build and solve problems through code. I'm always open to connect and explore new opportunities in tech!
+              </p>
+              <div className="flex flex-wrap items-center gap-4">
+                <a 
+                  href="https://linkedin.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-link-color hover:text-link-hover transition-colors font-medium"
+                >
+                  LinkedIn
+                </a>
+                <a 
+                  href="https://github.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-link-color hover:text-link-hover transition-colors font-medium"
+                >
+                  GitHub
+                </a>
+                <a 
+                  href="mailto:mihajlomandic27@gmail.com"
+                  className="text-link-color hover:text-link-hover transition-colors font-medium"
+                >
+                  mihajlomandic27@gmail.com
+                </a>
+              </div>
+            </div>
+            <div className="flex-shrink-0">
+              <img 
+                src={profilePhoto} 
+                alt="Michael Mandic" 
+                className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-2 border-border shadow-lg"
+              />
+            </div>
+          </section>
+
+          {/* Education Section */}
+          <section className="mb-12 fade-in-delay-1">
+            <h2 className="text-section-title font-display text-2xl font-semibold mb-6">
+              Education
+            </h2>
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-foreground font-semibold mb-1">
+                  University of Belgrade, School of Electrical Engineering
+                </h3>
+                <p className="text-muted-foreground">
+                  BSc Software Engineering
+                </p>
+              </div>
+              <span className="text-muted-foreground text-sm whitespace-nowrap ml-4">
+                2024 - Now
+              </span>
+            </div>
+          </section>
+
+          {/* Skills Section */}
+          <section className="mb-12 fade-in-delay-2">
+            <h2 className="text-section-title font-display text-2xl font-semibold mb-6">
+              Skills
+            </h2>
+            
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-muted-foreground text-sm mb-2">
+                  Programming Languages & Frameworks
+                </h3>
+                <p className="text-foreground font-medium">
+                  Python, JavaScript, HTML/CSS, C, C++, Astro, Tailwind CSS
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-muted-foreground text-sm mb-2">
+                  Tools
+                </h3>
+                <p className="text-foreground font-medium">
+                  VS Code, Visual Studio, JetBrains IDEs, Git, GitHub, Linux, MS 365/Office
+                </p>
+              </div>
+              
+              <div>
+                <h3 className="text-muted-foreground text-sm mb-2">
+                  Languages
+                </h3>
+                <p className="text-foreground font-medium">
+                  English (Fluent), Serbian (Native), German (Conversational)
+                </p>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <Footer />
       </div>
     </div>
   );
