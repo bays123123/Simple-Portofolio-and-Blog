@@ -11,19 +11,19 @@ const Index = () => {
           <section className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-8 mb-12 fade-in">
             <div className="flex-1">
               <h1 className="text-heading font-display text-4xl md:text-5xl font-bold mb-6">
-                Bayu Dwi Darmawan
+                Michael Mandic
               </h1>
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">I am a person who has worked in the printing field with more than 3 years of experience and now I am still working as a Proof Print machine operator in one company. Mastering Color Matching skills and also being careful in seeing good prints. I am also a blogger and like the field of information technology and I manage a technology sharing organization or community called Nusantara Code. 
  I created this for portfolio purposes. This website was also created with the help of advanced AI from bolt.new using the Astro and Tailwind frameworks.</p>
               <div className="flex flex-wrap items-center gap-4">
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
-                  LinkedIn
+                <a target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium" href="https://wa.me/6289684084271">
+                  ​Whatsapp
                 </a>
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   GitHub
                 </a>
-                <a href="mailto:dwibayu526@gmail.com" className="text-link-color hover:text-link-hover transition-colors font-medium">
-                  dwibayu526@gmail.com
+                <a href="mailto:mihajlomandic27@gmail.com" className="text-link-color hover:text-link-hover transition-colors font-medium">
+                  mihajlomandic27@gmail.com
                 </a>
               </div>
             </div>
