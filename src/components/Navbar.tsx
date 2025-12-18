@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
+
 const Navbar = () => {
-  return <nav className="flex items-center justify-between py-6">
+  return (
+    <nav className="flex items-center justify-between py-6">
       <Link to="/" className="text-foreground font-display text-xl font-semibold hover:text-primary transition-colors">
-        BDD
+        MM
       </Link>
       <div className="flex items-center gap-6">
         <Link to="/" className="text-muted-foreground hover:text-foreground transition-colors text-sm">
@@ -12,6 +14,8 @@ const Navbar = () => {
           Blog
         </Link>
       </div>
-    </nav>;
+    </nav>
+  );
 };
+
 export default Navbar;

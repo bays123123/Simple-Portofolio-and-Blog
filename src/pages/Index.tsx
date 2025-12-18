@@ -16,8 +16,8 @@ const Index = () => {
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">I am a person who has worked in the printing field with more than 3 years of experience and now I am still working as a Proof Print machine operator in one company. Mastering Color Matching skills and also being careful in seeing good prints. I am also a blogger and like the field of information technology and I manage a technology sharing organization or community called Nusantara Code. 
  I created this for portfolio purposes. This website was also created with the help of advanced AI from bolt.new using the Astro and Tailwind frameworks.</p>
               <div className="flex flex-wrap items-center gap-4">
-                <a target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium" href="https://wa.me/6289684084271">
-                  ​Whatsapp
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
+                  LinkedIn
                 </a>
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   GitHub
