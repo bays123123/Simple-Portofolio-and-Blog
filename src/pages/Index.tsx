@@ -22,8 +22,8 @@ const Index = () => {
                 <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   GitHub
                 </a>
-                <a href="mailto:mihajlomandic27@gmail.com" className="text-link-color hover:text-link-hover transition-colors font-medium">
-                  mihajlomandic27@gmail.com
+                <a href="mailto:dwibayu526@gmail.com" className="text-link-color hover:text-link-hover transition-colors font-medium">
+                  dwibayu526@gmail.com
                 </a>
               </div>
             </div>
