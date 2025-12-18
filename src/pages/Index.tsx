@@ -1,10 +1,8 @@
 import profilePhoto from "@/assets/profile-photo.png";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-6">
         <Navbar />
         
@@ -15,40 +13,22 @@ const Index = () => {
               <h1 className="text-heading font-display text-4xl md:text-5xl font-bold mb-6">
                 Michael Mandic
               </h1>
-              <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                I'm a software engineer based in Belgrade, and a citizen of Serbia and the EU. I've loved computers since I was a kid, and that curiosity grew into a drive to learn, build and solve problems through code. I'm always open to connect and explore new opportunities in tech!
-              </p>
+              <p className="text-muted-foreground text-lg leading-relaxed mb-6">I am a person who has worked in the printing field with more than 3 years of experience and now I am still working as a Proof Print machine operator in one company. Mastering Color Matching skills and also being careful in seeing good prints. I am also a blogger and like the field of information technology and I manage a technology sharing organization or community called Nusantara Code. 
+ I created this for portfolio purposes. This website was also created with the help of advanced AI from bolt.new using the Astro and Tailwind frameworks.</p>
               <div className="flex flex-wrap items-center gap-4">
-                <a 
-                  href="https://linkedin.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-link-color hover:text-link-hover transition-colors font-medium"
-                >
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   LinkedIn
                 </a>
-                <a 
-                  href="https://github.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-link-color hover:text-link-hover transition-colors font-medium"
-                >
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   GitHub
                 </a>
-                <a 
-                  href="mailto:mihajlomandic27@gmail.com"
-                  className="text-link-color hover:text-link-hover transition-colors font-medium"
-                >
+                <a href="mailto:mihajlomandic27@gmail.com" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   mihajlomandic27@gmail.com
                 </a>
               </div>
             </div>
             <div className="flex-shrink-0">
-              <img 
-                src={profilePhoto} 
-                alt="Michael Mandic" 
-                className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-2 border-border shadow-lg"
-              />
+              <img src={profilePhoto} alt="Michael Mandic" className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-2 border-border shadow-lg" />
             </div>
           </section>
 
@@ -111,8 +91,6 @@ const Index = () => {
 
         <Footer />
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
