@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ExternalLink } from "lucide-react";
 import profilePhoto from "@/assets/profile-photo.png";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -96,9 +97,10 @@ const Index = () => {
             </h2>
             <div className="grid gap-6">
               <article className="group p-4 rounded-lg border border-border bg-card hover:border-primary/50 transition-colors">
-                <h3 className="text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
+                <a href="https://nusantaracode.id/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
                   Nusantara Code Website
-                </h3>
+                  <ExternalLink size={16} />
+                </a>
                 <p className="text-muted-foreground text-sm mb-3">
                   Platform komunitas untuk berbagi pengetahuan teknologi dan programming.
                 </p>
