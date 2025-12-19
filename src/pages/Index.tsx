@@ -110,9 +110,10 @@ const Index = () => {
                 </div>
               </article>
               <article className="group p-4 rounded-lg border border-border bg-card hover:border-primary/50 transition-colors">
-                <h3 className="text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
+                <a href="https://www.bayud.my.id/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
                   Personal Portfolio
-                </h3>
+                  <ExternalLink size={16} />
+                </a>
                 <p className="text-muted-foreground text-sm mb-3">
                   Website portfolio pribadi dengan blog dan showcase proyek.
                 </p>
