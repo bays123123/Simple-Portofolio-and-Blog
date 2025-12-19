@@ -42,9 +42,6 @@ const Index = () => {
                 <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   LinkedIn
                 </a>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
-                  GitHub
-                </a>
                 <a href="mailto:dwibayu526@gmail.com" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   dwibayu526@gmail.com
                 </a>
