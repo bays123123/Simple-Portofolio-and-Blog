@@ -10,9 +10,7 @@ const Index = () => {
           {/* Hero Section with Photo */}
           <section className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-8 mb-12 fade-in">
             <div className="flex-1">
-              <h1 className="text-heading font-display text-4xl md:text-5xl font-bold mb-6">
-                Michael Mandic
-              </h1>
+              <h1 className="text-heading font-display text-4xl md:text-5xl font-bold mb-6">Bayu Dwi Darmawan</h1>
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">I am a person who has worked in the printing field with more than 3 years of experience and now I am still working as a Proof Print machine operator in one company. Mastering Color Matching skills and also being careful in seeing good prints. I am also a blogger and like the field of information technology and I manage a technology sharing organization or community called Nusantara Code. 
  I created this for portfolio purposes. This website was also created with the help of advanced AI from bolt.new using the Astro and Tailwind frameworks.</p>
               <div className="flex flex-wrap items-center gap-4">
