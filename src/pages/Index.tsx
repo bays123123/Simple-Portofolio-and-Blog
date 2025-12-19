@@ -109,7 +109,7 @@ const Index = () => {
             <h2 className="text-section-title font-display text-2xl font-semibold mb-6">
               Projects
             </h2>
-            <div className="grid gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <article className="group p-4 rounded-lg border border-border bg-card hover:border-primary/50 transition-colors">
                 <a href="https://nusantaracode.id/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
                   Nusantara Code Website
