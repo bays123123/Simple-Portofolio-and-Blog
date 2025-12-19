@@ -40,58 +40,66 @@ const Index = () => {
             </figure>
           </section>
 
-          {/* Education Section */}
-          <section className="mb-12 fade-in-delay-1" aria-label="Pendidikan">
+          {/* Experience Section */}
+          <section className="mb-12 fade-in-delay-1" aria-label="Pengalaman">
             <h2 className="text-section-title font-display text-2xl font-semibold mb-6">
-              Education
+              Experience
             </h2>
-            <article className="flex justify-between items-start">
-              <div>
-                <h3 className="text-foreground font-semibold mb-1">
-                  University of Belgrade, School of Electrical Engineering
-                </h3>
-                <p className="text-muted-foreground">
-                  BSc Software Engineering
-                </p>
-              </div>
-              <time className="text-muted-foreground text-sm whitespace-nowrap ml-4">
-                2024 - Now
-              </time>
-            </article>
+            <div className="space-y-6">
+              <article className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <div>
+                  <h3 className="text-foreground font-semibold mb-1">Proof Print Machine Operator</h3>
+                  <p className="text-muted-foreground">Color Matching & Quality Control</p>
+                </div>
+                <time className="text-muted-foreground text-sm whitespace-nowrap">2021 - Sekarang</time>
+              </article>
+              <article className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <div>
+                  <h3 className="text-foreground font-semibold mb-1">Founder Nusantara Code</h3>
+                  <p className="text-muted-foreground">Komunitas berbagi teknologi</p>
+                </div>
+                <time className="text-muted-foreground text-sm whitespace-nowrap">2023 - Sekarang</time>
+              </article>
+              <article className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <div>
+                  <h3 className="text-foreground font-semibold mb-1">Blogger Teknologi</h3>
+                  <p className="text-muted-foreground">Menulis artikel seputar IT & teknologi</p>
+                </div>
+                <time className="text-muted-foreground text-sm whitespace-nowrap">2022 - Sekarang</time>
+              </article>
+            </div>
           </section>
 
-          {/* Skills Section */}
-          <section className="mb-12 fade-in-delay-2" aria-label="Keahlian">
+          {/* Projects Section */}
+          <section className="mb-12 fade-in-delay-2" aria-label="Proyek">
             <h2 className="text-section-title font-display text-2xl font-semibold mb-6">
-              Skills
+              Projects
             </h2>
-            
-            <div className="space-y-6">
-              <article>
-                <h3 className="text-muted-foreground text-sm mb-2">
-                  Programming Languages & Frameworks
+            <div className="grid gap-6">
+              <article className="group p-4 rounded-lg border border-border bg-card hover:border-primary/50 transition-colors">
+                <h3 className="text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
+                  Nusantara Code Website
                 </h3>
-                <p className="text-foreground font-medium">
-                  Python, JavaScript, HTML/CSS, C, C++, Astro, Tailwind CSS
+                <p className="text-muted-foreground text-sm mb-3">
+                  Platform komunitas untuk berbagi pengetahuan teknologi dan programming.
                 </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">Astro</span>
+                  <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">Tailwind</span>
+                </div>
               </article>
-              
-              <article>
-                <h3 className="text-muted-foreground text-sm mb-2">
-                  Tools
+              <article className="group p-4 rounded-lg border border-border bg-card hover:border-primary/50 transition-colors">
+                <h3 className="text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
+                  Personal Portfolio
                 </h3>
-                <p className="text-foreground font-medium">
-                  VS Code, Visual Studio, JetBrains IDEs, Git, GitHub, Linux, MS 365/Office
+                <p className="text-muted-foreground text-sm mb-3">
+                  Website portfolio pribadi dengan blog dan showcase proyek.
                 </p>
-              </article>
-              
-              <article>
-                <h3 className="text-muted-foreground text-sm mb-2">
-                  Languages
-                </h3>
-                <p className="text-foreground font-medium">
-                  English (Fluent), Serbian (Native), German (Conversational)
-                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">React</span>
+                  <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">TypeScript</span>
+                  <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">Tailwind</span>
+                </div>
               </article>
             </div>
           </section>
