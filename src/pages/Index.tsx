@@ -1,6 +1,28 @@
+import { Link } from "react-router-dom";
 import profilePhoto from "@/assets/profile-photo.png";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+const blogPosts = [
+  {
+    id: "1",
+    title: "Getting Started with React and TypeScript",
+    date: "December 15, 2025",
+    readTime: "5 min read"
+  },
+  {
+    id: "2",
+    title: "My Journey into Software Engineering",
+    date: "December 10, 2025",
+    readTime: "8 min read"
+  },
+  {
+    id: "3",
+    title: "Why I Chose Tailwind CSS Over Traditional CSS",
+    date: "December 5, 2025",
+    readTime: "4 min read"
+  }
+];
 
 const Index = () => {
   return (
@@ -101,6 +123,36 @@ const Index = () => {
                   <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">Tailwind</span>
                 </div>
               </article>
+            </div>
+          </section>
+
+          {/* Blog Section */}
+          <section className="mb-12 fade-in-delay-3" aria-label="Artikel Blog">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-section-title font-display text-2xl font-semibold">
+                Latest Articles
+              </h2>
+              <Link to="/blog" className="text-link-color hover:text-link-hover transition-colors text-sm font-medium">
+                View all →
+              </Link>
+            </div>
+            <div className="space-y-4">
+              {blogPosts.map((post) => (
+                <article key={post.id} className="group">
+                  <Link to={`/blog/${post.id}`} className="block py-3 border-b border-border hover:border-primary/50 transition-colors">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                      <h3 className="text-foreground font-medium group-hover:text-primary transition-colors">
+                        {post.title}
+                      </h3>
+                      <div className="flex items-center gap-3 text-muted-foreground text-sm">
+                        <time>{post.date}</time>
+                        <span>·</span>
+                        <span>{post.readTime}</span>
+                      </div>
+                    </div>
+                  </Link>
+                </article>
+              ))}
             </div>
           </section>
         </main>
