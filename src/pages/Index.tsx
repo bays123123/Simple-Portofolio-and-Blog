@@ -62,30 +62,44 @@ const Index = () => {
 
           {/* Experience Section */}
           <section className="mb-12 fade-in-delay-1" aria-label="Pengalaman">
-            <h2 className="text-section-title font-display text-2xl font-semibold mb-6">
+            <h2 className="text-section-title font-display text-2xl font-semibold mb-8">
               Experience
             </h2>
-            <div className="space-y-6">
-              <article className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                <div>
-                  <h3 className="text-foreground font-semibold mb-1">Proof Print Machine Operator</h3>
-                  <p className="text-muted-foreground">Color Matching & Quality Control</p>
-                </div>
-                <time className="text-muted-foreground text-sm whitespace-nowrap">2021 - Sekarang</time>
+            <div className="relative pl-6 border-l border-border space-y-10">
+              {/* Experience 1 */}
+              <article className="relative">
+                <div className="absolute -left-[25px] top-1 w-2 h-2 rounded-full bg-muted-foreground" />
+                <h3 className="text-foreground font-bold text-lg uppercase tracking-wide mb-1">
+                  PT. Supernova Flexible Packaging
+                </h3>
+                <p className="text-muted-foreground text-sm mb-1">Proof Print Operator</p>
+                <time className="text-primary text-sm mb-3 block">Jun 2018 - Actual</time>
+                <p className="text-foreground mb-3">
+                  I operate the JM Headford Gravure Proof Press machine by maximizing results for customers, by paying attention to print results and also appropriate colors
+                </p>
+                <ul className="text-muted-foreground text-sm space-y-1">
+                  <li>• Mastering color matching skills and being careful in seeing good prints and full responsibility.</li>
+                  <li>• Make proof results according to the schedule and customer requests.</li>
+                  <li>• See the proof results to match the color reference according to customer requests.</li>
+                </ul>
               </article>
-              <article className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                <div>
-                  <h3 className="text-foreground font-semibold mb-1">Founder Nusantara Code</h3>
-                  <p className="text-muted-foreground">Komunitas berbagi teknologi</p>
-                </div>
-                <time className="text-muted-foreground text-sm whitespace-nowrap">2023 - Sekarang</time>
-              </article>
-              <article className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                <div>
-                  <h3 className="text-foreground font-semibold mb-1">Blogger Teknologi</h3>
-                  <p className="text-muted-foreground">Menulis artikel seputar IT & teknologi</p>
-                </div>
-                <time className="text-muted-foreground text-sm whitespace-nowrap">2022 - Sekarang</time>
+
+              {/* Experience 2 */}
+              <article className="relative">
+                <div className="absolute -left-[25px] top-1 w-2 h-2 rounded-full bg-muted-foreground" />
+                <h3 className="text-foreground font-bold text-lg uppercase tracking-wide mb-1">
+                  PT. Gelora Aksara Pratama
+                </h3>
+                <p className="text-muted-foreground text-sm mb-1">Assistant Operator Sheet-fed Printing</p>
+                <time className="text-primary text-sm mb-3 block">Feb 2017 - Agu 2017</time>
+                <p className="text-foreground mb-3">
+                  Internship for seven months with a job as an assistant operator running a sheet-fed printing (SM 72 Heidelberg Offset Printer Machine), studying the printing system by means of lithography
+                </p>
+                <ul className="text-muted-foreground text-sm space-y-1">
+                  <li>• Learn the color according to the color reference on the sheet-feed printing machine.</li>
+                  <li>• Ensure the machine runs smoothly and get the best results.</li>
+                  <li>• Take care of the machine by always applying cleanliness every time.</li>
+                </ul>
               </article>
             </div>
           </section>
