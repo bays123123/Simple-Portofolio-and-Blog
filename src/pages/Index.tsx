@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Download } from "lucide-react";
 import profilePhoto from "@/assets/profile-photo.png";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -45,6 +45,14 @@ const Index = () => {
                 </a>
                 <a href="mailto:dwibayu526@gmail.com" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   dwibayu526@gmail.com
+                </a>
+                <a 
+                  href="/resume.pdf" 
+                  download 
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium text-sm"
+                >
+                  <Download size={16} />
+                  Download Resume
                 </a>
               </nav>
             </header>
