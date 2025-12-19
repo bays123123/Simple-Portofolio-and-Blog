@@ -116,7 +116,7 @@ const Index = () => {
                   <ExternalLink size={16} />
                 </a>
                 <p className="text-muted-foreground text-sm mb-3">
-                  Platform komunitas untuk berbagi pengetahuan teknologi dan programming.
+                  A community platform for sharing technology and programming knowledge.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">Astro</span>
@@ -129,7 +129,7 @@ const Index = () => {
                   <ExternalLink size={16} />
                 </a>
                 <p className="text-muted-foreground text-sm mb-3">
-                  Website portfolio pribadi dengan blog dan showcase proyek.
+                  Personal portfolio website with blog and project showcase.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">React</span>
