@@ -39,7 +39,7 @@ const Index = () => {
                 Saya adalah seorang profesional di bidang percetakan dengan pengalaman lebih dari 3 tahun. Saat ini bekerja sebagai Proof Print machine operator. Menguasai Color Matching dan teliti dalam melihat hasil cetak berkualitas. Saya juga seorang blogger teknologi dan founder komunitas Nusantara Code.
               </p>
               <nav className="flex flex-wrap items-center gap-4" aria-label="Social links">
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
+                <a href="https://id.linkedin.com/in/bayu-dwi-darmawan" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
                   LinkedIn
                 </a>
                 <a href="mailto:dwibayu526@gmail.com" className="text-link-color hover:text-link-hover transition-colors font-medium">
