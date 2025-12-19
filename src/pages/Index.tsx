@@ -1,31 +1,28 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { ExternalLink, Download } from "lucide-react";
 import profilePhoto from "@/assets/profile-photo.png";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-const blogPosts = [
-  {
-    id: "1",
-    title: "Getting Started with React and TypeScript",
-    date: "December 15, 2025",
-    readTime: "5 min read"
-  },
-  {
-    id: "2",
-    title: "My Journey into Software Engineering",
-    date: "December 10, 2025",
-    readTime: "8 min read"
-  },
-  {
-    id: "3",
-    title: "Why I Chose Tailwind CSS Over Traditional CSS",
-    date: "December 5, 2025",
-    readTime: "4 min read"
-  }
-];
+import { format } from "date-fns";
 
 const Index = () => {
+  const { data: blogPosts } = useQuery({
+    queryKey: ['latest-blog-posts'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('id, title, slug, read_time, created_at')
+        .eq('published', true)
+        .order('created_at', { ascending: false })
+        .limit(3);
+      
+      if (error) throw error;
+      return data;
+    }
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
@@ -161,17 +158,17 @@ const Index = () => {
               </Link>
             </div>
             <div className="space-y-3 sm:space-y-4">
-              {blogPosts.map((post) => (
+              {blogPosts?.map((post) => (
                 <article key={post.id} className="group">
-                  <Link to={`/blog/${post.id}`} className="block py-3 sm:py-3 border-b border-border hover:border-primary/50 active:border-primary/50 transition-colors touch-manipulation">
+                  <Link to={`/blog/${post.slug}`} className="block py-3 sm:py-3 border-b border-border hover:border-primary/50 active:border-primary/50 transition-colors touch-manipulation">
                     <div className="flex flex-col gap-1">
                       <h3 className="text-foreground text-sm sm:text-base font-medium group-hover:text-primary transition-colors">
                         {post.title}
                       </h3>
                       <div className="flex items-center gap-2 sm:gap-3 text-muted-foreground text-xs sm:text-sm">
-                        <time>{post.date}</time>
+                        <time>{format(new Date(post.created_at), 'MMMM d, yyyy')}</time>
                         <span>·</span>
-                        <span>{post.readTime}</span>
+                        <span>{post.read_time}</span>
                       </div>
                     </div>
                   </Link>
