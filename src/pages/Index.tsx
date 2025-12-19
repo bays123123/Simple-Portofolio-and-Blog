@@ -37,7 +37,7 @@ const Index = () => {
             <header className="flex-1">
               <h1 className="text-heading font-display text-4xl md:text-5xl font-bold mb-6">Bayu Dwi Darmawan</h1>
               <p className="text-muted-foreground text-lg leading-relaxed mb-6">
-                Saya adalah seorang profesional di bidang percetakan dengan pengalaman lebih dari 3 tahun. Saat ini bekerja sebagai Proof Print machine operator. Menguasai Color Matching dan teliti dalam melihat hasil cetak berkualitas. Saya juga seorang blogger teknologi dan founder komunitas Nusantara Code.
+                I am a professional in the printing industry with more than 3 years of experience. Currently working as a Proof Print machine operator. Skilled in Color Matching and meticulous in ensuring high-quality print results. I am also a technology blogger and founder of the Nusantara Code community.
               </p>
               <nav className="flex flex-wrap items-center gap-4" aria-label="Social links">
                 <a href="https://id.linkedin.com/in/bayu-dwi-darmawan" target="_blank" rel="noopener noreferrer" className="text-link-color hover:text-link-hover transition-colors font-medium">
