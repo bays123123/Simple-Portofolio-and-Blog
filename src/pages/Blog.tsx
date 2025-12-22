@@ -30,9 +30,6 @@ const Blog = () => {
             <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               Blog
             </h1>
-            <p className="text-muted-foreground text-base sm:text-lg">
-              Thoughts, tutorials, and insights about software engineering and technology.
-            </p>
           </section>
 
           <section className="space-y-6 sm:space-y-8">
