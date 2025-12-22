@@ -108,11 +108,6 @@ const Auth = () => {
           <CardTitle className="text-2xl font-display">
             {isLogin ? 'Admin Login' : 'Registrasi'}
           </CardTitle>
-          <CardDescription>
-            {isLogin 
-              ? 'Masuk untuk mengatur artikel blog' 
-              : 'Buat akun baru'}
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
