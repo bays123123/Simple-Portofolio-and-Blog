@@ -5,6 +5,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -70,47 +72,6 @@ const BlogPost = () => {
     );
   }
 
-  // Simple markdown-like rendering for content
-  const renderContent = (content: string) => {
-    const lines = content.split('\n');
-    return lines.map((line, index) => {
-      if (line.startsWith('## ')) {
-        return (
-          <h2 key={index} className="text-xl sm:text-2xl font-bold text-foreground mt-8 mb-4">
-            {line.replace('## ', '')}
-          </h2>
-        );
-      }
-      if (line.startsWith('- **')) {
-        const match = line.match(/- \*\*(.+?)\*\*: (.+)/);
-        if (match) {
-          return (
-            <li key={index} className="text-muted-foreground mb-2">
-              <strong className="text-foreground">{match[1]}</strong>: {match[2]}
-            </li>
-          );
-        }
-      }
-      if (line.startsWith('- ')) {
-        return (
-          <li key={index} className="text-muted-foreground mb-2 ml-4">
-            {line.replace('- ', '')}
-          </li>
-        );
-      }
-      if (line.startsWith('```')) {
-        return null;
-      }
-      if (line.trim() === '') {
-        return <br key={index} />;
-      }
-      return (
-        <p key={index} className="text-muted-foreground leading-relaxed mb-4">
-          {line}
-        </p>
-      );
-    });
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -138,8 +99,10 @@ const BlogPost = () => {
               </div>
             </header>
 
-            <div className="prose prose-invert max-w-none">
-              {renderContent(post.content)}
+            <div className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {post.content}
+              </ReactMarkdown>
             </div>
           </article>
         </main>
