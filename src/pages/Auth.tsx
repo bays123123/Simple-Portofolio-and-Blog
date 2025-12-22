@@ -148,31 +148,6 @@ const Auth = () => {
               {isSubmitting ? 'Loading...' : isLogin ? 'Login' : 'Daftar'}
             </Button>
           </form>
-          <div className="mt-4 text-center text-sm text-muted-foreground">
-            {isLogin ? (
-              <>
-                Belum punya akun?{' '}
-                <button
-                  type="button"
-                  onClick={() => setIsLogin(false)}
-                  className="text-primary hover:underline"
-                >
-                  Daftar
-                </button>
-              </>
-            ) : (
-              <>
-                Sudah punya akun?{' '}
-                <button
-                  type="button"
-                  onClick={() => setIsLogin(true)}
-                  className="text-primary hover:underline"
-                >
-                  Login
-                </button>
-              </>
-            )}
-          </div>
         </CardContent>
       </Card>
     </div>
