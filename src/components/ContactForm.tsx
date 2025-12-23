@@ -56,14 +56,31 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.from("contact_messages").insert({
+      // Save to database
+      const { error: dbError } = await supabase.from("contact_messages").insert({
         name: result.data.name,
         email: result.data.email,
         subject: result.data.subject || null,
         message: result.data.message,
       });
 
-      if (error) throw error;
+      if (dbError) throw dbError;
+
+      // Send email notifications (don't block on this)
+      supabase.functions.invoke("send-contact-notification", {
+        body: {
+          name: result.data.name,
+          email: result.data.email,
+          subject: result.data.subject || null,
+          message: result.data.message,
+        },
+      }).then((res) => {
+        if (res.error) {
+          console.error("Email notification error:", res.error);
+        } else {
+          console.log("Email notifications sent successfully");
+        }
+      });
 
       toast({
         title: "Pesan terkirim!",
