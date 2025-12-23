@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { Pencil, Trash2, Plus, LogOut, ArrowLeft } from 'lucide-react';
+import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface BlogPost {
@@ -33,6 +33,8 @@ const Admin = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [aiTopic, setAiTopic] = useState('');
+  const [isGenerating, setIsGenerating] = useState<'title' | 'excerpt' | 'content' | null>(null);
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -173,6 +175,46 @@ const Admin = () => {
       .trim();
   };
 
+  const generateAIContent = async (type: 'title' | 'excerpt' | 'content') => {
+    const topic = aiTopic || formData.title;
+    if (!topic) {
+      toast({ variant: 'destructive', title: 'Masukkan topik atau judul terlebih dahulu' });
+      return;
+    }
+
+    setIsGenerating(type);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-blog-content', {
+        body: { topic, type }
+      });
+
+      if (error) throw error;
+      if (data.error) throw new Error(data.error);
+
+      const content = data.content;
+
+      if (type === 'title') {
+        const cleanTitle = content.replace(/^["']|["']$/g, '').trim();
+        setFormData(prev => ({ 
+          ...prev, 
+          title: cleanTitle,
+          slug: generateSlug(cleanTitle)
+        }));
+      } else if (type === 'excerpt') {
+        setFormData(prev => ({ ...prev, excerpt: content.trim() }));
+      } else {
+        setFormData(prev => ({ ...prev, content: content.trim() }));
+      }
+
+      toast({ title: `${type === 'title' ? 'Judul' : type === 'excerpt' ? 'Ringkasan' : 'Konten'} berhasil di-generate` });
+    } catch (error: any) {
+      console.error('AI generation error:', error);
+      toast({ variant: 'destructive', title: 'Gagal generate konten', description: error.message });
+    } finally {
+      setIsGenerating(null);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -238,6 +280,54 @@ const Admin = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* AI Topic Input */}
+                <div className="p-3 rounded-lg bg-primary/10 border border-primary/20 space-y-3">
+                  <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                    <Sparkles size={16} />
+                    AI Content Generator
+                  </div>
+                  <div className="space-y-2">
+                    <Input
+                      value={aiTopic}
+                      onChange={(e) => setAiTopic(e.target.value)}
+                      placeholder="Masukkan topik untuk generate konten..."
+                      className="bg-background"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => generateAIContent('title')}
+                        disabled={isGenerating !== null}
+                      >
+                        {isGenerating === 'title' ? <Loader2 size={14} className="mr-1 animate-spin" /> : <Sparkles size={14} className="mr-1" />}
+                        Generate Judul
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => generateAIContent('excerpt')}
+                        disabled={isGenerating !== null}
+                      >
+                        {isGenerating === 'excerpt' ? <Loader2 size={14} className="mr-1 animate-spin" /> : <Sparkles size={14} className="mr-1" />}
+                        Generate Ringkasan
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => generateAIContent('content')}
+                        disabled={isGenerating !== null}
+                      >
+                        {isGenerating === 'content' ? <Loader2 size={14} className="mr-1 animate-spin" /> : <Sparkles size={14} className="mr-1" />}
+                        Generate Konten
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="title">Judul</Label>
                   <Input
