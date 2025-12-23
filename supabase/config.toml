@@ -2,3 +2,6 @@ project_id = "seyrcyazviltifdaojyu"
 
 [functions.generate-blog-content]
 verify_jwt = false
+
+[functions.sitemap]
+verify_jwt = false
