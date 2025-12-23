@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { ExternalLink, Download } from "lucide-react";
+import { ExternalLink, Download, Mail } from "lucide-react";
 import profilePhoto from "@/assets/profile-photo.png";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ContactForm from "@/components/ContactForm";
 import { format } from "date-fns";
 
 const Index = () => {
@@ -175,6 +176,20 @@ const Index = () => {
                 </article>
               ))}
             </div>
+          </section>
+
+          {/* Contact Section */}
+          <section className="mb-10 md:mb-12 fade-in-delay-3" aria-label="Kontak">
+            <div className="flex items-center gap-2 mb-5 sm:mb-6">
+              <Mail size={24} className="text-primary" />
+              <h2 className="text-section-title font-display text-xl sm:text-2xl font-semibold">
+                Get In Touch
+              </h2>
+            </div>
+            <p className="text-muted-foreground mb-6">
+              Ada pertanyaan atau ingin berkolaborasi? Jangan ragu untuk menghubungi saya melalui form di bawah ini.
+            </p>
+            <ContactForm />
           </section>
         </main>
 
