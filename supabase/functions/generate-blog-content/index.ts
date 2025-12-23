@@ -29,21 +29,49 @@ serve(async (req) => {
     let userPrompt = '';
 
     if (type === 'title') {
-      systemPrompt = 'You are a professional blog title writer. Generate catchy, SEO-friendly blog titles. Return only the title, nothing else.';
-      userPrompt = `Generate a compelling blog title about: ${topic}`;
+      systemPrompt = 'You are a professional blog title writer specializing in Indonesian content. Generate catchy, SEO-friendly blog titles that are compelling and descriptive. Return only the title, nothing else.';
+      userPrompt = `Generate a compelling blog title in Indonesian about: ${topic}`;
     } else if (type === 'excerpt') {
-      systemPrompt = 'You are a professional copywriter. Generate engaging blog excerpts/summaries. Return only the excerpt (2-3 sentences), nothing else.';
-      userPrompt = `Generate an engaging excerpt/summary for a blog post about: ${topic}`;
+      systemPrompt = 'You are a professional Indonesian copywriter. Generate engaging blog excerpts/summaries that hook readers and make them want to read more. Return only the excerpt (2-3 sentences), nothing else.';
+      userPrompt = `Generate an engaging excerpt/summary in Indonesian for a blog post about: ${topic}`;
     } else {
       // Full content
-      systemPrompt = `You are a professional blog writer. Write engaging, well-structured blog content in Markdown format. 
-Include:
-- Clear headings and subheadings
-- Bullet points where appropriate
-- Engaging introduction and conclusion
-- Practical examples or insights
-Write in Indonesian language unless the topic suggests otherwise.`;
-      userPrompt = `Write a comprehensive blog article about: ${topic}`;
+      systemPrompt = `Anda adalah penulis blog profesional Indonesia yang ahli dalam membuat konten berkualitas tinggi.
+
+INSTRUKSI PENULISAN:
+1. Tulis artikel dalam Bahasa Indonesia yang baik dan benar
+2. Gunakan struktur yang jelas dengan heading dan subheading menggunakan format Markdown:
+   - Gunakan ## untuk judul bagian utama (H2)
+   - Gunakan ### untuk sub-bagian (H3)
+   - JANGAN gunakan # (H1) karena judul artikel sudah ada
+
+3. Struktur artikel yang WAJIB diikuti:
+   - Paragraf pembuka yang menarik dan menjelaskan topik (2-3 paragraf)
+   - Beberapa bagian utama dengan ## heading (minimal 3-4 bagian)
+   - Setiap bagian memiliki penjelasan mendalam dengan paragraf yang rapi
+   - Gunakan ### untuk sub-bagian jika diperlukan
+   - Paragraf penutup/kesimpulan yang kuat
+
+4. Kualitas konten:
+   - Setiap paragraf minimal 3-4 kalimat
+   - Gunakan transisi yang baik antar paragraf
+   - Sertakan contoh konkret dan penjelasan praktis
+   - Gunakan bullet points (-) atau numbered lists hanya jika benar-benar diperlukan
+   - Hindari paragraf yang terlalu pendek atau terlalu panjang
+
+5. Format yang dilarang:
+   - JANGAN gunakan # untuk heading
+   - JANGAN buat konten yang terlalu singkat
+   - JANGAN gunakan terlalu banyak bullet points, fokus pada paragraf naratif
+
+6. Panjang artikel: minimal 800-1200 kata`;
+      userPrompt = `Tulis artikel blog yang komprehensif dan terstruktur dengan baik tentang: ${topic}
+
+Pastikan artikel memiliki:
+- Pembukaan yang menarik
+- Minimal 4 bagian utama dengan heading ##
+- Penjelasan mendalam di setiap bagian
+- Kesimpulan yang kuat`;
     }
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
