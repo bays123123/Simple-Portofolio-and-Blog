@@ -100,15 +100,16 @@ const BlogPost = () => {
             </header>
 
             <div className="prose prose-invert max-w-none 
-              prose-headings:text-foreground prose-headings:font-display prose-headings:leading-tight
-              prose-h2:text-xl prose-h2:sm:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:font-bold
-              prose-h3:text-lg prose-h3:sm:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-semibold
-              prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:mb-5 prose-p:text-base prose-p:sm:text-lg
+              prose-headings:text-foreground prose-headings:font-display prose-headings:leading-tight prose-headings:tracking-tight
+              prose-h2:text-xl prose-h2:sm:text-2xl prose-h2:mt-12 prose-h2:mb-5 prose-h2:font-bold prose-h2:text-foreground
+              prose-h3:text-lg prose-h3:sm:text-xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:font-semibold prose-h3:text-foreground/90
+              prose-p:text-muted-foreground prose-p:leading-[1.8] prose-p:mb-6 prose-p:mt-0 prose-p:text-base prose-p:sm:text-lg
               prose-li:text-muted-foreground prose-li:leading-relaxed
-              prose-ul:my-4 prose-ol:my-4
+              prose-ul:my-5 prose-ol:my-5
               prose-strong:text-foreground prose-strong:font-semibold
               prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-              prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:italic
+              prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8
+              prose-hr:border-border prose-hr:my-10
             ">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {post.content}
