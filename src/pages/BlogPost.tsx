@@ -9,6 +9,19 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState } from "react";
 
+// Helper to generate responsive image props with srcset for Supabase Storage images
+const getResponsiveImageProps = (url: string) => {
+  if (!url) return null;
+  const isSupabaseStorage = url.includes('.supabase.co/storage/v1/');
+  const srcSet = isSupabaseStorage
+    ? `${url}?width=400&quality=80 400w, ${url}?width=800&quality=80 800w, ${url}?width=1200&quality=80 1200w`
+    : undefined;
+  return {
+    srcSet,
+    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px',
+  };
+};
+
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   const [fontSize, setFontSize] = useState<0 | 1 | 2>(0);
@@ -94,15 +107,22 @@ const BlogPost = () => {
           <article className="fade-in">
             {post.cover_image && (
               <figure className="relative w-full -mx-4 sm:mx-0 sm:rounded-xl overflow-hidden border-0 sm:border border-border mb-8 sm:mb-10">
-                <img
-                  src={post.cover_image}
-                  alt={post.title}
-                  className="w-full aspect-[4/3] sm:aspect-[16/9] object-cover max-h-[320px] sm:max-h-[420px]"
-                  loading="eager"
-                  onError={(e) => {
-                    (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
-                  }}
-                />
+                {(() => {
+                  const responsiveProps = getResponsiveImageProps(post.cover_image);
+                  return (
+                    <img
+                      src={post.cover_image}
+                      alt={post.title}
+                      className="w-full aspect-[4/3] sm:aspect-[16/9] object-cover max-h-[320px] sm:max-h-[420px]"
+                      loading="lazy"
+                      decoding="async"
+                      {...(responsiveProps || {})}
+                      onError={(e) => {
+                        (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  );
+                })()}
               </figure>
             )}
             <header className="mb-10 sm:mb-12">
