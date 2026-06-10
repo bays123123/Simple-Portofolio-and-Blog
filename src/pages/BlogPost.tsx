@@ -7,7 +7,7 @@ import { ArrowLeft, Type, AlignJustify } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 // Helper to generate responsive image props with srcset for Supabase Storage images
 const getResponsiveImageProps = (url: string) => {
