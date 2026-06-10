@@ -93,15 +93,17 @@ const BlogPost = () => {
 
           <article className="fade-in">
             {post.cover_image && (
-              <img
-                src={post.cover_image}
-                alt={post.title}
-                className="w-full aspect-[16/9] object-cover rounded-xl border border-border mb-8 sm:mb-10"
-                loading="eager"
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = 'none';
-                }}
-              />
+              <figure className="relative w-full -mx-4 sm:mx-0 sm:rounded-xl overflow-hidden border-0 sm:border border-border mb-8 sm:mb-10">
+                <img
+                  src={post.cover_image}
+                  alt={post.title}
+                  className="w-full aspect-[4/3] sm:aspect-[16/9] object-cover max-h-[320px] sm:max-h-[420px]"
+                  loading="eager"
+                  onError={(e) => {
+                    (e.currentTarget.parentElement as HTMLElement).style.display = 'none';
+                  }}
+                />
+              </figure>
             )}
             <header className="mb-10 sm:mb-12">
               <h1 className="text-heading font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight mb-4">
