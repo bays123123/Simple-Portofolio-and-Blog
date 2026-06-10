@@ -104,12 +104,13 @@ const BlogPost = () => {
               prose-h2:text-xl prose-h2:sm:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:font-bold
               prose-h3:text-lg prose-h3:sm:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-semibold
               prose-p:text-muted-foreground prose-p:leading-[1.8] prose-p:my-6
-              prose-li:text-muted-foreground prose-li:leading-[1.8] prose-li:my-2
-              prose-ul:my-6 prose-ol:my-6
+              prose-ul:my-6 prose-ol:my-6 prose-ul:space-y-2 prose-ol:space-y-2
+              prose-li:text-muted-foreground prose-li:leading-[1.8] prose-li:my-0 prose-li:pl-1
               prose-strong:text-foreground prose-strong:font-semibold
               prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-              prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-6
+              prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:italic prose-blockquote:my-8 prose-blockquote:py-1
               prose-hr:border-border prose-hr:my-10
+              prose-img:my-8 prose-img:rounded-lg
             ">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {post.content}
