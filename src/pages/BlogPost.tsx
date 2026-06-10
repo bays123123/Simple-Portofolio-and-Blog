@@ -11,6 +11,9 @@ import { useState } from "react";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
+  const [fontSize, setFontSize] = useState<0 | 1 | 2>(0);
+  const [lineHeight, setLineHeight] = useState<0 | 1 | 2>(1);
+  const [showControls, setShowControls] = useState(false);
 
   const { data: post, isLoading, error } = useQuery({
     queryKey: ['blog-post', slug],
