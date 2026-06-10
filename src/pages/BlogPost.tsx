@@ -174,7 +174,7 @@ const BlogPost = () => {
               prose-headings:text-foreground prose-headings:font-display prose-headings:leading-snug prose-headings:tracking-tight
               prose-h2:text-xl prose-h2:sm:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:font-bold
               prose-h3:text-lg prose-h3:sm:text-xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-semibold
-              prose-p:text-muted-foreground prose-p:my-6
+              prose-p:text-muted-foreground prose-p:my-10
               prose-ul:my-6 prose-ol:my-6 prose-ul:space-y-2 prose-ol:space-y-2
               prose-li:text-muted-foreground prose-li:my-0 prose-li:pl-1
               prose-strong:text-foreground prose-strong:font-semibold
