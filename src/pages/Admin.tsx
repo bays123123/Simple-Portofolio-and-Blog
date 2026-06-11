@@ -422,12 +422,14 @@ const Admin = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="tags">Tag</Label>
-                  <Input
-                    id="tags"
+                  <TagAutocomplete
                     value={formData.tags}
-                    onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                    placeholder="Pisahkan dengan koma, contoh: React, Web, SEO"
+                    onChange={(tags) => setFormData({ ...formData, tags })}
+                    placeholder="Tambahkan tag..."
                   />
+                  <p className="text-xs text-muted-foreground">
+                    Tekan Enter atau koma untuk menambahkan tag. Pilih dari daftar yang muncul.
+                  </p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Switch
