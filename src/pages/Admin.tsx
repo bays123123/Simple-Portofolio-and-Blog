@@ -364,13 +364,13 @@ const Admin = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="content">Konten (Markdown)</Label>
-                  <Textarea
+                  <Label htmlFor="content">Konten</Label>
+                  <MarkdownEditor
                     id="content"
                     value={formData.content}
-                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    placeholder="Konten artikel dalam format Markdown"
-                    rows={8}
+                    onChange={(content) => setFormData({ ...formData, content })}
+                    placeholder="Tulis konten artikel di sini. Gunakan toolbar di atas untuk format teks."
+                    rows={12}
                   />
                 </div>
                 <div className="space-y-2">
