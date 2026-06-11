@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,31 +7,102 @@ import Footer from "@/components/Footer";
 import { format } from "date-fns";
 
 const Blog = () => {
+  const [activeCategory, setActiveCategory] = useState<string>("Semua");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
   const { data: blogPosts, isLoading } = useQuery({
     queryKey: ['blog-posts'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('id, title, slug, excerpt, read_time, created_at')
+        .select('id, title, slug, excerpt, read_time, created_at, category, tags')
         .eq('published', true)
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
       return data;
     }
   });
 
+  const categories = useMemo(() => {
+    const set = new Set<string>();
+    blogPosts?.forEach((p) => p.category && set.add(p.category));
+    return ["Semua", ...Array.from(set).sort()];
+  }, [blogPosts]);
+
+  const tags = useMemo(() => {
+    const set = new Set<string>();
+    blogPosts?.forEach((p) => p.tags?.forEach((t) => t && set.add(t)));
+    return Array.from(set).sort();
+  }, [blogPosts]);
+
+  const filteredPosts = useMemo(() => {
+    return blogPosts?.filter((p) => {
+      const categoryMatch = activeCategory === "Semua" || p.category === activeCategory;
+      const tagMatch = !activeTag || p.tags?.includes(activeTag);
+      return categoryMatch && tagMatch;
+    });
+  }, [blogPosts, activeCategory, activeTag]);
+
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Navbar />
-        
+
         <main className="py-6 sm:py-8">
-          <section className="mb-10 sm:mb-12 fade-in">
+          <section className="mb-8 sm:mb-10 fade-in">
             <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               Blog
             </h1>
           </section>
+
+          {!isLoading && (categories.length > 1 || tags.length > 0) && (
+            <section className="mb-8 sm:mb-10 space-y-4 fade-in">
+              {categories.length > 1 && (
+                <div className="flex flex-wrap gap-2">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                        activeCategory === cat
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {tags.length > 0 && (
+                <div className="flex flex-wrap items-center gap-2">
+                  {tags.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                      className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
+                        activeTag === tag
+                          ? 'bg-primary/15 text-primary ring-1 ring-primary/40'
+                          : 'bg-secondary/60 text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      #{tag}
+                    </button>
+                  ))}
+                  {activeTag && (
+                    <button
+                      onClick={() => setActiveTag(null)}
+                      className="text-xs text-muted-foreground underline hover:text-foreground"
+                    >
+                      Hapus filter tag
+                    </button>
+                  )}
+                </div>
+              )}
+            </section>
+          )}
 
           <section className="space-y-6 sm:space-y-8">
             {isLoading ? (
@@ -43,14 +115,19 @@ const Blog = () => {
                   </div>
                 ))}
               </div>
-            ) : (
-              blogPosts?.map((post, index) => (
-                <article 
-                  key={post.id} 
+            ) : filteredPosts && filteredPosts.length > 0 ? (
+              filteredPosts.map((post, index) => (
+                <article
+                  key={post.id}
                   className={`group border-b border-border pb-6 sm:pb-8 last:border-0 fade-in-delay-${Math.min(index + 1, 4)}`}
                 >
                   <Link to={`/blog/${post.slug}`} className="block touch-manipulation">
                     <div className="flex flex-col gap-2 mb-3">
+                      {post.category && (
+                        <span className="text-primary text-xs font-semibold uppercase tracking-wide">
+                          {post.category}
+                        </span>
+                      )}
                       <h2 className="text-foreground font-display text-lg sm:text-xl font-semibold group-hover:text-primary transition-colors">
                         {post.title}
                       </h2>
@@ -61,12 +138,28 @@ const Blog = () => {
                     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-2">
                       {post.excerpt}
                     </p>
-                    <span className="text-primary text-sm font-medium">
-                      {post.read_time}
-                    </span>
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <span className="text-primary text-sm font-medium">
+                        {post.read_time}
+                      </span>
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5">
+                          {post.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="rounded-md bg-secondary/60 px-2 py-0.5 text-xs text-muted-foreground"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </Link>
                 </article>
               ))
+            ) : (
+              <p className="text-muted-foreground text-sm">Tidak ada artikel yang cocok dengan filter.</p>
             )}
           </section>
         </main>
