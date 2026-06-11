@@ -106,7 +106,7 @@ const BlogPost = () => {
 
           <article className="fade-in">
             {post.cover_image && (
-              <figure className="relative w-full -mx-4 sm:mx-0 sm:rounded-xl overflow-hidden border-0 sm:border border-border mb-8 sm:mb-10">
+              <figure className="relative w-full rounded-xl overflow-hidden border border-border mb-8 sm:mb-10">
                 {(() => {
                   const responsiveProps = getResponsiveImageProps(post.cover_image);
                   return (
