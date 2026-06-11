@@ -131,6 +131,16 @@
   }
 }
 
+.article-content {
+  line-height: var(--article-line-height, 1.8);
+}
+
+.article-content p,
+.article-content li,
+.article-content blockquote {
+  line-height: var(--article-line-height, 1.8);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
