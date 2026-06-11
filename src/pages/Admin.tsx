@@ -128,6 +128,12 @@ const Admin = () => {
     },
   });
 
+  const parseTags = (value: string): string[] =>
+    value
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+
   const resetForm = () => {
     setIsEditing(false);
     setEditingPost(null);
@@ -139,6 +145,8 @@ const Admin = () => {
       cover_image: '',
       published: false,
       read_time: '',
+      category: '',
+      tags: '',
     });
   };
 
@@ -152,6 +160,8 @@ const Admin = () => {
       cover_image: post.cover_image || '',
       published: post.published,
       read_time: post.read_time || '',
+      category: post.category || '',
+      tags: (post.tags || []).join(', '),
     });
     setIsEditing(true);
   };
