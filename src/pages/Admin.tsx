@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2 } from 'lucide-react';
+import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2, X } from 'lucide-react';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import { format } from 'date-fns';
 
