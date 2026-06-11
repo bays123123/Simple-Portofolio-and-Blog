@@ -126,6 +126,14 @@ const BlogPost = () => {
               </figure>
             )}
             <header className="mb-10 sm:mb-12">
+              {post.category && (
+                <Link
+                  to="/blog"
+                  className="inline-block text-primary text-xs font-semibold uppercase tracking-wide mb-3 hover:underline"
+                >
+                  {post.category}
+                </Link>
+              )}
               <h1 className="text-heading font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight mb-4">
                 {post.title}
               </h1>
