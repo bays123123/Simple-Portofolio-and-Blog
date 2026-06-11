@@ -410,6 +410,24 @@ const Admin = () => {
                     placeholder="5 min read"
                   />
                 </div>
+                <div className="space-y-2">
+                  <Label htmlFor="category">Kategori</Label>
+                  <Input
+                    id="category"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    placeholder="Contoh: Teknologi"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="tags">Tag</Label>
+                  <Input
+                    id="tags"
+                    value={formData.tags}
+                    onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                    placeholder="Pisahkan dengan koma, contoh: React, Web, SEO"
+                  />
+                </div>
                 <div className="flex items-center gap-2">
                   <Switch
                     id="published"
