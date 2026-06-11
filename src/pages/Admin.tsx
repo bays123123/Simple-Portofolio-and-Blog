@@ -99,6 +99,8 @@ const Admin = () => {
         cover_image: post.cover_image || null,
         published: post.published,
         read_time: post.read_time || null,
+        category: post.category || null,
+        tags: parseTags(post.tags),
       }).eq('id', id);
       if (error) throw error;
     },
