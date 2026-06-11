@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2 } from 'lucide-react';
+import MarkdownEditor from '@/components/MarkdownEditor';
 import { format } from 'date-fns';
 
 interface BlogPost {
@@ -364,13 +365,13 @@ const Admin = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="content">Konten (Markdown)</Label>
-                  <Textarea
+                  <Label htmlFor="content">Konten</Label>
+                  <MarkdownEditor
                     id="content"
                     value={formData.content}
-                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                    placeholder="Konten artikel dalam format Markdown"
-                    rows={8}
+                    onChange={(content) => setFormData({ ...formData, content })}
+                    placeholder="Tulis konten artikel di sini. Gunakan toolbar di atas untuk format teks."
+                    rows={12}
                   />
                 </div>
                 <div className="space-y-2">
