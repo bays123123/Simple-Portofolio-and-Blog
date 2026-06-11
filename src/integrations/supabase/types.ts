@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       blog_posts: {
         Row: {
+          category: string | null
           content: string
           cover_image: string | null
           created_at: string
@@ -24,10 +25,12 @@ export type Database = {
           published: boolean
           read_time: string | null
           slug: string
+          tags: string[]
           title: string
           updated_at: string
         }
         Insert: {
+          category?: string | null
           content: string
           cover_image?: string | null
           created_at?: string
@@ -36,10 +39,12 @@ export type Database = {
           published?: boolean
           read_time?: string | null
           slug: string
+          tags?: string[]
           title: string
           updated_at?: string
         }
         Update: {
+          category?: string | null
           content?: string
           cover_image?: string | null
           created_at?: string
@@ -48,6 +53,7 @@ export type Database = {
           published?: boolean
           read_time?: string | null
           slug?: string
+          tags?: string[]
           title?: string
           updated_at?: string
         }
