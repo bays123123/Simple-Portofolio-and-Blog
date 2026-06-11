@@ -23,6 +23,8 @@ interface BlogPost {
   cover_image: string | null;
   published: boolean;
   read_time: string | null;
+  category: string | null;
+  tags: string[] | null;
   created_at: string;
 }
 
@@ -44,6 +46,8 @@ const Admin = () => {
     cover_image: '',
     published: false,
     read_time: '',
+    category: '',
+    tags: '',
   });
 
   const { data: posts, isLoading: postsLoading } = useQuery({
@@ -70,6 +74,8 @@ const Admin = () => {
         cover_image: post.cover_image || null,
         published: post.published,
         read_time: post.read_time || null,
+        category: post.category || null,
+        tags: parseTags(post.tags),
       });
       if (error) throw error;
     },
@@ -93,6 +99,8 @@ const Admin = () => {
         cover_image: post.cover_image || null,
         published: post.published,
         read_time: post.read_time || null,
+        category: post.category || null,
+        tags: parseTags(post.tags),
       }).eq('id', id);
       if (error) throw error;
     },
@@ -120,6 +128,12 @@ const Admin = () => {
     },
   });
 
+  const parseTags = (value: string): string[] =>
+    value
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
+
   const resetForm = () => {
     setIsEditing(false);
     setEditingPost(null);
@@ -131,6 +145,8 @@ const Admin = () => {
       cover_image: '',
       published: false,
       read_time: '',
+      category: '',
+      tags: '',
     });
   };
 
@@ -144,6 +160,8 @@ const Admin = () => {
       cover_image: post.cover_image || '',
       published: post.published,
       read_time: post.read_time || '',
+      category: post.category || '',
+      tags: (post.tags || []).join(', '),
     });
     setIsEditing(true);
   };
@@ -390,6 +408,24 @@ const Admin = () => {
                     value={formData.read_time}
                     onChange={(e) => setFormData({ ...formData, read_time: e.target.value })}
                     placeholder="5 min read"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="category">Kategori</Label>
+                  <Input
+                    id="category"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    placeholder="Contoh: Teknologi"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="tags">Tag</Label>
+                  <Input
+                    id="tags"
+                    value={formData.tags}
+                    onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                    placeholder="Pisahkan dengan koma, contoh: React, Web, SEO"
                   />
                 </div>
                 <div className="flex items-center gap-2">

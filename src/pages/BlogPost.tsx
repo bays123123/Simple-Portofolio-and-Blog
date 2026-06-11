@@ -126,6 +126,14 @@ const BlogPost = () => {
               </figure>
             )}
             <header className="mb-10 sm:mb-12">
+              {post.category && (
+                <Link
+                  to="/blog"
+                  className="inline-block text-primary text-xs font-semibold uppercase tracking-wide mb-3 hover:underline"
+                >
+                  {post.category}
+                </Link>
+              )}
               <h1 className="text-heading font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight mb-4">
                 {post.title}
               </h1>
@@ -227,6 +235,19 @@ const BlogPost = () => {
                 {post.content}
               </ReactMarkdown>
             </div>
+
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-10 pt-6 border-t border-border flex flex-wrap gap-2">
+                {post.tags.map((tag: string) => (
+                  <span
+                    key={tag}
+                    className="rounded-md bg-secondary/60 px-2.5 py-1 text-xs font-medium text-muted-foreground"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </article>
         </main>
 
