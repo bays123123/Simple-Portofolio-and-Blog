@@ -68,7 +68,6 @@ const MarkdownEditor = ({
     const selected = value.slice(start, end);
     const suffix = tool.suffix ?? '';
 
-    let insertStart = start;
     let insert = '';
 
     if (tool.prefix === '\n---\n') {
@@ -85,12 +84,6 @@ const MarkdownEditor = ({
 
     requestAnimationFrame(() => {
       textarea.focus();
-      const selectionStart =
-        insertStart +
-        insert.length -
-        suffix.length -
-        (selected ? 0 : (tool.block ? 0 : tool.placeholder.length + suffix.length - suffix.length));
-      // Place cursor on the placeholder text for quick typing
       if (!selected && tool.placeholder) {
         const phStart = newValue.indexOf(tool.placeholder, start);
         if (phStart !== -1) {
