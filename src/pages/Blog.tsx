@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { format } from "date-fns";
+
 
 const Blog = () => {
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
@@ -46,6 +48,15 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Blog | Bayu Dwi Darmawan</title>
+        <meta name="description" content="Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak. Referensi teori dan praktik percetakan untuk publik." />
+        <meta property="og:title" content="Blog | Bayu Dwi Darmawan" />
+        <meta property="og:description" content="Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak. Referensi teori dan praktik percetakan untuk publik." />
+        <meta property="og:url" content="https://www.bayud.my.id/blog" />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://www.bayud.my.id/blog" />
+      </Helmet>
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Navbar />
 
@@ -54,6 +65,9 @@ const Blog = () => {
             <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               Blog
             </h1>
+            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+              Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak. Referensi teori dan praktik percetakan untuk publik.
+            </p>
           </section>
 
           {!isLoading && (categories.length > 1 || tags.length > 0) && (
