@@ -23,6 +23,8 @@ interface BlogPost {
   cover_image: string | null;
   published: boolean;
   read_time: string | null;
+  category: string | null;
+  tags: string[] | null;
   created_at: string;
 }
 
@@ -44,6 +46,8 @@ const Admin = () => {
     cover_image: '',
     published: false,
     read_time: '',
+    category: '',
+    tags: '',
   });
 
   const { data: posts, isLoading: postsLoading } = useQuery({
