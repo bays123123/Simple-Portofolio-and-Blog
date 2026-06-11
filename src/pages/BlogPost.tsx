@@ -235,6 +235,19 @@ const BlogPost = () => {
                 {post.content}
               </ReactMarkdown>
             </div>
+
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-10 pt-6 border-t border-border flex flex-wrap gap-2">
+                {post.tags.map((tag: string) => (
+                  <span
+                    key={tag}
+                    className="rounded-md bg-secondary/60 px-2.5 py-1 text-xs font-medium text-muted-foreground"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </article>
         </main>
 
