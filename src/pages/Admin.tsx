@@ -12,6 +12,8 @@ import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2, X } from 'lucide-react';
 import MarkdownEditor from '@/components/MarkdownEditor';
+import TagAutocomplete from '@/components/TagAutocomplete';
+import { format } from 'date-fns';
 import { format } from 'date-fns';
 
 interface BlogPost {
