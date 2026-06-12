@@ -138,8 +138,8 @@ const Blog = () => {
                   </div>
                 ))}
               </div>
-            ) : filteredPosts && filteredPosts.length > 0 ? (
-              filteredPosts.map((post, index) => (
+            ) : paginatedPosts && paginatedPosts.length > 0 ? (
+              paginatedPosts.map((post, index) => (
                 <article
                   key={post.id}
                   className={`group border-b border-border pb-6 sm:pb-8 last:border-0 fade-in-delay-${Math.min(index + 1, 4)}`}
