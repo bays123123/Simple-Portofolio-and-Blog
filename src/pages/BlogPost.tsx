@@ -108,10 +108,35 @@ const BlogPost = () => {
     );
   }
 
+  const metaDescription = getMetaDescription(post);
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <Helmet>
+        <title>{`${post.title} | Bayu Dwi Darmawan`}</title>
+        <meta name="description" content={metaDescription} />
+        <meta property="og:title" content={`${post.title} | Bayu Dwi Darmawan`} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={`https://www.bayud.my.id/blog/${post.slug}`} />
+        <meta property="og:type" content="article" />
+        {post.cover_image && <meta property="og:image" content={post.cover_image} />}
+        {post.cover_image && <meta property="og:image:alt" content={post.title} />}
+        <link rel="canonical" href={`https://www.bayud.my.id/blog/${post.slug}`} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: post.title,
+          description: metaDescription,
+          image: post.cover_image || undefined,
+          datePublished: post.created_at,
+          dateModified: post.updated_at,
+          url: `https://www.bayud.my.id/blog/${post.slug}`,
+          author: {
+            "@type": "Person",
+            name: "Bayu Dwi Darmawan"
+          }
+        })}</script>
+      </Helmet>
         <Navbar />
         
         <main className="py-6 sm:py-8">
