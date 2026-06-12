@@ -116,7 +116,7 @@ const Blog = () => {
                   ))}
                   {activeTag && (
                     <button
-                      onClick={() => setActiveTag(null)}
+                      onClick={() => { setActiveTag(null); setCurrentPage(1); }}
                       className="text-xs text-muted-foreground underline hover:text-foreground"
                     >
                       Hapus filter tag
