@@ -49,6 +49,12 @@ const Blog = () => {
     });
   }, [blogPosts, activeCategory, activeTag]);
 
+  const totalPages = Math.ceil((filteredPosts?.length || 0) / POSTS_PER_PAGE);
+  const paginatedPosts = useMemo(() => {
+    const start = (currentPage - 1) * POSTS_PER_PAGE;
+    return filteredPosts?.slice(start, start + POSTS_PER_PAGE);
+  }, [filteredPosts, currentPage]);
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
