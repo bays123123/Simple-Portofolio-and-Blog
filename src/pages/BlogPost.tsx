@@ -137,6 +137,7 @@ const BlogPost = () => {
           }
         })}</script>
       </Helmet>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Navbar />
         
         <main className="py-6 sm:py-8">
