@@ -86,7 +86,7 @@ const Blog = () => {
                   {categories.map((cat) => (
                     <button
                       key={cat}
-                      onClick={() => setActiveCategory(cat)}
+                      onClick={() => { setActiveCategory(cat); setCurrentPage(1); }}
                       className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
                         activeCategory === cat
                           ? 'bg-primary text-primary-foreground'
