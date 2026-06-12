@@ -104,7 +104,7 @@ const Blog = () => {
                   {tags.map((tag) => (
                     <button
                       key={tag}
-                      onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                      onClick={() => { setActiveTag(activeTag === tag ? null : tag); setCurrentPage(1); }}
                       className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                         activeTag === tag
                           ? 'bg-primary/15 text-primary ring-1 ring-primary/40'
