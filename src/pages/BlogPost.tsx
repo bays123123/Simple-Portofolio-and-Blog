@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -7,7 +8,7 @@ import { ArrowLeft, Type, AlignJustify } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 // Helper to generate responsive image props with srcset for Supabase Storage images
 const getResponsiveImageProps = (url: string) => {
@@ -20,6 +21,24 @@ const getResponsiveImageProps = (url: string) => {
     srcSet,
     sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px',
   };
+};
+
+// Strip markdown syntax to get plain text for meta description
+const stripMarkdown = (md: string) => {
+  return md
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[#*_~`]/g, '')
+    .replace(/>\s?/g, '')
+    .replace(/\n+/g, ' ')
+    .trim();
+};
+
+const getMetaDescription = (post: any) => {
+  if (post.excerpt) return post.excerpt;
+  const plain = stripMarkdown(post.content || '');
+  if (plain.length <= 160) return plain;
+  return plain.slice(0, 157).trimEnd() + '...';
 };
 
 const BlogPost = () => {
