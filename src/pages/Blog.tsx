@@ -6,11 +6,15 @@ import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { format } from "date-fns";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
+
+const POSTS_PER_PAGE = 5;
 
 const Blog = () => {
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const { data: blogPosts, isLoading } = useQuery({
     queryKey: ['blog-posts'],
@@ -46,6 +50,12 @@ const Blog = () => {
     });
   }, [blogPosts, activeCategory, activeTag]);
 
+  const totalPages = Math.ceil((filteredPosts?.length || 0) / POSTS_PER_PAGE);
+  const paginatedPosts = useMemo(() => {
+    const start = (currentPage - 1) * POSTS_PER_PAGE;
+    return filteredPosts?.slice(start, start + POSTS_PER_PAGE);
+  }, [filteredPosts, currentPage]);
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -77,7 +87,7 @@ const Blog = () => {
                   {categories.map((cat) => (
                     <button
                       key={cat}
-                      onClick={() => setActiveCategory(cat)}
+                      onClick={() => { setActiveCategory(cat); setCurrentPage(1); }}
                       className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
                         activeCategory === cat
                           ? 'bg-primary text-primary-foreground'
@@ -95,7 +105,7 @@ const Blog = () => {
                   {tags.map((tag) => (
                     <button
                       key={tag}
-                      onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                      onClick={() => { setActiveTag(activeTag === tag ? null : tag); setCurrentPage(1); }}
                       className={`rounded-md px-2.5 py-1 text-xs font-medium transition-colors ${
                         activeTag === tag
                           ? 'bg-primary/15 text-primary ring-1 ring-primary/40'
@@ -107,7 +117,7 @@ const Blog = () => {
                   ))}
                   {activeTag && (
                     <button
-                      onClick={() => setActiveTag(null)}
+                      onClick={() => { setActiveTag(null); setCurrentPage(1); }}
                       className="text-xs text-muted-foreground underline hover:text-foreground"
                     >
                       Hapus filter tag
@@ -129,8 +139,8 @@ const Blog = () => {
                   </div>
                 ))}
               </div>
-            ) : filteredPosts && filteredPosts.length > 0 ? (
-              filteredPosts.map((post, index) => (
+            ) : paginatedPosts && paginatedPosts.length > 0 ? (
+              paginatedPosts.map((post, index) => (
                 <article
                   key={post.id}
                   className={`group border-b border-border pb-6 sm:pb-8 last:border-0 fade-in-delay-${Math.min(index + 1, 4)}`}
@@ -176,6 +186,44 @@ const Blog = () => {
               <p className="text-muted-foreground text-sm">Tidak ada artikel yang cocok dengan filter.</p>
             )}
           </section>
+
+          {totalPages > 1 && (
+            <nav className="mt-8 sm:mt-10 flex items-center justify-center gap-1.5 fade-in" aria-label="Pagination">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-secondary"
+                aria-label="Halaman sebelumnya"
+              >
+                <ChevronLeft size={16} />
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
+                    currentPage === page
+                      ? 'bg-primary text-primary-foreground'
+                      : 'hover:bg-secondary text-muted-foreground hover:text-foreground'
+                  }`}
+                  aria-label={`Halaman ${page}`}
+                  aria-current={currentPage === page ? 'page' : undefined}
+                >
+                  {page}
+                </button>
+              ))}
+
+              <button
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-secondary"
+                aria-label="Halaman berikutnya"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </nav>
+          )}
         </main>
 
         <Footer />
