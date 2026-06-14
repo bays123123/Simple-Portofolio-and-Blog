@@ -1,0 +1,13 @@
+# Bayu Dwi Darmawan Portfolio
+
+> Personal portfolio of Bayu Dwi Darmawan, a Proof Print Machine Operator and tech blogger covering printing, color matching, and technology.
+
+## Pages
+
+- [Home](/): Portfolio landing page with experience, projects, and resume.
+- [Blog](/blog): Articles about printing technology, color matching, and tech topics.
+
+## Blog
+
+- [Pentingnya Grey Balance pada Mutu Hasil Cetak Offset](/blog/pentingnya-grey-balance-pada-mutu-hasil-cetak-offset): Explains the importance of grey balance in offset print quality.
+- [Prinsip Dasar Sudut Raster dalam Cetak CMYK](/blog/prinsip-dasar-sudut-raster-dalam-cetak-cmyk): Introduces raster angle principles in CMYK printing.
