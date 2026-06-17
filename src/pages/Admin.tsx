@@ -13,6 +13,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2 } from 'lucide-react';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import TagAutocomplete from '@/components/TagAutocomplete';
+import AnalyticsDashboard from '@/components/AnalyticsDashboard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
 
 interface BlogPost {
