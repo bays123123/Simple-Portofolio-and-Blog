@@ -287,6 +287,17 @@ const Admin = () => {
           </Button>
         </header>
 
+        <Tabs defaultValue="statistik" className="w-full">
+          <TabsList className="mb-6">
+            <TabsTrigger value="statistik">Statistik</TabsTrigger>
+            <TabsTrigger value="artikel">Artikel</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="statistik">
+            <AnalyticsDashboard />
+          </TabsContent>
+
+          <TabsContent value="artikel">
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Form */}
           <Card>
