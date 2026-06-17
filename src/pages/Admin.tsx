@@ -512,6 +512,8 @@ const Admin = () => {
             </CardContent>
           </Card>
         </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
