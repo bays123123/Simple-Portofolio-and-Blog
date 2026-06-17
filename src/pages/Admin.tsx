@@ -13,6 +13,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2 } from 'lucide-react';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import TagAutocomplete from '@/components/TagAutocomplete';
+import AnalyticsDashboard from '@/components/AnalyticsDashboard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
 
 interface BlogPost {
@@ -285,6 +287,17 @@ const Admin = () => {
           </Button>
         </header>
 
+        <Tabs defaultValue="statistik" className="w-full">
+          <TabsList className="mb-6">
+            <TabsTrigger value="statistik">Statistik</TabsTrigger>
+            <TabsTrigger value="artikel">Artikel</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="statistik">
+            <AnalyticsDashboard />
+          </TabsContent>
+
+          <TabsContent value="artikel">
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Form */}
           <Card>
@@ -499,6 +512,8 @@ const Admin = () => {
             </CardContent>
           </Card>
         </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

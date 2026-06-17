@@ -89,6 +89,39 @@ export type Database = {
         }
         Relationships: []
       }
+      page_views: {
+        Row: {
+          country: string | null
+          country_code: string | null
+          created_at: string
+          device: string
+          id: string
+          path: string
+          session_id: string | null
+          source: string
+        }
+        Insert: {
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          device?: string
+          id?: string
+          path: string
+          session_id?: string | null
+          source?: string
+        }
+        Update: {
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          device?: string
+          id?: string
+          path?: string
+          session_id?: string | null
+          source?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
