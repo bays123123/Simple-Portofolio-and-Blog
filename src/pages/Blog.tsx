@@ -106,6 +106,7 @@ const Blog = () => {
         <meta property="og:url" content="https://www.bayud.my.id/blog" />
         <meta property="og:type" content="website" />
         <link rel="canonical" href="https://www.bayud.my.id/blog" />
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Navbar />
