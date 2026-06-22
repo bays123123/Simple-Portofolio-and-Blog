@@ -2,21 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.bayud.my.id/</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.bayud.my.id/blog</loc>
-    <lastmod>2026-06-14</lastmod>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.bayud.my.id/auth</loc>
+    <loc>https://www.bayud.my.id/blog/spesifikasi-teknis-standar-untuk-plat-cetak-offset</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bayud.my.id/blog/bagaimana-mesin-digital-print-bekerja</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bayud.my.id/blog/pemilihan-material-pada-percetakan-rotogravure</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bayud.my.id/blog/perbedaan-tinta-rubber-dan-tinta-plastisol-pada-cetak-sablon</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bayud.my.id/blog/penyebab-terbentuknya-pinhole-pada-silinder-rotogravure</loc>
+    <lastmod>2026-06-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bayud.my.id/blog/cara-kerja-tinta-dalam-proses-cetak-rotogravure</loc>
     <lastmod>2026-06-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.bayud.my.id/blog/pentingnya-grey-balance-pada-mutu-hasil-cetak-offset</loc>
