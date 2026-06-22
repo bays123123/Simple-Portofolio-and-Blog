@@ -56,6 +56,46 @@ const Blog = () => {
     return filteredPosts?.slice(start, start + POSTS_PER_PAGE);
   }, [filteredPosts, currentPage]);
 
+  const jsonLd = useMemo(() => {
+    const baseUrl = "https://www.bayud.my.id";
+    const graph: Record<string, unknown>[] = [
+      {
+        "@type": "Blog",
+        "@id": `${baseUrl}/blog#blog`,
+        url: `${baseUrl}/blog`,
+        name: "Blog | Bayu Dwi Darmawan",
+        description:
+          "Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak. Referensi teori dan praktik percetakan untuk publik.",
+        inLanguage: "id",
+        author: { "@type": "Person", name: "Bayu Dwi Darmawan" },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${baseUrl}/` },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${baseUrl}/blog` },
+        ],
+      },
+    ];
+
+    if (blogPosts && blogPosts.length > 0) {
+      graph.push({
+        "@type": "ItemList",
+        itemListOrder: "https://schema.org/ItemListOrderDescending",
+        numberOfItems: blogPosts.length,
+        itemListElement: blogPosts.map((post, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          url: `${baseUrl}/blog/${post.slug}`,
+          name: post.title,
+        })),
+      });
+    }
+
+    return { "@context": "https://schema.org", "@graph": graph };
+  }, [blogPosts]);
+
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -66,6 +106,7 @@ const Blog = () => {
         <meta property="og:url" content="https://www.bayud.my.id/blog" />
         <meta property="og:type" content="website" />
         <link rel="canonical" href="https://www.bayud.my.id/blog" />
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Navbar />
