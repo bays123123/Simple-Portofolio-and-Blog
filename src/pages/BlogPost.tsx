@@ -4,11 +4,44 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft, Type, AlignJustify } from "lucide-react";
+import { ArrowLeft, Type, AlignJustify, List } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState, useMemo } from "react";
+
+// Convert heading text into a URL-friendly slug for anchor ids
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+// Extract h2/h3 headings from markdown content for the table of contents
+const extractHeadings = (md: string) => {
+  if (!md) return [] as { id: string; text: string; level: number }[];
+  const lines = md.split("\n");
+  const headings: { id: string; text: string; level: number }[] = [];
+  let inCodeBlock = false;
+  for (const line of lines) {
+    if (line.trim().startsWith("```")) {
+      inCodeBlock = !inCodeBlock;
+      continue;
+    }
+    if (inCodeBlock) continue;
+    const match = /^(#{2,3})\s+(.*)$/.exec(line.trim());
+    if (match) {
+      const level = match[1].length;
+      const text = match[2].replace(/[#*_~`]/g, "").trim();
+      if (text) headings.push({ id: slugify(text), text, level });
+    }
+  }
+  return headings;
+};
+
+
 
 // Helper to generate responsive image props with srcset for Supabase Storage images
 const getResponsiveImageProps = (url: string) => {
