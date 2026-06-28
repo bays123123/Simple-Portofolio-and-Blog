@@ -1,14 +1,59 @@
+import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft, Type, AlignJustify } from "lucide-react";
+import { ArrowLeft, Type, AlignJustify, List } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState, useMemo } from "react";
+
+// Convert heading text into a URL-friendly slug for anchor ids
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+
+// Recursively extract plain text from React children (for heading ids)
+const getNodeText = (node: React.ReactNode): string => {
+  if (node == null) return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(getNodeText).join("");
+  if (React.isValidElement(node)) return getNodeText((node.props as { children?: React.ReactNode }).children);
+  return "";
+};
+
+
+
+// Extract h2/h3 headings from markdown content for the table of contents
+const extractHeadings = (md: string) => {
+  if (!md) return [] as { id: string; text: string; level: number }[];
+  const lines = md.split("\n");
+  const headings: { id: string; text: string; level: number }[] = [];
+  let inCodeBlock = false;
+  for (const line of lines) {
+    if (line.trim().startsWith("```")) {
+      inCodeBlock = !inCodeBlock;
+      continue;
+    }
+    if (inCodeBlock) continue;
+    const match = /^(#{2,3})\s+(.*)$/.exec(line.trim());
+    if (match) {
+      const level = match[1].length;
+      const text = match[2].replace(/[#*_~`]/g, "").trim();
+      if (text) headings.push({ id: slugify(text), text, level });
+    }
+  }
+  return headings;
+};
+
+
 
 // Helper to generate responsive image props with srcset for Supabase Storage images
 const getResponsiveImageProps = (url: string) => {
@@ -62,6 +107,20 @@ const BlogPost = () => {
     },
     enabled: !!slug
   });
+
+  const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
+  const showToc = headings.length >= 3;
+
+  const handleTocClick = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', `#${id}`);
+    }
+  };
+
+
 
   if (isLoading) {
     return (
@@ -256,6 +315,31 @@ const BlogPost = () => {
               </div>
             </header>
 
+            {showToc && (
+              <nav
+                aria-label="Daftar isi"
+                className="mb-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
+              >
+                <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
+                  <List size={16} className="text-primary" />
+                  Daftar Isi
+                </div>
+                <ul className="space-y-1.5">
+                  {headings.map((h, i) => (
+                    <li key={`${h.id}-${i}`} className={h.level === 3 ? "ml-4" : ""}>
+                      <a
+                        href={`#${h.id}`}
+                        onClick={(e) => handleTocClick(e, h.id)}
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+
             <div
               className={`prose prose-invert max-w-none article-content
                 prose-headings:text-foreground prose-headings:font-display prose-headings:leading-snug prose-headings:tracking-tight
@@ -276,7 +360,17 @@ const BlogPost = () => {
                   lineHeight === 0 ? '1.6' : lineHeight === 1 ? '1.8' : '2.1',
               }}
             >
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h2: ({ node, ...props }) => (
+                    <h2 id={slugify(getNodeText(props.children))} {...props} />
+                  ),
+                  h3: ({ node, ...props }) => (
+                    <h3 id={slugify(getNodeText(props.children))} {...props} />
+                  ),
+                }}
+              >
                 {post.content}
               </ReactMarkdown>
             </div>
