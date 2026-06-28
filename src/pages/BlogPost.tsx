@@ -315,6 +315,31 @@ const BlogPost = () => {
               </div>
             </header>
 
+            {showToc && (
+              <nav
+                aria-label="Daftar isi"
+                className="mb-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
+              >
+                <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
+                  <List size={16} className="text-primary" />
+                  Daftar Isi
+                </div>
+                <ul className="space-y-1.5">
+                  {headings.map((h, i) => (
+                    <li key={`${h.id}-${i}`} className={h.level === 3 ? "ml-4" : ""}>
+                      <a
+                        href={`#${h.id}`}
+                        onClick={(e) => handleTocClick(e, h.id)}
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+
             <div
               className={`prose prose-invert max-w-none article-content
                 prose-headings:text-foreground prose-headings:font-display prose-headings:leading-snug prose-headings:tracking-tight
