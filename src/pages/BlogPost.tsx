@@ -19,6 +19,17 @@ const slugify = (text: string) =>
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 
+// Recursively extract plain text from React children (for heading ids)
+const getNodeText = (node: React.ReactNode): string => {
+  if (node == null) return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(getNodeText).join("");
+  if (React.isValidElement(node)) return getNodeText((node.props as { children?: React.ReactNode }).children);
+  return "";
+};
+
+
+
 // Extract h2/h3 headings from markdown content for the table of contents
 const extractHeadings = (md: string) => {
   if (!md) return [] as { id: string; text: string; level: number }[];
