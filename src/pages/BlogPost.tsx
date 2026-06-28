@@ -96,6 +96,20 @@ const BlogPost = () => {
     enabled: !!slug
   });
 
+  const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
+  const showToc = headings.length >= 3;
+
+  const handleTocClick = (e: React.MouseEvent, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', `#${id}`);
+    }
+  };
+
+
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
