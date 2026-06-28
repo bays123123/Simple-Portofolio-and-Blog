@@ -323,7 +323,17 @@ const BlogPost = () => {
                   lineHeight === 0 ? '1.6' : lineHeight === 1 ? '1.8' : '2.1',
               }}
             >
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h2: ({ node, ...props }) => (
+                    <h2 id={slugify(getNodeText(props.children))} {...props} />
+                  ),
+                  h3: ({ node, ...props }) => (
+                    <h3 id={slugify(getNodeText(props.children))} {...props} />
+                  ),
+                }}
+              >
                 {post.content}
               </ReactMarkdown>
             </div>
