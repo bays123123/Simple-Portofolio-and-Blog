@@ -111,6 +111,56 @@ const BlogPost = () => {
   const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
   const showToc = headings.length >= 3;
 
+  // Fetch other published posts and score them for relevance to the current one
+  const { data: relatedPosts } = useQuery({
+    queryKey: ['related-posts', post?.id],
+    enabled: !!post,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('id, title, slug, category, tags')
+        .eq('published', true)
+        .neq('id', post!.id);
+
+      if (error) throw error;
+
+      return (data || [])
+        .map((p) => {
+          let score = 0;
+          if (post!.category && p.category === post!.category) score += 2;
+          const shared = (p.tags || []).filter((t: string) => post!.tags?.includes(t)).length;
+          score += shared;
+          return { ...p, score };
+        })
+        .filter((p) => p.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+    },
+  });
+
+  // Split the article into two parts at a paragraph boundary near the middle,
+  // so a "related articles" block can be inserted mid-read.
+  const contentParts = useMemo(() => {
+    const md = post?.content || '';
+    if (!md.trim()) return [md];
+    const lines = md.split('\n');
+    const boundaries: number[] = [];
+    let inCode = false;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].trim().startsWith('```')) inCode = !inCode;
+      if (!inCode && lines[i].trim() === '' && i > 0 && i < lines.length - 1) {
+        boundaries.push(i);
+      }
+    }
+    if (boundaries.length === 0) return [md];
+    const mid = lines.length / 2;
+    let best = boundaries[0];
+    for (const b of boundaries) {
+      if (Math.abs(b - mid) < Math.abs(best - mid)) best = b;
+    }
+    return [lines.slice(0, best).join('\n'), lines.slice(best + 1).join('\n')];
+  }, [post?.content]);
+
   const handleTocClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     const el = document.getElementById(id);
