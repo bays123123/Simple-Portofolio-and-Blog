@@ -44,13 +44,35 @@ const Blog = () => {
     return Array.from(set).sort();
   }, [blogPosts]);
 
+  const archives = useMemo(() => {
+    const map = new Map<string, { key: string; label: string; count: number }>();
+    blogPosts?.forEach((p) => {
+      const d = new Date(p.created_at);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      const existing = map.get(key);
+      if (existing) {
+        existing.count += 1;
+      } else {
+        map.set(key, {
+          key,
+          label: format(d, "MMMM yyyy", { locale: idLocale }),
+          count: 1,
+        });
+      }
+    });
+    return Array.from(map.values()).sort((a, b) => b.key.localeCompare(a.key));
+  }, [blogPosts]);
+
   const filteredPosts = useMemo(() => {
     return blogPosts?.filter((p) => {
       const categoryMatch = activeCategory === "Semua" || p.category === activeCategory;
       const tagMatch = !activeTag || p.tags?.includes(activeTag);
-      return categoryMatch && tagMatch;
+      const d = new Date(p.created_at);
+      const archiveKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      const archiveMatch = !activeArchive || archiveKey === activeArchive;
+      return categoryMatch && tagMatch && archiveMatch;
     });
-  }, [blogPosts, activeCategory, activeTag]);
+  }, [blogPosts, activeCategory, activeTag, activeArchive]);
 
   const totalPages = Math.ceil((filteredPosts?.length || 0) / POSTS_PER_PAGE);
   const paginatedPosts = useMemo(() => {
