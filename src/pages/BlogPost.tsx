@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft, Type, AlignJustify, List } from "lucide-react";
+import { ArrowLeft, Type, AlignJustify, List, Link as LinkIcon, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -110,6 +110,56 @@ const BlogPost = () => {
 
   const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
   const showToc = headings.length >= 3;
+
+  // Fetch other published posts and score them for relevance to the current one
+  const { data: relatedPosts } = useQuery({
+    queryKey: ['related-posts', post?.id],
+    enabled: !!post,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('id, title, slug, category, tags')
+        .eq('published', true)
+        .neq('id', post!.id);
+
+      if (error) throw error;
+
+      return (data || [])
+        .map((p) => {
+          let score = 0;
+          if (post!.category && p.category === post!.category) score += 2;
+          const shared = (p.tags || []).filter((t: string) => post!.tags?.includes(t)).length;
+          score += shared;
+          return { ...p, score };
+        })
+        .filter((p) => p.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3);
+    },
+  });
+
+  // Split the article into two parts at a paragraph boundary near the middle,
+  // so a "related articles" block can be inserted mid-read.
+  const contentParts = useMemo(() => {
+    const md = post?.content || '';
+    if (!md.trim()) return [md];
+    const lines = md.split('\n');
+    const boundaries: number[] = [];
+    let inCode = false;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].trim().startsWith('```')) inCode = !inCode;
+      if (!inCode && lines[i].trim() === '' && i > 0 && i < lines.length - 1) {
+        boundaries.push(i);
+      }
+    }
+    if (boundaries.length === 0) return [md];
+    const mid = lines.length / 2;
+    let best = boundaries[0];
+    for (const b of boundaries) {
+      if (Math.abs(b - mid) < Math.abs(best - mid)) best = b;
+    }
+    return [lines.slice(0, best).join('\n'), lines.slice(best + 1).join('\n')];
+  }, [post?.content]);
 
   const handleTocClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
@@ -371,8 +421,49 @@ const BlogPost = () => {
                   ),
                 }}
               >
-                {post.content}
+                {contentParts[0]}
               </ReactMarkdown>
+
+              {contentParts.length === 2 && relatedPosts && relatedPosts.length > 0 && (
+                <aside
+                  aria-label="Artikel terkait"
+                  className="not-prose my-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
+                >
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
+                    <LinkIcon size={16} className="text-primary" />
+                    Baca Juga
+                  </div>
+                  <ul className="space-y-2.5">
+                    {relatedPosts.map((rp) => (
+                      <li key={rp.id}>
+                        <Link
+                          to={`/blog/${rp.slug}`}
+                          className="group flex items-start gap-2 text-base text-primary hover:underline"
+                        >
+                          <ArrowRight size={16} className="mt-1 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                          <span>{rp.title}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              )}
+
+              {contentParts.length === 2 && (
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h2: ({ node, ...props }) => (
+                      <h2 id={slugify(getNodeText(props.children))} {...props} />
+                    ),
+                    h3: ({ node, ...props }) => (
+                      <h3 id={slugify(getNodeText(props.children))} {...props} />
+                    ),
+                  }}
+                >
+                  {contentParts[1]}
+                </ReactMarkdown>
+              )}
             </div>
 
             {post.tags && post.tags.length > 0 && (
