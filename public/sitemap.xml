@@ -2,15 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.bayud.my.id/</loc>
-    <lastmod>2026-06-22</lastmod>
+    <lastmod>2026-07-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.bayud.my.id/blog</loc>
-    <lastmod>2026-06-22</lastmod>
+    <lastmod>2026-07-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.bayud.my.id/blog/fungsi-eye-mark-pada-desain-kemasan-dan-jenisnya</loc>
+    <lastmod>2026-07-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bayud.my.id/blog/hubungan-saturation-kejenuhan-warna-dengan-sistem-cielab</loc>
+    <lastmod>2026-06-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.bayud.my.id/blog/apa-itu-multidot-heidelberg</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.bayud.my.id/blog/spesifikasi-teknis-standar-untuk-plat-cetak-offset</loc>
