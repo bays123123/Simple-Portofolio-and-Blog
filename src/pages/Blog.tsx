@@ -6,7 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { format } from "date-fns";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { id as idLocale } from "date-fns/locale";
+import { ChevronLeft, ChevronRight, Archive } from "lucide-react";
 
 
 const POSTS_PER_PAGE = 5;
@@ -14,6 +15,7 @@ const POSTS_PER_PAGE = 5;
 const Blog = () => {
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const [activeArchive, setActiveArchive] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data: blogPosts, isLoading } = useQuery({
@@ -42,13 +44,35 @@ const Blog = () => {
     return Array.from(set).sort();
   }, [blogPosts]);
 
+  const archives = useMemo(() => {
+    const map = new Map<string, { key: string; label: string; count: number }>();
+    blogPosts?.forEach((p) => {
+      const d = new Date(p.created_at);
+      const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      const existing = map.get(key);
+      if (existing) {
+        existing.count += 1;
+      } else {
+        map.set(key, {
+          key,
+          label: format(d, "MMMM yyyy", { locale: idLocale }),
+          count: 1,
+        });
+      }
+    });
+    return Array.from(map.values()).sort((a, b) => b.key.localeCompare(a.key));
+  }, [blogPosts]);
+
   const filteredPosts = useMemo(() => {
     return blogPosts?.filter((p) => {
       const categoryMatch = activeCategory === "Semua" || p.category === activeCategory;
       const tagMatch = !activeTag || p.tags?.includes(activeTag);
-      return categoryMatch && tagMatch;
+      const d = new Date(p.created_at);
+      const archiveKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      const archiveMatch = !activeArchive || archiveKey === activeArchive;
+      return categoryMatch && tagMatch && archiveMatch;
     });
-  }, [blogPosts, activeCategory, activeTag]);
+  }, [blogPosts, activeCategory, activeTag, activeArchive]);
 
   const totalPages = Math.ceil((filteredPosts?.length || 0) / POSTS_PER_PAGE);
   const paginatedPosts = useMemo(() => {
@@ -108,7 +132,7 @@ const Blog = () => {
         <link rel="canonical" href="https://www.bayud.my.id/blog" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <Navbar />
 
         <main className="py-6 sm:py-8">
@@ -121,6 +145,8 @@ const Blog = () => {
             </p>
           </section>
 
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_16rem] gap-8 lg:gap-12">
+            <div className="min-w-0">
           {!isLoading && (categories.length > 1 || tags.length > 0) && (
             <section className="mb-8 sm:mb-10 space-y-4 fade-in">
               {categories.length > 1 && (
@@ -265,6 +291,54 @@ const Blog = () => {
               </button>
             </nav>
           )}
+            </div>
+
+            <aside className="lg:sticky lg:top-8 lg:self-start fade-in">
+              <div className="rounded-xl border border-border bg-card/40 p-4 sm:p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <Archive size={16} className="text-primary" />
+                  <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-heading">
+                    Arsip
+                  </h2>
+                </div>
+
+                {archives.length > 0 ? (
+                  <ul className="space-y-1">
+                    <li>
+                      <button
+                        onClick={() => { setActiveArchive(null); setCurrentPage(1); }}
+                        className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                          !activeArchive
+                            ? 'bg-primary/15 text-primary font-medium'
+                            : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                        }`}
+                      >
+                        <span>Semua</span>
+                        <span className="text-xs">{blogPosts?.length ?? 0}</span>
+                      </button>
+                    </li>
+                    {archives.map((a) => (
+                      <li key={a.key}>
+                        <button
+                          onClick={() => { setActiveArchive(activeArchive === a.key ? null : a.key); setCurrentPage(1); }}
+                          className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                            activeArchive === a.key
+                              ? 'bg-primary/15 text-primary font-medium'
+                              : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                          }`}
+                        >
+                          <span className="capitalize">{a.label}</span>
+                          <span className="text-xs">{a.count}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-xs text-muted-foreground">Belum ada arsip.</p>
+                )}
+              </div>
+            </aside>
+          </div>
         </main>
 
         <Footer />
