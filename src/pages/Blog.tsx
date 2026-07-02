@@ -132,7 +132,7 @@ const Blog = () => {
         <link rel="canonical" href="https://www.bayud.my.id/blog" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <Navbar />
 
         <main className="py-6 sm:py-8">
@@ -145,6 +145,8 @@ const Blog = () => {
             </p>
           </section>
 
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_16rem] gap-8 lg:gap-12">
+            <div className="min-w-0">
           {!isLoading && (categories.length > 1 || tags.length > 0) && (
             <section className="mb-8 sm:mb-10 space-y-4 fade-in">
               {categories.length > 1 && (
