@@ -421,8 +421,49 @@ const BlogPost = () => {
                   ),
                 }}
               >
-                {post.content}
+                {contentParts[0]}
               </ReactMarkdown>
+
+              {contentParts.length === 2 && relatedPosts && relatedPosts.length > 0 && (
+                <aside
+                  aria-label="Artikel terkait"
+                  className="not-prose my-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
+                >
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
+                    <LinkIcon size={16} className="text-primary" />
+                    Baca Juga
+                  </div>
+                  <ul className="space-y-2.5">
+                    {relatedPosts.map((rp) => (
+                      <li key={rp.id}>
+                        <Link
+                          to={`/blog/${rp.slug}`}
+                          className="group flex items-start gap-2 text-base text-primary hover:underline"
+                        >
+                          <ArrowRight size={16} className="mt-1 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                          <span>{rp.title}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              )}
+
+              {contentParts.length === 2 && (
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h2: ({ node, ...props }) => (
+                      <h2 id={slugify(getNodeText(props.children))} {...props} />
+                    ),
+                    h3: ({ node, ...props }) => (
+                      <h3 id={slugify(getNodeText(props.children))} {...props} />
+                    ),
+                  }}
+                >
+                  {contentParts[1]}
+                </ReactMarkdown>
+              )}
             </div>
 
             {post.tags && post.tags.length > 0 && (
