@@ -291,6 +291,54 @@ const Blog = () => {
               </button>
             </nav>
           )}
+            </div>
+
+            <aside className="lg:sticky lg:top-8 lg:self-start fade-in">
+              <div className="rounded-xl border border-border bg-card/40 p-4 sm:p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <Archive size={16} className="text-primary" />
+                  <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-heading">
+                    Arsip
+                  </h2>
+                </div>
+
+                {archives.length > 0 ? (
+                  <ul className="space-y-1">
+                    <li>
+                      <button
+                        onClick={() => { setActiveArchive(null); setCurrentPage(1); }}
+                        className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                          !activeArchive
+                            ? 'bg-primary/15 text-primary font-medium'
+                            : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                        }`}
+                      >
+                        <span>Semua</span>
+                        <span className="text-xs">{blogPosts?.length ?? 0}</span>
+                      </button>
+                    </li>
+                    {archives.map((a) => (
+                      <li key={a.key}>
+                        <button
+                          onClick={() => { setActiveArchive(activeArchive === a.key ? null : a.key); setCurrentPage(1); }}
+                          className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                            activeArchive === a.key
+                              ? 'bg-primary/15 text-primary font-medium'
+                              : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                          }`}
+                        >
+                          <span className="capitalize">{a.label}</span>
+                          <span className="text-xs">{a.count}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-xs text-muted-foreground">Belum ada arsip.</p>
+                )}
+              </div>
+            </aside>
+          </div>
         </main>
 
         <Footer />
