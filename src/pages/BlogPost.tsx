@@ -256,12 +256,32 @@ const BlogPost = () => {
       <Helmet>
         <title>{`${post.title} | Bayu Dwi Darmawan`}</title>
         <meta name="description" content={metaDescription} />
+
+        {/* Open Graph */}
         <meta property="og:title" content={`${post.title} | Bayu Dwi Darmawan`} />
         <meta property="og:description" content={metaDescription} />
         <meta property="og:url" content={`https://www.bayud.my.id/blog/${post.slug}`} />
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Bayu Dwi Darmawan" />
+        <meta property="article:published_time" content={post.created_at} />
+        {post.updated_at && <meta property="article:modified_time" content={post.updated_at} />}
+        <meta property="article:author" content="Bayu Dwi Darmawan" />
+        {post.category && <meta property="article:section" content={post.category} />}
+        {Array.isArray(post.tags) && post.tags.map((tag: string) => (
+          <meta property="article:tag" content={tag} key={tag} />
+        ))}
         {post.cover_image && <meta property="og:image" content={post.cover_image} />}
+        {post.cover_image && <meta property="og:image:width" content="1200" />}
+        {post.cover_image && <meta property="og:image:height" content="630" />}
         {post.cover_image && <meta property="og:image:alt" content={post.title} />}
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content={post.cover_image ? "summary_large_image" : "summary"} />
+        <meta name="twitter:title" content={`${post.title} | Bayu Dwi Darmawan`} />
+        <meta name="twitter:description" content={metaDescription} />
+        {post.cover_image && <meta name="twitter:image" content={post.cover_image} />}
+        {post.cover_image && <meta name="twitter:image:alt" content={post.title} />}
+
         <link rel="canonical" href={`https://www.bayud.my.id/blog/${post.slug}`} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -272,12 +292,23 @@ const BlogPost = () => {
           datePublished: post.created_at,
           dateModified: post.updated_at,
           url: `https://www.bayud.my.id/blog/${post.slug}`,
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://www.bayud.my.id/blog/${post.slug}`
+          },
+          keywords: Array.isArray(post.tags) ? post.tags.join(", ") : undefined,
+          articleSection: post.category || undefined,
           author: {
+            "@type": "Person",
+            name: "Bayu Dwi Darmawan"
+          },
+          publisher: {
             "@type": "Person",
             name: "Bayu Dwi Darmawan"
           }
         })}</script>
       </Helmet>
+
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Navbar />
         
