@@ -510,6 +510,49 @@ const BlogPost = () => {
                 ))}
               </div>
             )}
+
+            {(adjacentPosts?.prev || adjacentPosts?.next) && (
+              <nav
+                aria-label="Navigasi artikel"
+                className="mt-10 pt-6 border-t border-border"
+              >
+                <div className="flex flex-col sm:flex-row justify-between gap-4">
+                  {adjacentPosts?.prev ? (
+                    <Link
+                      to={`/blog/${adjacentPosts.prev.slug}`}
+                      className="group flex flex-col items-start gap-1 rounded-xl border border-border bg-card/50 p-4 hover:bg-card transition-colors sm:max-w-[50%]"
+                    >
+                      <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                        <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
+                        Artikel Sebelumnya
+                      </span>
+                      <span className="text-sm font-medium text-foreground line-clamp-2">
+                        {adjacentPosts.prev.title}
+                      </span>
+                    </Link>
+                  ) : (
+                    <div />
+                  )}
+
+                  {adjacentPosts?.next ? (
+                    <Link
+                      to={`/blog/${adjacentPosts.next.slug}`}
+                      className="group flex flex-col items-start sm:items-end gap-1 rounded-xl border border-border bg-card/50 p-4 hover:bg-card transition-colors sm:text-right sm:max-w-[50%]"
+                    >
+                      <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                        Artikel Berikutnya
+                        <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
+                      </span>
+                      <span className="text-sm font-medium text-foreground line-clamp-2">
+                        {adjacentPosts.next.title}
+                      </span>
+                    </Link>
+                  ) : (
+                    <div />
+                  )}
+                </div>
+              </nav>
+            )}
           </article>
         </main>
 
