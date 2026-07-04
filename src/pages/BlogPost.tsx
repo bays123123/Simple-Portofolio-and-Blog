@@ -554,6 +554,7 @@ const BlogPost = () => {
                   )}
                 </div>
               </div>
+              <ShareBar post={post} />
             </header>
 
             {showToc && (
