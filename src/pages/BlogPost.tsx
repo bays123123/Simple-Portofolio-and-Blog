@@ -138,6 +138,38 @@ const BlogPost = () => {
     },
   });
 
+  // Fetch the chronologically adjacent published articles
+  const { data: adjacentPosts } = useQuery({
+    queryKey: ['adjacent-posts', post?.id],
+    enabled: !!post,
+    queryFn: async () => {
+      const [prevResult, nextResult] = await Promise.all([
+        supabase
+          .from('blog_posts')
+          .select('id, title, slug, created_at')
+          .eq('published', true)
+          .lt('created_at', post!.created_at)
+          .order('created_at', { ascending: false })
+          .limit(1),
+        supabase
+          .from('blog_posts')
+          .select('id, title, slug, created_at')
+          .eq('published', true)
+          .gt('created_at', post!.created_at)
+          .order('created_at', { ascending: true })
+          .limit(1),
+      ]);
+
+      if (prevResult.error) throw prevResult.error;
+      if (nextResult.error) throw nextResult.error;
+
+      return {
+        prev: prevResult.data?.[0] || null,
+        next: nextResult.data?.[0] || null,
+      };
+    },
+  });
+
   // Split the article into two parts at a paragraph boundary near the middle,
   // so a "related articles" block can be inserted mid-read.
   const contentParts = useMemo(() => {
