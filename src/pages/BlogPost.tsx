@@ -742,6 +742,40 @@ const BlogPost = () => {
               </nav>
             )}
           </article>
+            </div>
+
+            <aside className="lg:sticky lg:top-8 lg:self-start fade-in space-y-6">
+              <div className="rounded-xl border border-border bg-card/40 p-4 sm:p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <FolderOpen size={16} className="text-primary" />
+                  <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-heading">
+                    Kategori
+                  </h2>
+                </div>
+                {categoryList.length > 0 ? (
+                  <ul className="space-y-1">
+                    {categoryList.map((cat) => (
+                      <li key={cat.name}>
+                        <Link
+                          to="/blog"
+                          className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                            post.category === cat.name
+                              ? 'bg-primary/15 text-primary font-medium'
+                              : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                          }`}
+                        >
+                          <span>{cat.name}</span>
+                          <span className="text-xs">{cat.count}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-xs text-muted-foreground">Belum ada kategori.</p>
+                )}
+              </div>
+            </aside>
+          </div>
         </main>
 
         <Footer />
