@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft, Type, AlignJustify, List, Link as LinkIcon, ArrowRight, Share2, Link2, Check } from "lucide-react";
+import { ArrowLeft, Type, AlignJustify, List, Link as LinkIcon, ArrowRight, Share2, Link2, Check, FolderOpen } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -298,6 +298,32 @@ const BlogPost = () => {
     },
   });
 
+  // Fetch all published posts to build the category list for the sidebar
+  const { data: allPublishedPosts } = useQuery({
+    queryKey: ['blog-all-posts-categories'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('category')
+        .eq('published', true)
+        .not('category', 'is', null);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const categoryList = useMemo(() => {
+    const map = new Map<string, number>();
+    allPublishedPosts?.forEach((p) => {
+      if (p.category) {
+        map.set(p.category, (map.get(p.category) || 0) + 1);
+      }
+    });
+    return Array.from(map.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allPublishedPosts]);
+
   // Split the article into two parts at a paragraph boundary near the middle,
   // so a "related articles" block can be inserted mid-read.
   const contentParts = useMemo(() => {
@@ -437,19 +463,21 @@ const BlogPost = () => {
         })}</script>
       </Helmet>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <Navbar />
         
         <main className="py-6 sm:py-8">
-          <Link 
-            to="/blog" 
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6 sm:mb-8 touch-manipulation"
-          >
-            <ArrowLeft size={16} />
-            Back to Blog
-          </Link>
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_16rem] gap-8 lg:gap-12">
+            <div className="min-w-0">
+              <Link 
+                to="/blog" 
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6 sm:mb-8 touch-manipulation"
+              >
+                <ArrowLeft size={16} />
+                Back to Blog
+              </Link>
 
-          <article className="fade-in">
+              <article className="fade-in">
             {post.cover_image && (
               <figure className="relative w-full rounded-xl overflow-hidden border border-border mb-8 sm:mb-10">
                 {(() => {
@@ -714,6 +742,40 @@ const BlogPost = () => {
               </nav>
             )}
           </article>
+            </div>
+
+            <aside className="lg:sticky lg:top-8 lg:self-start fade-in space-y-6">
+              <div className="rounded-xl border border-border bg-card/40 p-4 sm:p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <FolderOpen size={16} className="text-primary" />
+                  <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-heading">
+                    Kategori
+                  </h2>
+                </div>
+                {categoryList.length > 0 ? (
+                  <ul className="space-y-1">
+                    {categoryList.map((cat) => (
+                      <li key={cat.name}>
+                        <Link
+                          to="/blog"
+                          className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                            post.category === cat.name
+                              ? 'bg-primary/15 text-primary font-medium'
+                              : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                          }`}
+                        >
+                          <span>{cat.name}</span>
+                          <span className="text-xs">{cat.count}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-xs text-muted-foreground">Belum ada kategori.</p>
+                )}
+              </div>
+            </aside>
+          </div>
         </main>
 
         <Footer />
