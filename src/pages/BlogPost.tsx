@@ -467,15 +467,17 @@ const BlogPost = () => {
         <Navbar />
         
         <main className="py-6 sm:py-8">
-          <Link 
-            to="/blog" 
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6 sm:mb-8 touch-manipulation"
-          >
-            <ArrowLeft size={16} />
-            Back to Blog
-          </Link>
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_16rem] gap-8 lg:gap-12">
+            <div className="min-w-0">
+              <Link 
+                to="/blog" 
+                className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mb-6 sm:mb-8 touch-manipulation"
+              >
+                <ArrowLeft size={16} />
+                Back to Blog
+              </Link>
 
-          <article className="fade-in">
+              <article className="fade-in">
             {post.cover_image && (
               <figure className="relative w-full rounded-xl overflow-hidden border border-border mb-8 sm:mb-10">
                 {(() => {
