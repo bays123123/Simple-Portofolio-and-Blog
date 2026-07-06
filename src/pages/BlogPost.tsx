@@ -298,6 +298,32 @@ const BlogPost = () => {
     },
   });
 
+  // Fetch all published posts to build the category list for the sidebar
+  const { data: allPublishedPosts } = useQuery({
+    queryKey: ['blog-all-posts-categories'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('category')
+        .eq('published', true)
+        .not('category', 'is', null);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const categoryList = useMemo(() => {
+    const map = new Map<string, number>();
+    allPublishedPosts?.forEach((p) => {
+      if (p.category) {
+        map.set(p.category, (map.get(p.category) || 0) + 1);
+      }
+    });
+    return Array.from(map.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allPublishedPosts]);
+
   // Split the article into two parts at a paragraph boundary near the middle,
   // so a "related articles" block can be inserted mid-read.
   const contentParts = useMemo(() => {
