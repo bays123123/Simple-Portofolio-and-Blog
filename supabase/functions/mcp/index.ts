@@ -12,7 +12,7 @@ import { z } from "npm:zod@^3.25.76";
 function supabasePublic() {
   return createClient(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY,
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } }
   );
 }
@@ -49,7 +49,7 @@ import { z as z2 } from "npm:zod@^3.25.76";
 function supabasePublic2() {
   return createClient2(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY,
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } }
   );
 }
@@ -89,7 +89,7 @@ import { z as z3 } from "npm:zod@^3.25.76";
 function supabasePublic3() {
   return createClient3(
     process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY,
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } }
   );
 }
