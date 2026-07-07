@@ -14,7 +14,7 @@ const POSTS_PER_PAGE = 5;
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeCategory, setActiveCategory] = useState<string>(searchParams.get("category") || "Semua");
+  const [activeCategory, setActiveCategory] = useState<string>("Semua");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeArchive, setActiveArchive] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,6 +63,34 @@ const Blog = () => {
     });
     return Array.from(map.values()).sort((a, b) => b.key.localeCompare(a.key));
   }, [blogPosts]);
+
+  // Sync category filter with URL query params and clean up invalid categories
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat && categories.includes(cat)) {
+      setActiveCategory(cat);
+      setCurrentPage(1);
+    } else if (cat && categories.length > 1) {
+      const next = new URLSearchParams(searchParams.toString());
+      next.delete("category");
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, categories]);
+
+  // Push category selection back to the URL
+  useEffect(() => {
+    const currentCat = searchParams.get("category");
+    const next = new URLSearchParams(searchParams.toString());
+    if (activeCategory === "Semua") {
+      if (currentCat) {
+        next.delete("category");
+        setSearchParams(next, { replace: true });
+      }
+    } else if (currentCat !== activeCategory) {
+      next.set("category", activeCategory);
+      setSearchParams(next, { replace: true });
+    }
+  }, [activeCategory]);
 
   const filteredPosts = useMemo(() => {
     return blogPosts?.filter((p) => {
