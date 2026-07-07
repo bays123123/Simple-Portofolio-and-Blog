@@ -90,15 +90,19 @@ const Blog = () => {
   };
 
   const filteredPosts = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
     return blogPosts?.filter((p) => {
       const categoryMatch = activeCategory === "Semua" || p.category === activeCategory;
       const tagMatch = !activeTag || p.tags?.includes(activeTag);
       const d = new Date(p.created_at);
       const archiveKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
       const archiveMatch = !activeArchive || archiveKey === activeArchive;
-      return categoryMatch && tagMatch && archiveMatch;
+      const searchMatch = !query ||
+        p.title?.toLowerCase().includes(query) ||
+        p.excerpt?.toLowerCase().includes(query);
+      return categoryMatch && tagMatch && archiveMatch && searchMatch;
     });
-  }, [blogPosts, activeCategory, activeTag, activeArchive]);
+  }, [blogPosts, activeCategory, activeTag, activeArchive, searchQuery]);
 
   const totalPages = Math.ceil((filteredPosts?.length || 0) / POSTS_PER_PAGE);
   const paginatedPosts = useMemo(() => {
