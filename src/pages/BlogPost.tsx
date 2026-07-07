@@ -501,7 +501,7 @@ const BlogPost = () => {
             <header className="mb-10 sm:mb-12">
               {post.category && (
                 <Link
-                  to="/blog"
+                  to={`/blog?category=${encodeURIComponent(post.category)}`}
                   className="inline-block text-primary text-xs font-semibold uppercase tracking-wide mb-3 hover:underline"
                 >
                   {post.category}
@@ -757,7 +757,7 @@ const BlogPost = () => {
                     {categoryList.map((cat) => (
                       <li key={cat.name}>
                         <Link
-                          to="/blog"
+                          to={`/blog?category=${encodeURIComponent(cat.name)}`}
                           className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
                             post.category === cat.name
                               ? 'bg-primary/15 text-primary font-medium'

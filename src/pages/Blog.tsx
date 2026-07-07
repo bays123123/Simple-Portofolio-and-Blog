@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -13,6 +13,7 @@ import { ChevronLeft, ChevronRight, Archive } from "lucide-react";
 const POSTS_PER_PAGE = 5;
 
 const Blog = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeArchive, setActiveArchive] = useState<string | null>(null);
@@ -62,6 +63,30 @@ const Blog = () => {
     });
     return Array.from(map.values()).sort((a, b) => b.key.localeCompare(a.key));
   }, [blogPosts]);
+
+  // Sync category filter with URL query params and clean up invalid categories
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat && categories.includes(cat)) {
+      setActiveCategory(cat);
+      setCurrentPage(1);
+    } else if (cat && categories.length > 1) {
+      const next = new URLSearchParams(searchParams.toString());
+      next.delete("category");
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, categories, setSearchParams]);
+
+  const setCategory = (cat: string) => {
+    const next = new URLSearchParams(searchParams.toString());
+    if (cat === "Semua") {
+      next.delete("category");
+    } else {
+      next.set("category", cat);
+    }
+    setSearchParams(next, { replace: true });
+    setCurrentPage(1);
+  };
 
   const filteredPosts = useMemo(() => {
     return blogPosts?.filter((p) => {
@@ -154,7 +179,7 @@ const Blog = () => {
                   {categories.map((cat) => (
                     <button
                       key={cat}
-                      onClick={() => { setActiveCategory(cat); setCurrentPage(1); }}
+                      onClick={() => setCategory(cat)}
                       className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
                         activeCategory === cat
                           ? 'bg-primary text-primary-foreground'
