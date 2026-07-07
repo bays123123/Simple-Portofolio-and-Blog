@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { format } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Archive } from "lucide-react";
+import { ChevronLeft, ChevronRight, Archive, Search, X } from "lucide-react";
 
 
 const POSTS_PER_PAGE = 5;
@@ -17,6 +17,7 @@ const Blog = () => {
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeArchive, setActiveArchive] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data: blogPosts, isLoading } = useQuery({
@@ -89,15 +90,19 @@ const Blog = () => {
   };
 
   const filteredPosts = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
     return blogPosts?.filter((p) => {
       const categoryMatch = activeCategory === "Semua" || p.category === activeCategory;
       const tagMatch = !activeTag || p.tags?.includes(activeTag);
       const d = new Date(p.created_at);
       const archiveKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
       const archiveMatch = !activeArchive || archiveKey === activeArchive;
-      return categoryMatch && tagMatch && archiveMatch;
+      const searchMatch = !query ||
+        p.title?.toLowerCase().includes(query) ||
+        p.excerpt?.toLowerCase().includes(query);
+      return categoryMatch && tagMatch && archiveMatch && searchMatch;
     });
-  }, [blogPosts, activeCategory, activeTag, activeArchive]);
+  }, [blogPosts, activeCategory, activeTag, activeArchive, searchQuery]);
 
   const totalPages = Math.ceil((filteredPosts?.length || 0) / POSTS_PER_PAGE);
   const paginatedPosts = useMemo(() => {
@@ -168,6 +173,29 @@ const Blog = () => {
             <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
               Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak. Referensi teori dan praktik percetakan untuk publik.
             </p>
+          </section>
+
+          <section className="mb-6 sm:mb-8 fade-in">
+            <div className="relative">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+                placeholder="Cari artikel berdasarkan judul atau ringkasan..."
+                className="w-full rounded-lg border border-input bg-background pl-10 pr-9 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => { setSearchQuery(""); setCurrentPage(1); }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  aria-label="Hapus pencarian"
+                >
+                  <X size={14} />
+                </button>
+              )}
+            </div>
           </section>
 
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_16rem] gap-8 lg:gap-12">
@@ -275,7 +303,17 @@ const Blog = () => {
                 </article>
               ))
             ) : (
-              <p className="text-muted-foreground text-sm">Tidak ada artikel yang cocok dengan filter.</p>
+              <div className="text-muted-foreground text-sm space-y-2">
+                <p>Tidak ada artikel yang cocok dengan filter.</p>
+                {searchQuery && (
+                  <button
+                    onClick={() => { setSearchQuery(""); setCurrentPage(1); }}
+                    className="text-primary hover:underline"
+                  >
+                    Hapus pencarian
+                  </button>
+                )}
+              </div>
             )}
           </section>
 
