@@ -75,7 +75,7 @@ const Blog = () => {
       next.delete("category");
       setSearchParams(next, { replace: true });
     }
-  }, [searchParams, categories]);
+  }, [searchParams, categories, setSearchParams]);
 
   const setCategory = (cat: string) => {
     const next = new URLSearchParams(searchParams.toString());
