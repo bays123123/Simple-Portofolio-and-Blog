@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { format } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Archive } from "lucide-react";
+import { ChevronLeft, ChevronRight, Archive, Search, X } from "lucide-react";
 
 
 const POSTS_PER_PAGE = 5;
