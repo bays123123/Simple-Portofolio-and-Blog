@@ -77,20 +77,16 @@ const Blog = () => {
     }
   }, [searchParams, categories]);
 
-  // Push category selection back to the URL
-  useEffect(() => {
-    const currentCat = searchParams.get("category");
+  const setCategory = (cat: string) => {
     const next = new URLSearchParams(searchParams.toString());
-    if (activeCategory === "Semua") {
-      if (currentCat) {
-        next.delete("category");
-        setSearchParams(next, { replace: true });
-      }
-    } else if (currentCat !== activeCategory) {
-      next.set("category", activeCategory);
-      setSearchParams(next, { replace: true });
+    if (cat === "Semua") {
+      next.delete("category");
+    } else {
+      next.set("category", cat);
     }
-  }, [activeCategory]);
+    setSearchParams(next, { replace: true });
+    setCurrentPage(1);
+  };
 
   const filteredPosts = useMemo(() => {
     return blogPosts?.filter((p) => {
@@ -180,19 +176,19 @@ const Blog = () => {
             <section className="mb-8 sm:mb-10 space-y-4 fade-in">
               {categories.length > 1 && (
                 <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => { setActiveCategory(cat); setCurrentPage(1); }}
-                  className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
-                    activeCategory === cat
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setCategory(cat)}
+                      className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                        activeCategory === cat
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
                 </div>
               )}
 
