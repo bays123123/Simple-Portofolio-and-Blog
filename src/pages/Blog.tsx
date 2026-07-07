@@ -303,7 +303,17 @@ const Blog = () => {
                 </article>
               ))
             ) : (
-              <p className="text-muted-foreground text-sm">Tidak ada artikel yang cocok dengan filter.</p>
+              <div className="text-muted-foreground text-sm space-y-2">
+                <p>Tidak ada artikel yang cocok dengan filter.</p>
+                {searchQuery && (
+                  <button
+                    onClick={() => { setSearchQuery(""); setCurrentPage(1); }}
+                    className="text-primary hover:underline"
+                  >
+                    Hapus pencarian
+                  </button>
+                )}
+              </div>
             )}
           </section>
 
