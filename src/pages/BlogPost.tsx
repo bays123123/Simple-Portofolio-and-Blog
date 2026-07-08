@@ -618,10 +618,10 @@ const BlogPost = () => {
                   ),
                 }}
               >
-                {contentParts[0]}
+                {post.content || ''}
               </ReactMarkdown>
 
-              {contentParts.length === 2 && relatedPosts && relatedPosts.length > 0 && (
+              {relatedPosts && relatedPosts.length > 0 && (
                 <aside
                   aria-label="Artikel terkait"
                   className="not-prose my-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
@@ -644,22 +644,6 @@ const BlogPost = () => {
                     ))}
                   </ul>
                 </aside>
-              )}
-
-              {contentParts.length === 2 && (
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    h2: ({ node, ...props }) => (
-                      <h2 id={slugify(getNodeText(props.children))} {...props} />
-                    ),
-                    h3: ({ node, ...props }) => (
-                      <h3 id={slugify(getNodeText(props.children))} {...props} />
-                    ),
-                  }}
-                >
-                  {contentParts[1]}
-                </ReactMarkdown>
               )}
             </div>
 
