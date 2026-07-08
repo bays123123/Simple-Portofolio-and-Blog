@@ -171,7 +171,8 @@ const Blog = () => {
               Blog
             </h1>
             <p className="text-left text-muted-foreground text-sm sm:text-base leading-relaxed">
-              Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak. Referensi teori dan praktik percetakan untuk publik.
+              Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak.<br />
+              Referensi teori dan praktik percetakan untuk publik.
             </p>
           </section>
 
