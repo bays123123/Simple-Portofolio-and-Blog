@@ -324,29 +324,6 @@ const BlogPost = () => {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [allPublishedPosts]);
 
-  // Split the article into two parts at a paragraph boundary near the middle,
-  // so a "related articles" block can be inserted mid-read.
-  const contentParts = useMemo(() => {
-    const md = post?.content || '';
-    if (!md.trim()) return [md];
-    const lines = md.split('\n');
-    const boundaries: number[] = [];
-    let inCode = false;
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].trim().startsWith('```')) inCode = !inCode;
-      if (!inCode && lines[i].trim() === '' && i > 0 && i < lines.length - 1) {
-        boundaries.push(i);
-      }
-    }
-    if (boundaries.length === 0) return [md];
-    const mid = lines.length / 2;
-    let best = boundaries[0];
-    for (const b of boundaries) {
-      if (Math.abs(b - mid) < Math.abs(best - mid)) best = b;
-    }
-    return [lines.slice(0, best).join('\n'), lines.slice(best + 1).join('\n')];
-  }, [post?.content]);
-
   const handleTocClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     const el = document.getElementById(id);
@@ -641,10 +618,10 @@ const BlogPost = () => {
                   ),
                 }}
               >
-                {contentParts[0]}
+                {post.content || ''}
               </ReactMarkdown>
 
-              {contentParts.length === 2 && relatedPosts && relatedPosts.length > 0 && (
+              {relatedPosts && relatedPosts.length > 0 && (
                 <aside
                   aria-label="Artikel terkait"
                   className="not-prose my-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
@@ -667,22 +644,6 @@ const BlogPost = () => {
                     ))}
                   </ul>
                 </aside>
-              )}
-
-              {contentParts.length === 2 && (
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    h2: ({ node, ...props }) => (
-                      <h2 id={slugify(getNodeText(props.children))} {...props} />
-                    ),
-                    h3: ({ node, ...props }) => (
-                      <h3 id={slugify(getNodeText(props.children))} {...props} />
-                    ),
-                  }}
-                >
-                  {contentParts[1]}
-                </ReactMarkdown>
               )}
             </div>
 
