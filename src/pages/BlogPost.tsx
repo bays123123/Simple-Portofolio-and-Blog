@@ -324,29 +324,6 @@ const BlogPost = () => {
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [allPublishedPosts]);
 
-  // Split the article into two parts at a paragraph boundary near the middle,
-  // so a "related articles" block can be inserted mid-read.
-  const contentParts = useMemo(() => {
-    const md = post?.content || '';
-    if (!md.trim()) return [md];
-    const lines = md.split('\n');
-    const boundaries: number[] = [];
-    let inCode = false;
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].trim().startsWith('```')) inCode = !inCode;
-      if (!inCode && lines[i].trim() === '' && i > 0 && i < lines.length - 1) {
-        boundaries.push(i);
-      }
-    }
-    if (boundaries.length === 0) return [md];
-    const mid = lines.length / 2;
-    let best = boundaries[0];
-    for (const b of boundaries) {
-      if (Math.abs(b - mid) < Math.abs(best - mid)) best = b;
-    }
-    return [lines.slice(0, best).join('\n'), lines.slice(best + 1).join('\n')];
-  }, [post?.content]);
-
   const handleTocClick = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
     const el = document.getElementById(id);
