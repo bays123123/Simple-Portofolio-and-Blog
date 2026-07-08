@@ -170,7 +170,7 @@ const Blog = () => {
             <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
               Blog
             </h1>
-            <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+            <p className="text-left text-muted-foreground text-sm sm:text-base leading-relaxed">
               Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak. Referensi teori dan praktik percetakan untuk publik.
             </p>
           </section>
