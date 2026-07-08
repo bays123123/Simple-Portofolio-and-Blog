@@ -75,8 +75,11 @@ const Blog = () => {
       const next = new URLSearchParams(searchParams.toString());
       next.delete("category");
       setSearchParams(next, { replace: true });
+    } else if (!cat && activeCategory !== "Semua") {
+      setActiveCategory("Semua");
+      setCurrentPage(1);
     }
-  }, [searchParams, categories, setSearchParams]);
+  }, [searchParams, categories, setSearchParams, activeCategory]);
 
   const setCategory = (cat: string) => {
     const next = new URLSearchParams(searchParams.toString());
