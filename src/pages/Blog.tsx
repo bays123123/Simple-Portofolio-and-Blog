@@ -34,6 +34,22 @@ const Blog = () => {
     }
   });
 
+  // Public per-article view counts, keyed by "/blog/{slug}"
+  const { data: viewCounts } = useQuery({
+    queryKey: ['blog-view-counts'],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_blog_view_counts');
+      if (error) throw error;
+      const map: Record<string, number> = {};
+      ((data ?? []) as { path: string; views: number }[]).forEach((r) => {
+        map[r.path] = r.views;
+      });
+      return map;
+    },
+  });
+
+
+
   const categories = useMemo(() => {
     const set = new Set<string>();
     blogPosts?.forEach((p) => p.category && set.add(p.category));
