@@ -419,9 +419,16 @@ const BlogPost = () => {
           "@type": "Article",
           headline: post.title,
           description: metaDescription,
-          image: post.cover_image || undefined,
+          image: post.cover_image
+            ? {
+                "@type": "ImageObject",
+                url: post.cover_image,
+                width: 1200,
+                height: 630,
+              }
+            : undefined,
           datePublished: post.created_at,
-          dateModified: post.updated_at,
+          dateModified: post.updated_at || post.created_at,
           url: `https://www.bayud.my.id/blog/${post.slug}`,
           mainEntityOfPage: {
             "@type": "WebPage",
