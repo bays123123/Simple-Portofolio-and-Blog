@@ -514,7 +514,17 @@ const BlogPost = () => {
                   <time>{format(new Date(post.created_at), 'MMMM d, yyyy')}</time>
                   <span>·</span>
                   <span>{post.read_time}</span>
+                  {typeof viewCount === 'number' && (
+                    <>
+                      <span>·</span>
+                      <span className="inline-flex items-center gap-1">
+                        <Eye size={14} />
+                        {viewCount.toLocaleString('id-ID')} kali dibaca
+                      </span>
+                    </>
+                  )}
                 </div>
+
 
                 <div className="relative">
                   <button
