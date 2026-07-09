@@ -239,6 +239,21 @@ const BlogPost = () => {
   const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
   const showToc = headings.length >= 3;
 
+  // Public view count for this article (aggregated from recorded page visits)
+  const { data: viewCount } = useQuery({
+    queryKey: ['post-view-count', slug],
+    enabled: !!slug,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_blog_view_counts');
+      if (error) throw error;
+      const rows = (data ?? []) as { path: string; views: number }[];
+      const row = rows.find((r) => r.path === `/blog/${slug}`);
+      return row?.views ?? 0;
+    },
+  });
+
+
+
   // Fetch other published posts and score them for relevance to the current one
   const { data: relatedPosts } = useQuery({
     queryKey: ['related-posts', post?.id],
