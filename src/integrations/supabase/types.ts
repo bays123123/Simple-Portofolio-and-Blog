@@ -148,6 +148,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_blog_view_counts: {
+        Args: never
+        Returns: {
+          path: string
+          views: number
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

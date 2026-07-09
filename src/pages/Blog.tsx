@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { format } from "date-fns";
 import { id as idLocale } from "date-fns/locale";
-import { ChevronLeft, ChevronRight, Archive, Search, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Archive, Search, X, Eye } from "lucide-react";
 
 
 const POSTS_PER_PAGE = 5;
@@ -33,6 +33,22 @@ const Blog = () => {
       return data;
     }
   });
+
+  // Public per-article view counts, keyed by "/blog/{slug}"
+  const { data: viewCounts } = useQuery({
+    queryKey: ['blog-view-counts'],
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc('get_blog_view_counts');
+      if (error) throw error;
+      const map: Record<string, number> = {};
+      ((data ?? []) as { path: string; views: number }[]).forEach((r) => {
+        map[r.path] = r.views;
+      });
+      return map;
+    },
+  });
+
+
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -287,8 +303,14 @@ const Blog = () => {
                       {post.excerpt}
                     </p>
                     <div className="flex items-center justify-between gap-3 flex-wrap">
-                      <span className="text-primary text-sm font-medium">
-                        {post.read_time}
+                      <span className="flex items-center gap-3 text-sm">
+                        <span className="text-primary font-medium">{post.read_time}</span>
+                        {viewCounts && (
+                          <span className="inline-flex items-center gap-1 text-muted-foreground">
+                            <Eye size={13} />
+                            {(viewCounts[`/blog/${post.slug}`] ?? 0).toLocaleString('id-ID')}
+                          </span>
+                        )}
                       </span>
                       {post.tags && post.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">
