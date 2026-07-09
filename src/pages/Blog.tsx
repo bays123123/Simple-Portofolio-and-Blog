@@ -303,8 +303,14 @@ const Blog = () => {
                       {post.excerpt}
                     </p>
                     <div className="flex items-center justify-between gap-3 flex-wrap">
-                      <span className="text-primary text-sm font-medium">
-                        {post.read_time}
+                      <span className="flex items-center gap-3 text-sm">
+                        <span className="text-primary font-medium">{post.read_time}</span>
+                        {viewCounts && (
+                          <span className="inline-flex items-center gap-1 text-muted-foreground">
+                            <Eye size={13} />
+                            {(viewCounts[`/blog/${post.slug}`] ?? 0).toLocaleString('id-ID')}
+                          </span>
+                        )}
                       </span>
                       {post.tags && post.tags.length > 0 && (
                         <div className="flex flex-wrap gap-1.5">
