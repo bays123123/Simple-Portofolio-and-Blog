@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { ArrowLeft, Type, AlignJustify, List, Link as LinkIcon, ArrowRight, Share2, Link2, Check, FolderOpen } from "lucide-react";
+import { ArrowLeft, Type, AlignJustify, List, Link as LinkIcon, ArrowRight, Share2, Link2, Check, FolderOpen, Eye } from "lucide-react";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
