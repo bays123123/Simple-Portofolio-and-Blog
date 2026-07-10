@@ -641,7 +641,7 @@ const BlogPost = () => {
               }}
             >
               <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
+                remarkPlugins={[remarkGfm, remarkBreaks]}
                 components={{
                   h2: ({ node, ...props }) => (
                     <h2 id={slugify(getNodeText(props.children))} {...props} />
