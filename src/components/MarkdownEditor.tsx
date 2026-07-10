@@ -151,7 +151,7 @@ const MarkdownEditor = ({
         <div className="px-4 py-4 min-h-[12rem]">
           {value.trim() ? (
             <div className="prose prose-invert max-w-none prose-headings:text-foreground prose-p:text-muted-foreground prose-li:text-muted-foreground prose-strong:text-foreground prose-a:text-primary">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{value}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{value}</ReactMarkdown>
             </div>
           ) : (
             <p className="text-sm text-muted-foreground">Tidak ada konten untuk dipratinjau.</p>
