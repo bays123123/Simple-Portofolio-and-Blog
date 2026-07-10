@@ -9,6 +9,7 @@ import { ArrowLeft, Type, AlignJustify, List, Link as LinkIcon, ArrowRight, Shar
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 import { useState, useMemo } from "react";
 
 // Convert heading text into a URL-friendly slug for anchor ids
