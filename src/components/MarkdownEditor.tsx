@@ -222,7 +222,9 @@ const MarkdownEditor = ({
                 prose-img:my-8 prose-img:rounded-lg"
               style={{ ['--article-line-height' as string]: '1.8' }}
             >
-              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{value}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                {normalizeForPreview(value)}
+              </ReactMarkdown>
             </div>
           ) : (
             <p className="text-sm text-muted-foreground">Tidak ada konten untuk dipratinjau.</p>
