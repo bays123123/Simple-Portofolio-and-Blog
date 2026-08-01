@@ -374,6 +374,11 @@ const Admin = () => {
                   </Button>
                 )}
               </CardTitle>
+              <p className="text-xs text-muted-foreground">
+                {draftSavedAt
+                  ? `Draf otomatis tersimpan ${format(draftSavedAt, 'HH:mm:ss')}`
+                  : 'Draf otomatis aktif — tulisan tersimpan di perangkat ini.'}
+              </p>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
