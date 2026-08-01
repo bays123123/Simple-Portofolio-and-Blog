@@ -138,9 +138,10 @@ const MarkdownEditor = ({
 
     e.preventDefault();
 
-    // Avoid stacking more than one blank line
+    // Each Enter creates a real paragraph break; repeated Enter adds blank
+    // paragraphs, which the preview renders too.
     const before = value.slice(0, start);
-    const insert = /\n\s*\n\s*$/.test(before) ? '\n' : '\n\n';
+    const insert = /\n\n$/.test(before) ? '\n' : '\n\n';
     const newValue = before + insert + value.slice(end);
     onChange(newValue);
 
