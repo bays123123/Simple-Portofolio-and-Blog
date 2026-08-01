@@ -97,6 +97,41 @@ const MarkdownEditor = ({
     });
   };
 
+  // Enter creates a real new paragraph (blank line) so it renders correctly
+  // regardless of markdown soft-break settings elsewhere.
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key !== 'Enter' || e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    // Keep default single-newline behaviour inside lists, quotes and code blocks
+    const lineStart = value.lastIndexOf('\n', start - 1) + 1;
+    const currentLine = value.slice(lineStart, start);
+    const isStructuredLine = /^\s*(?:[-*+]\s|\d+\.\s|>\s?|\|)/.test(currentLine);
+    const codeFences = (value.slice(0, start).match(/^```/gm) || []).length;
+    const inCodeBlock = codeFences % 2 === 1;
+    if (isStructuredLine || inCodeBlock) return;
+
+    e.preventDefault();
+
+    // Avoid stacking more than one blank line
+    const before = value.slice(0, start);
+    const insert = /\n\s*\n\s*$/.test(before) ? '\n' : '\n\n';
+    const newValue = before + insert + value.slice(end);
+    onChange(newValue);
+
+    requestAnimationFrame(() => {
+      textarea.focus();
+      const pos = start + insert.length;
+      textarea.setSelectionRange(pos, pos);
+    });
+  };
+
+
   return (
     <div className="rounded-lg border border-input bg-background overflow-hidden">
       <div className="flex flex-wrap items-center gap-1 border-b border-input bg-muted/40 px-2 py-1.5">
@@ -143,6 +178,7 @@ const MarkdownEditor = ({
           ref={textareaRef}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder={placeholder}
           rows={rows}
           className="w-full resize-y bg-transparent px-3 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none font-mono"
