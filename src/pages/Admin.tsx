@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -16,6 +16,8 @@ import TagAutocomplete from '@/components/TagAutocomplete';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
+
+const DRAFT_STORAGE_KEY = 'admin-blog-draft';
 
 interface BlogPost {
   id: string;
