@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -16,6 +16,8 @@ import TagAutocomplete from '@/components/TagAutocomplete';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { format } from 'date-fns';
+
+const DRAFT_STORAGE_KEY = 'admin-blog-draft';
 
 interface BlogPost {
   id: string;
@@ -52,6 +54,66 @@ const Admin = () => {
     category: '',
     tags: '',
   });
+  const [draftSavedAt, setDraftSavedAt] = useState<Date | null>(null);
+  const draftRestored = useRef(false);
+
+  // Pulihkan draf yang belum selesai saat halaman dibuka
+  useEffect(() => {
+    if (draftRestored.current) return;
+    draftRestored.current = true;
+    try {
+      const raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw) as {
+        postId: string | null;
+        savedAt: string;
+        formData: typeof formData;
+      };
+      if (!saved?.formData) return;
+      const hasContent = Object.values(saved.formData).some(
+        (v) => typeof v === 'string' && v.trim() !== ''
+      );
+      if (!hasContent) return;
+      setFormData(saved.formData);
+      setIsEditing(true);
+      setDraftSavedAt(saved.savedAt ? new Date(saved.savedAt) : null);
+      toast({
+        title: 'Draf dipulihkan',
+        description: 'Tulisan yang belum disimpan berhasil dikembalikan.',
+      });
+    } catch {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Simpan draf otomatis (debounce 800ms)
+  useEffect(() => {
+    if (!draftRestored.current) return;
+    const hasContent = Object.values(formData).some(
+      (v) => typeof v === 'string' && v.trim() !== ''
+    );
+    const timer = setTimeout(() => {
+      if (!hasContent) {
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+        setDraftSavedAt(null);
+        return;
+      }
+      const savedAt = new Date();
+      localStorage.setItem(
+        DRAFT_STORAGE_KEY,
+        JSON.stringify({
+          postId: editingPost?.id ?? null,
+          savedAt: savedAt.toISOString(),
+          formData,
+        })
+      );
+      setDraftSavedAt(savedAt);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [formData, editingPost]);
+
+
 
   const { data: posts, isLoading: postsLoading } = useQuery({
     queryKey: ['admin-blog-posts'],
@@ -138,6 +200,8 @@ const Admin = () => {
       .filter(Boolean);
 
   const resetForm = () => {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    setDraftSavedAt(null);
     setIsEditing(false);
     setEditingPost(null);
     setFormData({
@@ -310,6 +374,11 @@ const Admin = () => {
                   </Button>
                 )}
               </CardTitle>
+              <p className="text-xs text-muted-foreground">
+                {draftSavedAt
+                  ? `Draf otomatis tersimpan ${format(draftSavedAt, 'HH:mm:ss')}`
+                  : 'Draf otomatis aktif — tulisan tersimpan di perangkat ini.'}
+              </p>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
