@@ -50,7 +50,27 @@ const tools: ToolAction[] = [
   { icon: Minus, label: 'Garis Pemisah', prefix: '\n---\n', placeholder: '', block: true },
 ];
 
+// Markdown collapses repeated blank lines, so empty paragraphs the writer
+// created with Enter would vanish in the preview. Insert a zero-width space
+// paragraph for every extra blank line so the preview matches the editor.
+const ZWSP = '&#8203;';
+
+const normalizeForPreview = (text: string) => {
+  const withEmptyParagraphs = text.replace(/\n{3,}/g, (match) => {
+    const extra = match.length - 2;
+    return '\n\n' + `${ZWSP}\n\n`.repeat(extra);
+  });
+
+  // Keep trailing empty paragraphs visible while typing
+  const trailing = withEmptyParagraphs.match(/\n{2,}$/);
+  if (trailing) {
+    return withEmptyParagraphs.replace(/\n{2,}$/, '\n\n' + ZWSP);
+  }
+  return withEmptyParagraphs;
+};
+
 const MarkdownEditor = ({
+
   id,
   value,
   onChange,
@@ -118,9 +138,10 @@ const MarkdownEditor = ({
 
     e.preventDefault();
 
-    // Avoid stacking more than one blank line
+    // Each Enter creates a real paragraph break; repeated Enter adds blank
+    // paragraphs, which the preview renders too.
     const before = value.slice(0, start);
-    const insert = /\n\s*\n\s*$/.test(before) ? '\n' : '\n\n';
+    const insert = /\n\n$/.test(before) ? '\n' : '\n\n';
     const newValue = before + insert + value.slice(end);
     onChange(newValue);
 
@@ -201,7 +222,9 @@ const MarkdownEditor = ({
                 prose-img:my-8 prose-img:rounded-lg"
               style={{ ['--article-line-height' as string]: '1.8' }}
             >
-              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>{value}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]}>
+                {normalizeForPreview(value)}
+              </ReactMarkdown>
             </div>
           ) : (
             <p className="text-sm text-muted-foreground">Tidak ada konten untuk dipratinjau.</p>
