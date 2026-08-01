@@ -200,6 +200,8 @@ const Admin = () => {
       .filter(Boolean);
 
   const resetForm = () => {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    setDraftSavedAt(null);
     setIsEditing(false);
     setEditingPost(null);
     setFormData({
