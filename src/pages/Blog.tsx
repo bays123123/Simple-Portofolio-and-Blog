@@ -147,6 +147,20 @@ const Blog = () => {
     return filteredPosts?.slice(start, start + POSTS_PER_PAGE);
   }, [filteredPosts, currentPage]);
 
+  const visiblePages = useMemo(() => {
+    if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
+
+    const pages: (number | 'ellipsis')[] = [];
+    if (currentPage <= 3) {
+      pages.push(1, 2, 3, 4, 'ellipsis', totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1, 'ellipsis', totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+    } else {
+      pages.push(1, 'ellipsis', currentPage - 1, currentPage, currentPage + 1, 'ellipsis', totalPages);
+    }
+    return pages;
+  }, [totalPages, currentPage]);
+
   const jsonLd = useMemo(() => {
     const baseUrl = "https://www.bayud.my.id";
     const graph: Record<string, unknown>[] = [
@@ -372,20 +386,30 @@ const Blog = () => {
                 <ChevronLeft size={16} />
               </button>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
-                    currentPage === page
-                      ? 'bg-primary text-primary-foreground'
-                      : 'hover:bg-secondary text-muted-foreground hover:text-foreground'
-                  }`}
-                  aria-label={`Halaman ${page}`}
-                  aria-current={currentPage === page ? 'page' : undefined}
-                >
-                  {page}
-                </button>
+              {visiblePages.map((page, idx) => (
+                page === 'ellipsis' ? (
+                  <span
+                    key={`ellipsis-${idx}`}
+                    className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm text-muted-foreground select-none"
+                    aria-hidden="true"
+                  >
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
+                      currentPage === page
+                        ? 'bg-primary text-primary-foreground'
+                        : 'hover:bg-secondary text-muted-foreground hover:text-foreground'
+                    }`}
+                    aria-label={`Halaman ${page}`}
+                    aria-current={currentPage === page ? 'page' : undefined}
+                  >
+                    {page}
+                  </button>
+                )
               ))}
 
               <button
