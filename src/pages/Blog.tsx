@@ -73,13 +73,27 @@ const Blog = () => {
       } else {
         map.set(key, {
           key,
-          label: format(d, "MMMM yyyy", { locale: idLocale }),
+          label: format(d, "MMMM", { locale: idLocale }),
           count: 1,
         });
       }
     });
     return Array.from(map.values()).sort((a, b) => b.key.localeCompare(a.key));
   }, [blogPosts]);
+
+  // Group archives by year for the collapsible sidebar
+  const archiveYears = useMemo(() => {
+    const map = new Map<string, { year: string; count: number; months: typeof archives }>();
+    archives.forEach((a) => {
+      const year = a.key.slice(0, 4);
+      const entry = map.get(year) ?? { year, count: 0, months: [] };
+      entry.count += a.count;
+      entry.months.push(a);
+      map.set(year, entry);
+    });
+    return Array.from(map.values()).sort((a, b) => b.year.localeCompare(a.year));
+  }, [archives]);
+
 
   // Sync category filter with URL query params and clean up invalid categories
   useEffect(() => {
