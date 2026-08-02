@@ -50,24 +50,8 @@ const tools: ToolAction[] = [
   { icon: Minus, label: 'Garis Pemisah', prefix: '\n---\n', placeholder: '', block: true },
 ];
 
-// Markdown collapses repeated blank lines, so empty paragraphs the writer
-// created with Enter would vanish in the preview. Insert a zero-width space
-// paragraph for every extra blank line so the preview matches the editor.
-const ZWSP = '&#8203;';
+const normalizeForPreview = normalizeArticleMarkdown;
 
-const normalizeForPreview = (text: string) => {
-  const withEmptyParagraphs = text.replace(/\n{3,}/g, (match) => {
-    const extra = match.length - 2;
-    return '\n\n' + `${ZWSP}\n\n`.repeat(extra);
-  });
-
-  // Keep trailing empty paragraphs visible while typing
-  const trailing = withEmptyParagraphs.match(/\n{2,}$/);
-  if (trailing) {
-    return withEmptyParagraphs.replace(/\n{2,}$/, '\n\n' + ZWSP);
-  }
-  return withEmptyParagraphs;
-};
 
 const MarkdownEditor = ({
 
