@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
+import { normalizeArticleMarkdown } from "@/lib/markdown";
 import { useState, useMemo } from "react";
 
 // Convert heading text into a URL-friendly slug for anchor ids
