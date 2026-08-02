@@ -131,7 +131,9 @@ const Blog = () => {
       const tagMatch = !activeTag || p.tags?.includes(activeTag);
       const d = new Date(p.created_at);
       const archiveKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-      const archiveMatch = !activeArchive || archiveKey === activeArchive;
+      const archiveMatch = !activeArchive ||
+        (activeArchive.length === 4 ? archiveKey.startsWith(activeArchive) : archiveKey === activeArchive);
+
       const searchMatch = !query ||
         p.title?.toLowerCase().includes(query) ||
         p.excerpt?.toLowerCase().includes(query);
