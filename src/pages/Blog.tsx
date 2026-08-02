@@ -386,20 +386,30 @@ const Blog = () => {
                 <ChevronLeft size={16} />
               </button>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  className={`inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
-                    currentPage === page
-                      ? 'bg-primary text-primary-foreground'
-                      : 'hover:bg-secondary text-muted-foreground hover:text-foreground'
-                  }`}
-                  aria-label={`Halaman ${page}`}
-                  aria-current={currentPage === page ? 'page' : undefined}
-                >
-                  {page}
-                </button>
+              {visiblePages.map((page, idx) => (
+                page === 'ellipsis' ? (
+                  <span
+                    key={`ellipsis-${idx}`}
+                    className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm text-muted-foreground select-none"
+                    aria-hidden="true"
+                  >
+                    …
+                  </span>
+                ) : (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors ${
+                      currentPage === page
+                        ? 'bg-primary text-primary-foreground'
+                        : 'hover:bg-secondary text-muted-foreground hover:text-foreground'
+                    }`}
+                    aria-label={`Halaman ${page}`}
+                    aria-current={currentPage === page ? 'page' : undefined}
+                  >
+                    {page}
+                  </button>
+                )
               ))}
 
               <button
