@@ -17,6 +17,8 @@ const Blog = () => {
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeArchive, setActiveArchive] = useState<string | null>(null);
+  const [openYears, setOpenYears] = useState<string[]>([]);
+
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
 
