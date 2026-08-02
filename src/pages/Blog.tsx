@@ -409,40 +409,91 @@ const Blog = () => {
                   </h2>
                 </div>
 
-                {archives.length > 0 ? (
-                  <ul className="space-y-1">
+                {archiveYears.length > 0 ? (
+                  <ul className="space-y-1.5">
                     <li>
                       <button
                         onClick={() => { setActiveArchive(null); setCurrentPage(1); }}
-                        className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                        className={`flex w-full items-center justify-between rounded-md px-2.5 py-2 text-sm transition-colors ${
                           !activeArchive
                             ? 'bg-primary/15 text-primary font-medium'
                             : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                         }`}
                       >
-                        <span>Semua</span>
-                        <span className="text-xs">{blogPosts?.length ?? 0}</span>
+                        <span>Semua artikel</span>
+                        <span className="text-xs tabular-nums">{blogPosts?.length ?? 0}</span>
                       </button>
                     </li>
-                    {archives.map((a) => (
-                      <li key={a.key}>
-                        <button
-                          onClick={() => { setActiveArchive(activeArchive === a.key ? null : a.key); setCurrentPage(1); }}
-                          className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
-                            activeArchive === a.key
-                              ? 'bg-primary/15 text-primary font-medium'
-                              : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-                          }`}
-                        >
-                          <span className="capitalize">{a.label}</span>
-                          <span className="text-xs">{a.count}</span>
-                        </button>
-                      </li>
-                    ))}
+
+                    {archiveYears.map((y) => {
+                      const isOpen = openYears.includes(y.year) || activeArchive?.startsWith(y.year);
+                      return (
+                        <li key={y.year} className="rounded-lg border border-border/60 overflow-hidden">
+                          <div className="flex items-stretch">
+                            <button
+                              onClick={() =>
+                                setOpenYears((prev) =>
+                                  prev.includes(y.year) ? prev.filter((v) => v !== y.year) : [...prev, y.year]
+                                )
+                              }
+                              aria-expanded={!!isOpen}
+                              className="flex flex-1 items-center gap-2 px-2.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+                            >
+                              <ChevronDown
+                                size={14}
+                                className={`shrink-0 text-muted-foreground transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`}
+                              />
+                              <span>{y.year}</span>
+                              <span className="ml-auto text-xs text-muted-foreground tabular-nums">{y.count}</span>
+                            </button>
+                          </div>
+
+                          {isOpen && (
+                            <ul className="border-t border-border/60 p-1.5 space-y-0.5">
+                              <li>
+                                <button
+                                  onClick={() => {
+                                    setActiveArchive(activeArchive === y.year ? null : y.year);
+                                    setCurrentPage(1);
+                                  }}
+                                  className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-xs transition-colors ${
+                                    activeArchive === y.year
+                                      ? 'bg-primary/15 text-primary font-medium'
+                                      : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                                  }`}
+                                >
+                                  <span>Semua bulan</span>
+                                  <span className="tabular-nums">{y.count}</span>
+                                </button>
+                              </li>
+                              {y.months.map((a) => (
+                                <li key={a.key}>
+                                  <button
+                                    onClick={() => {
+                                      setActiveArchive(activeArchive === a.key ? null : a.key);
+                                      setCurrentPage(1);
+                                    }}
+                                    className={`flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-colors ${
+                                      activeArchive === a.key
+                                        ? 'bg-primary/15 text-primary font-medium'
+                                        : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                                    }`}
+                                  >
+                                    <span className="capitalize">{a.label}</span>
+                                    <span className="text-xs tabular-nums">{a.count}</span>
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 ) : (
                   <p className="text-xs text-muted-foreground">Belum ada arsip.</p>
                 )}
+
               </div>
             </aside>
           </div>
