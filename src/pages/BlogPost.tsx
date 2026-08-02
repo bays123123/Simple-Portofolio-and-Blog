@@ -651,7 +651,7 @@ const BlogPost = () => {
                   ),
                 }}
               >
-                {post.content || ''}
+                {normalizeArticleMarkdown(post.content || '')}
               </ReactMarkdown>
 
               {relatedPosts && relatedPosts.length > 0 && (
