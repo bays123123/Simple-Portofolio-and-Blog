@@ -564,7 +564,7 @@ const Admin = () => {
                 </p>
               ) : (
                 <div className="space-y-3 max-h-[600px] overflow-y-auto">
-                  {posts?.map((post) => (
+                  {filteredPosts?.map((post) => (
                     <div
                       key={post.id}
                       className="p-3 rounded-lg border border-border bg-card hover:bg-secondary/50 transition-colors"
