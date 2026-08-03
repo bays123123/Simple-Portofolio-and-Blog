@@ -194,6 +194,18 @@ const Admin = () => {
     },
   });
 
+  const filteredPosts = posts?.filter((post) => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      post.title.toLowerCase().includes(q) ||
+      post.slug.toLowerCase().includes(q) ||
+      post.category?.toLowerCase().includes(q) ||
+      post.tags?.some((tag) => tag.toLowerCase().includes(q)) ||
+      post.excerpt?.toLowerCase().includes(q)
+    );
+  });
+
   const parseTags = (value: string): string[] =>
     value
       .split(',')
