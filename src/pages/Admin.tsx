@@ -545,12 +545,23 @@ const Admin = () => {
           <Card>
             <CardHeader>
               <CardTitle>Daftar Artikel</CardTitle>
+              <div className="relative mt-3">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+                <Input
+                  placeholder="Cari artikel, kategori, atau tag..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
             </CardHeader>
             <CardContent>
               {postsLoading ? (
                 <p className="text-muted-foreground">Loading...</p>
-              ) : posts?.length === 0 ? (
-                <p className="text-muted-foreground">Belum ada artikel</p>
+              ) : filteredPosts?.length === 0 ? (
+                <p className="text-muted-foreground">
+                  {searchQuery ? 'Tidak ada artikel yang cocok' : 'Belum ada artikel'}
+                </p>
               ) : (
                 <div className="space-y-3 max-h-[600px] overflow-y-auto">
                   {posts?.map((post) => (
