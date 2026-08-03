@@ -73,6 +73,7 @@ async function main() {
   const staticPages = [
     { loc: "/", changefreq: "monthly", priority: "1.0" },
     { loc: "/blog", changefreq: "daily", priority: "0.9" },
+    { loc: "/auth", changefreq: "yearly", priority: "0.3" },
   ];
 
   let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
