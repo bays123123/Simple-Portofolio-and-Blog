@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2 } from 'lucide-react';
+import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2, Search } from 'lucide-react';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import TagAutocomplete from '@/components/TagAutocomplete';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
@@ -55,6 +55,7 @@ const Admin = () => {
     tags: '',
   });
   const [draftSavedAt, setDraftSavedAt] = useState<Date | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const draftRestored = useRef(false);
 
   // Pulihkan draf yang belum selesai saat halaman dibuka
@@ -191,6 +192,18 @@ const Admin = () => {
     onError: (error: Error) => {
       toast({ variant: 'destructive', title: 'Gagal menghapus artikel', description: error.message });
     },
+  });
+
+  const filteredPosts = posts?.filter((post) => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return true;
+    return (
+      post.title.toLowerCase().includes(q) ||
+      post.slug.toLowerCase().includes(q) ||
+      post.category?.toLowerCase().includes(q) ||
+      post.tags?.some((tag) => tag.toLowerCase().includes(q)) ||
+      post.excerpt?.toLowerCase().includes(q)
+    );
   });
 
   const parseTags = (value: string): string[] =>
@@ -532,15 +545,26 @@ const Admin = () => {
           <Card>
             <CardHeader>
               <CardTitle>Daftar Artikel</CardTitle>
+              <div className="relative mt-3">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={16} />
+                <Input
+                  placeholder="Cari artikel, kategori, atau tag..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9"
+                />
+              </div>
             </CardHeader>
             <CardContent>
               {postsLoading ? (
                 <p className="text-muted-foreground">Loading...</p>
-              ) : posts?.length === 0 ? (
-                <p className="text-muted-foreground">Belum ada artikel</p>
+              ) : filteredPosts?.length === 0 ? (
+                <p className="text-muted-foreground">
+                  {searchQuery ? 'Tidak ada artikel yang cocok' : 'Belum ada artikel'}
+                </p>
               ) : (
                 <div className="space-y-3 max-h-[600px] overflow-y-auto">
-                  {posts?.map((post) => (
+                  {filteredPosts?.map((post) => (
                     <div
                       key={post.id}
                       className="p-3 rounded-lg border border-border bg-card hover:bg-secondary/50 transition-colors"
