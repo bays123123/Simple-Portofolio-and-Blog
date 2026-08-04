@@ -34,7 +34,7 @@ const Index = () => {
             <header className="flex-1">
               <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">Bayu Dwi Darmawan</h1>
               <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-5 sm:mb-6">
-                I am a professional in the printing industry with more than 3 years of experience. Currently working as a Proof Print machine operator. Skilled in Color Matching and meticulous in ensuring high-quality print results. I am also a technology blogger and founder of the Nusantara Code community.
+                Proof Print Operator with over 7 years of experience in the flexible packaging industry. Skilled in operating the JM Headford Gravure Proof Press, color matching, proof printing, and color quality control to ensure print results meet customer standards prior to mass production. Accustomed to working towards production targets, maintaining print quality consistency, and collaborating with the production team to meet deadlines.
               </p>
               <nav className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4" aria-label="Social links">
                 <div className="flex flex-wrap items-center gap-3 sm:gap-4">
