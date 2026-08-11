@@ -511,8 +511,8 @@ const BlogPost = () => {
               <h1 className="text-heading font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight mb-4">
                 {post.title}
               </h1>
-              <div className="flex items-center justify-between flex-wrap gap-3">
-                <div className="flex items-center gap-3 text-muted-foreground text-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="flex items-center flex-wrap gap-x-3 gap-y-1 text-muted-foreground text-sm">
                   <time>{format(new Date(post.created_at), 'MMMM d, yyyy')}</time>
                   <span>·</span>
                   <span>{post.read_time}</span>
@@ -528,19 +528,20 @@ const BlogPost = () => {
                 </div>
 
 
-                <div className="relative">
+                <div className="relative self-start sm:self-auto">
                   <button
                     onClick={() => setShowControls(!showControls)}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary rounded-lg px-3 py-1.5 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground bg-secondary/60 hover:bg-secondary border border-border rounded-lg px-3 py-2 transition-colors"
                     aria-label="Mode baca nyaman"
                     aria-expanded={showControls}
                   >
                     <Type size={14} />
-                    <span className="hidden sm:inline">Mode Baca</span>
+                    <span>Mode Baca</span>
                   </button>
 
                   {showControls && (
-                    <div className="absolute right-0 top-full mt-2 z-20 bg-card border border-border rounded-xl shadow-lg p-4 w-56 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 z-20 bg-card border border-border rounded-xl shadow-lg p-4 w-[min(16rem,calc(100vw-3rem))] animate-in fade-in zoom-in-95 duration-150">
+
                       <div className="mb-4">
                         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-2">
                           <Type size={12} />
