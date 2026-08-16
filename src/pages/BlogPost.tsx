@@ -33,10 +33,15 @@ const getNodeText = (node: React.ReactNode): string => {
 
 
 
+// Some posts write headings inside list items ("1. ## Judul"). Promote those to
+// real headings so both the article and its table of contents stay in sync.
+export const prepareArticleMarkdown = (md: string) =>
+  (md || '').replace(/^[ \t]*(?:\d+[.)]|[-*+])[ \t]+(#{2,3}[ \t]+)/gm, '$1');
+
 // Extract h2/h3 headings from markdown content for the table of contents
 const extractHeadings = (md: string) => {
   if (!md) return [] as { id: string; text: string; level: number }[];
-  const lines = md.split("\n");
+  const lines = prepareArticleMarkdown(md).split("\n");
   const headings: { id: string; text: string; level: number }[] = [];
   let inCodeBlock = false;
   for (const line of lines) {
@@ -239,7 +244,7 @@ const BlogPost = () => {
   });
 
   const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
-  const showToc = headings.length >= 3;
+  const showToc = headings.length >= 2;
 
   // Public view count for this article (aggregated from recorded page visits)
   const { data: viewCount } = useQuery({
@@ -653,7 +658,7 @@ const BlogPost = () => {
                   ),
                 }}
               >
-                {normalizeArticleMarkdown(post.content || '')}
+                {normalizeArticleMarkdown(prepareArticleMarkdown(post.content || ''))}
               </ReactMarkdown>
 
               {relatedPosts && relatedPosts.length > 0 && (
