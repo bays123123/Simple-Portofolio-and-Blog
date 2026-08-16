@@ -244,7 +244,7 @@ const BlogPost = () => {
   });
 
   const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
-  const showToc = headings.length >= 3;
+  const showToc = headings.length >= 2;
 
   // Public view count for this article (aggregated from recorded page visits)
   const { data: viewCount } = useQuery({
@@ -658,7 +658,7 @@ const BlogPost = () => {
                   ),
                 }}
               >
-                {normalizeArticleMarkdown(post.content || '')}
+                {normalizeArticleMarkdown(prepareArticleMarkdown(post.content || ''))}
               </ReactMarkdown>
 
               {relatedPosts && relatedPosts.length > 0 && (
