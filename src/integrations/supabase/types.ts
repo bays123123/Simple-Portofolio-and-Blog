@@ -122,6 +122,50 @@ export type Database = {
         }
         Relationships: []
       }
+      post_translations: {
+        Row: {
+          content: string | null
+          created_at: string
+          excerpt: string | null
+          id: string
+          lang: string
+          post_id: string
+          source_updated_at: string | null
+          title: string | null
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          lang: string
+          post_id: string
+          source_updated_at?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          lang?: string
+          post_id?: string
+          source_updated_at?: string | null
+          title?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_translations_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "blog_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
