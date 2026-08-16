@@ -1,14 +1,12 @@
-# robots.txt for Bayu Dwi Darmawan Portfolio
-# Last updated: 2025
+# robots.txt for Bayu Dwi Darmawan Blog
+# Optimized for search engines and AI crawlers that respect robots.txt
 
-# Default rules for all search engines
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /auth
-Crawl-delay: 1
 
-# Google
+# Google Search
 User-agent: Googlebot
 Allow: /
 Disallow: /admin
@@ -22,17 +20,6 @@ Allow: /blog
 
 # Bing
 User-agent: Bingbot
-Allow: /
-Disallow: /admin
-Disallow: /auth
-
-User-agent: msnbot
-Allow: /
-Disallow: /admin
-Disallow: /auth
-
-# Yahoo
-User-agent: Slurp
 Allow: /
 Disallow: /admin
 Disallow: /auth
@@ -55,41 +42,38 @@ Allow: /
 Disallow: /admin
 Disallow: /auth
 
-# Facebook
+# Social media crawlers
 User-agent: facebookexternalhit
 Allow: /
 
-# Twitter
 User-agent: Twitterbot
 Allow: /
 
-# LinkedIn
 User-agent: LinkedInBot
 Allow: /
 
-# Pinterest
 User-agent: Pinterestbot
 Allow: /
 
-# Telegram
 User-agent: TelegramBot
 Allow: /
 
-# Block AI training bots (optional - remove if you want AI to crawl)
+# AI crawlers
+# Allowed so AI services can discover and potentially cite blog content.
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: anthropic-ai
-Disallow: /
+Allow: /
 
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 
-# Sitemaps
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemap
 Sitemap: https://www.bayud.my.id/sitemap.xml
