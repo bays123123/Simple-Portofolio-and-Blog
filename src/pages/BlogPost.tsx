@@ -42,8 +42,6 @@ export const prepareArticleMarkdown = (md: string) =>
 const extractHeadings = (md: string) => {
   if (!md) return [] as { id: string; text: string; level: number }[];
   const lines = prepareArticleMarkdown(md).split("\n");
-  if (!md) return [] as { id: string; text: string; level: number }[];
-  const lines = md.split("\n");
   const headings: { id: string; text: string; level: number }[] = [];
   let inCodeBlock = false;
   for (const line of lines) {
