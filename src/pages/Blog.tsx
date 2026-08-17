@@ -6,14 +6,18 @@ import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { format } from "date-fns";
-import { id as idLocale } from "date-fns/locale";
+import { id as idLocale, enUS } from "date-fns/locale";
 import { ChevronLeft, ChevronRight, ChevronDown, Archive, Search, X, Eye } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
+import { usePostTranslations } from "@/hooks/usePostTranslations";
 
 
 const POSTS_PER_PAGE = 5;
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { lang, t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeArchive, setActiveArchive] = useState<string | null>(null);
@@ -75,13 +79,13 @@ const Blog = () => {
       } else {
         map.set(key, {
           key,
-          label: format(d, "MMMM", { locale: idLocale }),
+          label: format(d, "MMMM", { locale: lang === "en" ? enUS : idLocale }),
           count: 1,
         });
       }
     });
     return Array.from(map.values()).sort((a, b) => b.key.localeCompare(a.key));
-  }, [blogPosts]);
+  }, [blogPosts, lang]);
 
   // Group archives by year for the collapsible sidebar
   const archiveYears = useMemo(() => {
@@ -146,6 +150,14 @@ const Blog = () => {
     const start = (currentPage - 1) * POSTS_PER_PAGE;
     return filteredPosts?.slice(start, start + POSTS_PER_PAGE);
   }, [filteredPosts, currentPage]);
+
+  // Translate the titles/excerpts of the posts currently on screen
+  const visibleIds = useMemo(() => (paginatedPosts ?? []).map((p) => p.id), [paginatedPosts]);
+  const { data: postTranslations, isFetching: isTranslating } = usePostTranslations(visibleIds, lang);
+  const localize = (post: { id: string; title: string; excerpt: string | null }) => ({
+    title: postTranslations?.[post.id]?.title ?? post.title,
+    excerpt: postTranslations?.[post.id]?.excerpt ?? post.excerpt,
+  });
 
   const visiblePages = useMemo(() => {
     if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -218,12 +230,15 @@ const Blog = () => {
 
         <main className="py-6 sm:py-8">
           <section className="mb-8 sm:mb-10 fade-in">
-            <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-              Blog
-            </h1>
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold">
+                {t("blogTitle")}
+              </h1>
+              <LanguageToggle loading={isTranslating} className="mt-1.5" />
+            </div>
             <p className="text-left text-muted-foreground text-sm sm:text-base leading-relaxed">
-              Arsip digital dan catatan profesional Bayu Dwi Darmawan seputar teknik grafika dan ilmu cetak.<br />
-              Referensi teori dan praktik percetakan untuk publik.
+              {t("blogDescLine1")}<br />
+              {t("blogDescLine2")}
             </p>
           </section>
 
@@ -234,7 +249,7 @@ const Blog = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
-                placeholder="Cari artikel berdasarkan judul atau ringkasan..."
+                placeholder={t("searchPlaceholder")}
                 className="w-full rounded-lg border border-input bg-background pl-10 pr-9 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
               />
               {searchQuery && (
@@ -242,7 +257,7 @@ const Blog = () => {
                   type="button"
                   onClick={() => { setSearchQuery(""); setCurrentPage(1); }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  aria-label="Hapus pencarian"
+                  aria-label={t("clearSearch")}
                 >
                   <X size={14} />
                 </button>
@@ -266,7 +281,7 @@ const Blog = () => {
                           : 'bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80'
                       }`}
                     >
-                      {cat}
+                      {cat === "Semua" ? t("allCategories") : cat}
                     </button>
                   ))}
                 </div>
@@ -292,7 +307,7 @@ const Blog = () => {
                       onClick={() => { setActiveTag(null); setCurrentPage(1); }}
                       className="text-xs text-muted-foreground underline hover:text-foreground"
                     >
-                      Hapus filter tag
+                      {t("removeTagFilter")}
                     </button>
                   )}
                 </div>
@@ -325,14 +340,14 @@ const Blog = () => {
                         </span>
                       )}
                       <h2 className="text-foreground font-display text-lg sm:text-xl font-semibold group-hover:text-primary transition-colors">
-                        {post.title}
+                        {localize(post).title}
                       </h2>
                       <span className="text-muted-foreground text-sm">
                         {format(new Date(post.created_at), 'MMMM d, yyyy')}
                       </span>
                     </div>
                     <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-2">
-                      {post.excerpt}
+                      {localize(post).excerpt}
                     </p>
                     <div className="flex items-center justify-between gap-3 flex-wrap">
                       <span className="flex items-center gap-3 text-sm">
@@ -340,7 +355,7 @@ const Blog = () => {
                         {viewCounts && (
                           <span className="inline-flex items-center gap-1 text-muted-foreground">
                             <Eye size={13} />
-                            {(viewCounts[`/blog/${post.slug}`] ?? 0).toLocaleString('id-ID')}
+                            {(viewCounts[`/blog/${post.slug}`] ?? 0).toLocaleString(lang === 'en' ? 'en-US' : 'id-ID')}
                           </span>
                         )}
                       </span>
@@ -362,13 +377,13 @@ const Blog = () => {
               ))
             ) : (
               <div className="text-muted-foreground text-sm space-y-2">
-                <p>Tidak ada artikel yang cocok dengan filter.</p>
+                <p>{t("noMatch")}</p>
                 {searchQuery && (
                   <button
                     onClick={() => { setSearchQuery(""); setCurrentPage(1); }}
                     className="text-primary hover:underline"
                   >
-                    Hapus pencarian
+                    {t("clearSearch")}
                   </button>
                 )}
               </div>
@@ -381,7 +396,7 @@ const Blog = () => {
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
                 className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-secondary"
-                aria-label="Halaman sebelumnya"
+                aria-label={t("prevPage")}
               >
                 <ChevronLeft size={16} />
               </button>
@@ -404,7 +419,7 @@ const Blog = () => {
                         ? 'bg-primary text-primary-foreground'
                         : 'hover:bg-secondary text-muted-foreground hover:text-foreground'
                     }`}
-                    aria-label={`Halaman ${page}`}
+                    aria-label={`${t("page")} ${page}`}
                     aria-current={currentPage === page ? 'page' : undefined}
                   >
                     {page}
@@ -416,7 +431,7 @@ const Blog = () => {
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
                 className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-secondary"
-                aria-label="Halaman berikutnya"
+                aria-label={t("nextPage")}
               >
                 <ChevronRight size={16} />
               </button>
@@ -429,7 +444,7 @@ const Blog = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <Archive size={16} className="text-primary" />
                   <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-heading">
-                    Arsip
+                    {t("archive")}
                   </h2>
                 </div>
 
@@ -444,7 +459,7 @@ const Blog = () => {
                             : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                         }`}
                       >
-                        <span>Semua artikel</span>
+                        <span>{t("allArticles")}</span>
                         <span className="text-xs tabular-nums">{blogPosts?.length ?? 0}</span>
                       </button>
                     </li>
@@ -486,7 +501,7 @@ const Blog = () => {
                                       : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                                   }`}
                                 >
-                                  <span>Semua bulan</span>
+                                  <span>{t("allMonths")}</span>
                                   <span className="tabular-nums">{y.count}</span>
                                 </button>
                               </li>
@@ -515,7 +530,7 @@ const Blog = () => {
                     })}
                   </ul>
                 ) : (
-                  <p className="text-xs text-muted-foreground">Belum ada arsip.</p>
+                  <p className="text-xs text-muted-foreground">{t("noArchive")}</p>
                 )}
 
               </div>

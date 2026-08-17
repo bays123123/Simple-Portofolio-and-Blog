@@ -12,6 +12,9 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { normalizeArticleMarkdown } from "@/lib/markdown";
 import { useState, useMemo } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
+import { usePostTranslations } from "@/hooks/usePostTranslations";
 
 // Convert heading text into a URL-friendly slug for anchor ids
 const slugify = (text: string) =>
@@ -95,11 +98,13 @@ const getMetaDescription = (post: any) => {
 
 type ShareBarProps = {
   post: any;
+  displayTitle?: string;
 };
 
-const ShareBar = ({ post }: ShareBarProps) => {
+const ShareBar = ({ post, displayTitle }: ShareBarProps) => {
+  const { t } = useLanguage();
   const url = `https://www.bayud.my.id/blog/${post.slug}`;
-  const title = post.title;
+  const title = displayTitle ?? post.title;
   const [copied, setCopied] = useState(false);
 
   const shareNetwork = (shareUrl: string) => {
@@ -183,13 +188,13 @@ const ShareBar = ({ post }: ShareBarProps) => {
 
   return (
     <div className="flex flex-wrap items-center gap-2 mt-4 sm:mt-5">
-      <span className="text-xs font-medium text-muted-foreground">Bagikan:</span>
+      <span className="text-xs font-medium text-muted-foreground">{t("share")}:</span>
 
       {typeof navigator !== "undefined" && navigator.share && (
         <button
           type="button"
           onClick={handleNativeShare}
-          aria-label="Bagikan"
+          aria-label={t("share")}
           className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border bg-card/50 text-muted-foreground hover:text-foreground hover:bg-card transition-colors"
         >
           <Share2 size={16} />
@@ -201,7 +206,7 @@ const ShareBar = ({ post }: ShareBarProps) => {
           key={network.name}
           type="button"
           onClick={() => shareNetwork(network.href)}
-          aria-label={`Bagikan ke ${network.name}`}
+          aria-label={`${t("share")} ${network.name}`}
           className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border bg-card/50 text-muted-foreground hover:text-foreground hover:bg-card transition-colors"
         >
           {network.icon}
@@ -211,11 +216,11 @@ const ShareBar = ({ post }: ShareBarProps) => {
       <button
         type="button"
         onClick={handleCopy}
-        aria-label={copied ? "Link tersalin" : "Salin link artikel"}
+        aria-label={copied ? t("copied") : t("copyLink")}
         className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary rounded-lg px-3 py-1.5 transition-colors"
       >
         {copied ? <Check size={14} /> : <Link2 size={14} />}
-        {copied ? "Tersalin" : "Salin link"}
+        {copied ? t("copied") : t("copyLink")}
       </button>
     </div>
   );
@@ -223,6 +228,7 @@ const ShareBar = ({ post }: ShareBarProps) => {
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { lang, t } = useLanguage();
   const [fontSize, setFontSize] = useState<0 | 1 | 2>(0);
   const [lineHeight, setLineHeight] = useState<0 | 1 | 2>(1);
   const [showControls, setShowControls] = useState(false);
@@ -243,7 +249,17 @@ const BlogPost = () => {
     enabled: !!slug
   });
 
-  const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
+  // Full translation (title, excerpt, content) of the current article
+  const { data: articleTranslation, isFetching: isTranslating } = usePostTranslations(
+    post ? [post.id] : [],
+    lang,
+    true,
+  );
+  const translated = post ? articleTranslation?.[post.id] : undefined;
+  const displayTitle = translated?.title ?? post?.title ?? '';
+  const displayContent = translated?.content ?? post?.content ?? '';
+
+  const headings = useMemo(() => extractHeadings(displayContent), [displayContent]);
   const showToc = headings.length >= 2;
 
   // Public view count for this article (aggregated from recorded page visits)
@@ -320,6 +336,19 @@ const BlogPost = () => {
     },
   });
 
+  // Translate the titles of related and previous/next articles
+  const linkedIds = useMemo(() => {
+    const ids = [
+      ...(relatedPosts ?? []).map((p) => p.id),
+      adjacentPosts?.prev?.id,
+      adjacentPosts?.next?.id,
+    ].filter(Boolean) as string[];
+    return Array.from(new Set(ids));
+  }, [relatedPosts, adjacentPosts]);
+  const { data: linkedTranslations } = usePostTranslations(linkedIds, lang);
+  const linkTitle = (item: { id: string; title: string }) =>
+    linkedTranslations?.[item.id]?.title ?? item.title;
+
   // Fetch all published posts to build the category list for the sidebar
   const { data: allPublishedPosts } = useQuery({
     queryKey: ['blog-all-posts-categories'],
@@ -392,7 +421,7 @@ const BlogPost = () => {
                 className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
               >
                 <ArrowLeft size={16} />
-                Back to Blog
+                {t("backToBlog")}
               </Link>
             </div>
           </main>
@@ -491,7 +520,7 @@ const BlogPost = () => {
                   return (
                     <img
                       src={post.cover_image}
-                      alt={post.title}
+                      alt={displayTitle}
                       className="w-full aspect-[4/3] sm:aspect-[16/9] object-cover max-h-[320px] sm:max-h-[420px]"
                       loading="lazy"
                       decoding="async"
@@ -514,7 +543,7 @@ const BlogPost = () => {
                 </Link>
               )}
               <h1 className="text-heading font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight mb-4">
-                {post.title}
+                {displayTitle}
               </h1>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div className="flex items-center flex-wrap gap-x-3 gap-y-1 text-muted-foreground text-sm">
@@ -526,22 +555,24 @@ const BlogPost = () => {
                       <span>·</span>
                       <span className="inline-flex items-center gap-1">
                         <Eye size={14} />
-                        {viewCount.toLocaleString('id-ID')} kali dibaca
+                        {viewCount.toLocaleString(lang === 'en' ? 'en-US' : 'id-ID')} {t("views")}
                       </span>
                     </>
                   )}
                 </div>
 
 
-                <div className="relative self-start sm:self-auto">
+                <div className="flex items-center gap-2 self-start sm:self-auto">
+                  <LanguageToggle loading={isTranslating} />
+                <div className="relative">
                   <button
                     onClick={() => setShowControls(!showControls)}
                     className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground bg-secondary/60 hover:bg-secondary border border-border rounded-lg px-3 py-2 transition-colors"
-                    aria-label="Mode baca nyaman"
+                    aria-label={t("readingMode")}
                     aria-expanded={showControls}
                   >
                     <Type size={14} />
-                    <span>Mode Baca</span>
+                    <span>{t("readingMode")}</span>
                   </button>
 
                   {showControls && (
@@ -550,7 +581,7 @@ const BlogPost = () => {
                       <div className="mb-4">
                         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-2">
                           <Type size={12} />
-                          Ukuran Font
+                          {t("fontSize")}
                         </div>
                         <div className="flex items-center gap-2">
                           <button
@@ -577,13 +608,13 @@ const BlogPost = () => {
                       <div>
                         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-2">
                           <AlignJustify size={12} />
-                          Jarak Baris
+                          {t("lineSpacing")}
                         </div>
                         <div className="flex items-center gap-2">
                           {[
-                            { label: 'Rapat', value: 0 as const },
-                            { label: 'Normal', value: 1 as const },
-                            { label: 'Longgar', value: 2 as const },
+                            { label: t("tight"), value: 0 as const },
+                            { label: t("normal"), value: 1 as const },
+                            { label: t("loose"), value: 2 as const },
                           ].map((opt) => (
                             <button
                               key={opt.value}
@@ -598,18 +629,19 @@ const BlogPost = () => {
                     </div>
                   )}
                 </div>
+                </div>
               </div>
-              <ShareBar post={post} />
+              <ShareBar post={post} displayTitle={displayTitle} />
             </header>
 
             {showToc && (
               <nav
-                aria-label="Daftar isi"
+                aria-label={t("tableOfContents")}
                 className="mb-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
               >
                 <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
                   <List size={16} className="text-primary" />
-                  Daftar Isi
+                  {t("tableOfContents")}
                 </div>
                 <ul className="space-y-1.5">
                   {headings.map((h, i) => (
@@ -658,17 +690,17 @@ const BlogPost = () => {
                   ),
                 }}
               >
-                {normalizeArticleMarkdown(prepareArticleMarkdown(post.content || ''))}
+                {normalizeArticleMarkdown(prepareArticleMarkdown(displayContent))}
               </ReactMarkdown>
 
               {relatedPosts && relatedPosts.length > 0 && (
                 <aside
-                  aria-label="Artikel terkait"
+                  aria-label={t("readAlso")}
                   className="not-prose my-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
                 >
                   <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
                     <LinkIcon size={16} className="text-primary" />
-                    Baca Juga
+                    {t("readAlso")}
                   </div>
                   <ul className="space-y-2.5">
                     {relatedPosts.map((rp) => (
@@ -678,7 +710,7 @@ const BlogPost = () => {
                           className="group flex items-start gap-2 text-base text-primary hover:underline"
                         >
                           <ArrowRight size={16} className="mt-1 shrink-0 transition-transform group-hover:translate-x-0.5" />
-                          <span>{rp.title}</span>
+                          <span>{linkTitle(rp)}</span>
                         </Link>
                       </li>
                     ))}
@@ -702,7 +734,7 @@ const BlogPost = () => {
 
             {(adjacentPosts?.prev || adjacentPosts?.next) && (
               <nav
-                aria-label="Navigasi artikel"
+                aria-label={t("nextArticle")}
                 className="mt-10 pt-6 border-t border-border"
               >
                 <div className="flex flex-col sm:flex-row justify-between gap-4">
@@ -713,10 +745,10 @@ const BlogPost = () => {
                     >
                       <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                         <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />
-                        Artikel Sebelumnya
+                        {t("prevArticle")}
                       </span>
                       <span className="text-sm font-medium text-foreground line-clamp-2">
-                        {adjacentPosts.prev.title}
+                        {linkTitle(adjacentPosts.prev)}
                       </span>
                     </Link>
                   ) : (
@@ -729,11 +761,11 @@ const BlogPost = () => {
                       className="group flex flex-col items-start sm:items-end gap-1 rounded-xl border border-border bg-card/50 p-4 hover:bg-card transition-colors sm:text-right sm:max-w-[50%]"
                     >
                       <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
-                        Artikel Berikutnya
+                        {t("nextArticle")}
                         <ArrowRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                       </span>
                       <span className="text-sm font-medium text-foreground line-clamp-2">
-                        {adjacentPosts.next.title}
+                        {linkTitle(adjacentPosts.next)}
                       </span>
                     </Link>
                   ) : (
@@ -750,7 +782,7 @@ const BlogPost = () => {
                 <div className="flex items-center gap-2 mb-4">
                   <FolderOpen size={16} className="text-primary" />
                   <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-heading">
-                    Kategori
+                    {t("categories")}
                   </h2>
                 </div>
                 {categoryList.length > 0 ? (
@@ -772,7 +804,7 @@ const BlogPost = () => {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-xs text-muted-foreground">Belum ada kategori.</p>
+                  <p className="text-xs text-muted-foreground">{t("noCategories")}</p>
                 )}
               </div>
             </aside>
