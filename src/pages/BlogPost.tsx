@@ -12,6 +12,9 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import { normalizeArticleMarkdown } from "@/lib/markdown";
 import { useState, useMemo } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
+import { usePostTranslations } from "@/hooks/usePostTranslations";
 
 // Convert heading text into a URL-friendly slug for anchor ids
 const slugify = (text: string) =>
@@ -95,11 +98,13 @@ const getMetaDescription = (post: any) => {
 
 type ShareBarProps = {
   post: any;
+  displayTitle?: string;
 };
 
-const ShareBar = ({ post }: ShareBarProps) => {
+const ShareBar = ({ post, displayTitle }: ShareBarProps) => {
+  const { t } = useLanguage();
   const url = `https://www.bayud.my.id/blog/${post.slug}`;
-  const title = post.title;
+  const title = displayTitle ?? post.title;
   const [copied, setCopied] = useState(false);
 
   const shareNetwork = (shareUrl: string) => {
@@ -183,13 +188,13 @@ const ShareBar = ({ post }: ShareBarProps) => {
 
   return (
     <div className="flex flex-wrap items-center gap-2 mt-4 sm:mt-5">
-      <span className="text-xs font-medium text-muted-foreground">Bagikan:</span>
+      <span className="text-xs font-medium text-muted-foreground">{t("share")}:</span>
 
       {typeof navigator !== "undefined" && navigator.share && (
         <button
           type="button"
           onClick={handleNativeShare}
-          aria-label="Bagikan"
+          aria-label={t("share")}
           className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border bg-card/50 text-muted-foreground hover:text-foreground hover:bg-card transition-colors"
         >
           <Share2 size={16} />
@@ -201,7 +206,7 @@ const ShareBar = ({ post }: ShareBarProps) => {
           key={network.name}
           type="button"
           onClick={() => shareNetwork(network.href)}
-          aria-label={`Bagikan ke ${network.name}`}
+          aria-label={`${t("share")} ${network.name}`}
           className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border bg-card/50 text-muted-foreground hover:text-foreground hover:bg-card transition-colors"
         >
           {network.icon}
@@ -211,11 +216,11 @@ const ShareBar = ({ post }: ShareBarProps) => {
       <button
         type="button"
         onClick={handleCopy}
-        aria-label={copied ? "Link tersalin" : "Salin link artikel"}
+        aria-label={copied ? t("copied") : t("copyLink")}
         className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground bg-secondary/50 hover:bg-secondary rounded-lg px-3 py-1.5 transition-colors"
       >
         {copied ? <Check size={14} /> : <Link2 size={14} />}
-        {copied ? "Tersalin" : "Salin link"}
+        {copied ? t("copied") : t("copyLink")}
       </button>
     </div>
   );
@@ -223,6 +228,7 @@ const ShareBar = ({ post }: ShareBarProps) => {
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
+  const { lang, t } = useLanguage();
   const [fontSize, setFontSize] = useState<0 | 1 | 2>(0);
   const [lineHeight, setLineHeight] = useState<0 | 1 | 2>(1);
   const [showControls, setShowControls] = useState(false);
@@ -243,7 +249,17 @@ const BlogPost = () => {
     enabled: !!slug
   });
 
-  const headings = useMemo(() => extractHeadings(post?.content || ''), [post?.content]);
+  // Full translation (title, excerpt, content) of the current article
+  const { data: articleTranslation, isFetching: isTranslating } = usePostTranslations(
+    post ? [post.id] : [],
+    lang,
+    true,
+  );
+  const translated = post ? articleTranslation?.[post.id] : undefined;
+  const displayTitle = translated?.title ?? post?.title ?? '';
+  const displayContent = translated?.content ?? post?.content ?? '';
+
+  const headings = useMemo(() => extractHeadings(displayContent), [displayContent]);
   const showToc = headings.length >= 2;
 
   // Public view count for this article (aggregated from recorded page visits)
