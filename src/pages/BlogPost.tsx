@@ -89,12 +89,38 @@ const stripMarkdown = (md: string) => {
     .trim();
 };
 
-const getMetaDescription = (post: any) => {
-  if (post.excerpt) return post.excerpt;
-  const plain = stripMarkdown(post.content || '');
-  if (plain.length <= 160) return plain;
-  return plain.slice(0, 157).trimEnd() + '...';
+// Trim text at a word boundary without cutting mid-word
+const truncateAtWord = (text: string, max: number) => {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:—-]+$/, '') + '…';
 };
+
+const SITE_NAME = 'Bayu Dwi Darmawan';
+
+// CTR-friendly title: keep the article headline readable, add brand only when it fits (<= 60 chars)
+const getMetaTitle = (title: string) => {
+  const clean = (title || '').replace(/\s+/g, ' ').trim();
+  const withBrand = `${clean} | ${SITE_NAME}`;
+  if (withBrand.length <= 60) return withBrand;
+  if (clean.length <= 60) return clean;
+  return truncateAtWord(clean, 59);
+};
+
+// 150-160 char description built from excerpt, falling back to the article body
+const getMetaDescription = (post: any, overrides?: { excerpt?: string | null; content?: string | null }) => {
+  const excerpt = (overrides?.excerpt ?? post?.excerpt ?? '').trim();
+  const body = stripMarkdown(overrides?.content ?? post?.content ?? '');
+  let text = excerpt;
+  // Too-short excerpts get padded with the opening of the article for a fuller snippet
+  if (text.length < 110 && body) {
+    text = text ? `${text.replace(/[.\s]+$/, '')}. ${body}` : body;
+  }
+  return truncateAtWord(text, 158);
+};
+
 
 type ShareBarProps = {
   post: any;
@@ -431,23 +457,31 @@ const BlogPost = () => {
     );
   }
 
-  const metaDescription = getMetaDescription(post);
+  const metaDescription = getMetaDescription(post, {
+    excerpt: translated?.excerpt,
+    content: translated?.content,
+  });
+  const metaTitle = getMetaTitle(displayTitle || post.title);
+  const socialTitle = (displayTitle || post.title).replace(/\s+/g, ' ').trim();
+  const postUrl = `https://www.bayud.my.id/blog/${post.slug}`;
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{`${post.title} | Bayu Dwi Darmawan`}</title>
+        <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
+        <meta name="author" content={SITE_NAME} />
 
         {/* Open Graph */}
-        <meta property="og:title" content={`${post.title} | Bayu Dwi Darmawan`} />
+        <meta property="og:title" content={socialTitle} />
         <meta property="og:description" content={metaDescription} />
-        <meta property="og:url" content={`https://www.bayud.my.id/blog/${post.slug}`} />
+        <meta property="og:url" content={postUrl} />
         <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="Bayu Dwi Darmawan" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'id_ID'} />
         <meta property="article:published_time" content={post.created_at} />
         {post.updated_at && <meta property="article:modified_time" content={post.updated_at} />}
-        <meta property="article:author" content="Bayu Dwi Darmawan" />
+        <meta property="article:author" content={SITE_NAME} />
         {post.category && <meta property="article:section" content={post.category} />}
         {Array.isArray(post.tags) && post.tags.map((tag: string) => (
           <meta property="article:tag" content={tag} key={tag} />
@@ -455,20 +489,21 @@ const BlogPost = () => {
         {post.cover_image && <meta property="og:image" content={post.cover_image} />}
         {post.cover_image && <meta property="og:image:width" content="1200" />}
         {post.cover_image && <meta property="og:image:height" content="630" />}
-        {post.cover_image && <meta property="og:image:alt" content={post.title} />}
+        {post.cover_image && <meta property="og:image:alt" content={socialTitle} />}
 
         {/* Twitter Card */}
         <meta name="twitter:card" content={post.cover_image ? "summary_large_image" : "summary"} />
-        <meta name="twitter:title" content={`${post.title} | Bayu Dwi Darmawan`} />
+        <meta name="twitter:title" content={socialTitle} />
         <meta name="twitter:description" content={metaDescription} />
         {post.cover_image && <meta name="twitter:image" content={post.cover_image} />}
-        {post.cover_image && <meta name="twitter:image:alt" content={post.title} />}
+        {post.cover_image && <meta name="twitter:image:alt" content={socialTitle} />}
 
-        <link rel="canonical" href={`https://www.bayud.my.id/blog/${post.slug}`} />
+        <link rel="canonical" href={postUrl} />
+
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Article",
-          headline: post.title,
+          headline: truncateAtWord(socialTitle, 110),
           description: metaDescription,
           image: post.cover_image
             ? {
