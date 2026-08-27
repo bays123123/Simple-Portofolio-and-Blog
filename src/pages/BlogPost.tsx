@@ -89,12 +89,38 @@ const stripMarkdown = (md: string) => {
     .trim();
 };
 
-const getMetaDescription = (post: any) => {
-  if (post.excerpt) return post.excerpt;
-  const plain = stripMarkdown(post.content || '');
-  if (plain.length <= 160) return plain;
-  return plain.slice(0, 157).trimEnd() + '...';
+// Trim text at a word boundary without cutting mid-word
+const truncateAtWord = (text: string, max: number) => {
+  const clean = text.replace(/\s+/g, ' ').trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,.;:—-]+$/, '') + '…';
 };
+
+const SITE_NAME = 'Bayu Dwi Darmawan';
+
+// CTR-friendly title: keep the article headline readable, add brand only when it fits (<= 60 chars)
+const getMetaTitle = (title: string) => {
+  const clean = (title || '').replace(/\s+/g, ' ').trim();
+  const withBrand = `${clean} | ${SITE_NAME}`;
+  if (withBrand.length <= 60) return withBrand;
+  if (clean.length <= 60) return clean;
+  return truncateAtWord(clean, 59);
+};
+
+// 150-160 char description built from excerpt, falling back to the article body
+const getMetaDescription = (post: any, overrides?: { excerpt?: string | null; content?: string | null }) => {
+  const excerpt = (overrides?.excerpt ?? post?.excerpt ?? '').trim();
+  const body = stripMarkdown(overrides?.content ?? post?.content ?? '');
+  let text = excerpt;
+  // Too-short excerpts get padded with the opening of the article for a fuller snippet
+  if (text.length < 110 && body) {
+    text = text ? `${text.replace(/[.\s]+$/, '')}. ${body}` : body;
+  }
+  return truncateAtWord(text, 158);
+};
+
 
 type ShareBarProps = {
   post: any;
