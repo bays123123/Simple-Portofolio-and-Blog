@@ -503,7 +503,7 @@ const BlogPost = () => {
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Article",
-          headline: post.title,
+          headline: truncateAtWord(socialTitle, 110),
           description: metaDescription,
           image: post.cover_image
             ? {
