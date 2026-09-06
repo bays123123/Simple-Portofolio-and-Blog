@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.translate-posts]
 verify_jwt = false
+
+[functions.indexnow-submit]
+verify_jwt = false
