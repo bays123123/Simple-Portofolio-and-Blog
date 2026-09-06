@@ -89,6 +89,27 @@ export type Database = {
         }
         Relationships: []
       }
+      indexnow_submissions: {
+        Row: {
+          created_at: string
+          id: string
+          status: number
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          status?: number
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          status?: number
+          url?: string
+        }
+        Relationships: []
+      }
       page_views: {
         Row: {
           country: string | null
