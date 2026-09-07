@@ -185,12 +185,15 @@ const Admin = () => {
         tags: parseTags(post.tags),
       }).eq('id', id);
       if (error) throw error;
+      return post.published;
     },
-    onSuccess: () => {
+    onSuccess: (wasPublished) => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
       resetForm();
       toast({ title: 'Artikel berhasil diperbarui' });
+      if (wasPublished) void notifySearchEngines();
     },
+
     onError: (error: Error) => {
       toast({ variant: 'destructive', title: 'Gagal memperbarui artikel', description: error.message });
     },
