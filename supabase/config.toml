@@ -20,3 +20,6 @@ verify_jwt = false
 
 [functions.indexnow-submit]
 verify_jwt = false
+
+[functions.gsc-sitemap-ping]
+verify_jwt = false
