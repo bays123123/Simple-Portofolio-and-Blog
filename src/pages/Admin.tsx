@@ -130,6 +130,19 @@ const Admin = () => {
     enabled: isAdmin,
   });
 
+  // Notify Google (sitemap) and Bing (IndexNow) whenever a published article changes.
+  const notifySearchEngines = async () => {
+    try {
+      await Promise.allSettled([
+        supabase.functions.invoke('gsc-sitemap-ping', { body: { days: 1, force: true } }),
+        supabase.functions.invoke('indexnow-submit', { body: { days: 1 } }),
+      ]);
+      toast({ title: 'Sitemap dikirim ke Google & Bing' });
+    } catch (e) {
+      console.error('notifySearchEngines failed:', e);
+    }
+  };
+
   const createMutation = useMutation({
     mutationFn: async (post: typeof formData) => {
       const { error } = await supabase.from('blog_posts').insert({
@@ -144,16 +157,19 @@ const Admin = () => {
         tags: parseTags(post.tags),
       });
       if (error) throw error;
+      return post.published;
     },
-    onSuccess: () => {
+    onSuccess: (wasPublished) => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
       resetForm();
       toast({ title: 'Artikel berhasil dibuat' });
+      if (wasPublished) void notifySearchEngines();
     },
     onError: (error: Error) => {
       toast({ variant: 'destructive', title: 'Gagal membuat artikel', description: error.message });
     },
   });
+
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, post }: { id: string; post: typeof formData }) => {
