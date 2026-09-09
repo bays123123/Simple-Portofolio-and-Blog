@@ -5,8 +5,16 @@
     <link>https://www.bayud.my.id/blog</link>
     <description>Artikel seputar industri percetakan, cetak offset, dan kemasan.</description>
     <language>id</language>
-    <lastBuildDate>Mon, 07 Sep 2026 13:37:20 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 09 Sep 2026 23:33:42 GMT</lastBuildDate>
     <atom:link href="https://www.bayud.my.id/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mengapa Warna Hitam Disebut K dalam CMYK?</title>
+      <link>https://www.bayud.my.id/blog/mengapa-warna-hitam-disebut-k-dalam-cmyk</link>
+      <guid isPermaLink="true">https://www.bayud.my.id/blog/mengapa-warna-hitam-disebut-k-dalam-cmyk</guid>
+      <description>Anda pasti familiar dengan CMYK: Cyan, Magenta, Yellow... tapi kenapa &apos;K&apos; untuk Black? Bukan &apos;B&apos; seperti yang kita duga? Ada kisah menarik di balik penamaan ini yang bukan hanya tentang menghindari kebingungan, tapi juga terkait teknik cetak klasik. Mari kita selami misteri warna &apos;K&apos; yang sering kita pakai ini!</description>
+      <category>Color</category>
+      <pubDate>Mon, 07 Sep 2026 14:13:32 GMT</pubDate>
+    </item>
     <item>
       <title>Plat Cetak Offset: Jenis, Proses Pembuatan, dan Perawatannya</title>
       <link>https://www.bayud.my.id/blog/plat-cetak-offset-jenis-proses-dan-perawatannya</link>
@@ -14,14 +22,6 @@
       <description>Mengenal plat offset dari bahan dasar, proses CTP, hingga cara merawatnya agar hasil cetak tetap tajam dan konsisten dari lembar pertama sampai terakhir.</description>
       <category>Offset</category>
       <pubDate>Sun, 06 Sep 2026 02:14:05 GMT</pubDate>
-    </item>
-    <item>
-      <title>7 Tahun Sebagai Proof Print Operator: Pelajaran dari Lantai Produksi</title>
-      <link>https://www.bayud.my.id/blog/7-tahun-sebagai-proof-print-operator-pelajaran-dari-lantai-produksi</link>
-      <guid isPermaLink="true">https://www.bayud.my.id/blog/7-tahun-sebagai-proof-print-operator-pelajaran-dari-lantai-produksi</guid>
-      <description>Catatan pengalaman tujuh tahun bekerja sebagai proof print operator di industri flexible packaging: kebiasaan kerja, cara membaca warna, dan pelajaran dari kesalahan yang sering terulang.</description>
-      <category>Pengalaman Kerja</category>
-      <pubDate>Fri, 04 Sep 2026 01:50:15 GMT</pubDate>
     </item>
     <item>
       <title>Teknik Color Matching pada Cetak Rotogravure</title>
@@ -37,6 +37,14 @@
       <guid isPermaLink="true">https://www.bayud.my.id/blog/kontrol-kualitas-cetak-dari-proof-hingga-mass-production</guid>
       <description>Cara menjaga kualitas cetak tetap konsisten dari proof sampai produksi massal: standar sebelum mesin berjalan, pemeriksaan start up, pemantauan berkala, cacat umum, dan dokumentasi.</description>
       <category>Quality Control</category>
+      <pubDate>Fri, 04 Sep 2026 01:50:15 GMT</pubDate>
+    </item>
+    <item>
+      <title>7 Tahun Sebagai Proof Print Operator: Pelajaran dari Lantai Produksi</title>
+      <link>https://www.bayud.my.id/blog/7-tahun-sebagai-proof-print-operator-pelajaran-dari-lantai-produksi</link>
+      <guid isPermaLink="true">https://www.bayud.my.id/blog/7-tahun-sebagai-proof-print-operator-pelajaran-dari-lantai-produksi</guid>
+      <description>Catatan pengalaman tujuh tahun bekerja sebagai proof print operator di industri flexible packaging: kebiasaan kerja, cara membaca warna, dan pelajaran dari kesalahan yang sering terulang.</description>
+      <category>Pengalaman Kerja</category>
       <pubDate>Fri, 04 Sep 2026 01:50:15 GMT</pubDate>
     </item>
     <item>
