@@ -2,39 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;700&display=swap');
-
 @layer base {
   :root {
-    --background: 0 0% 11%;
-    --foreground: 0 0% 98%;
+    --background: 210 11% 7%;
+    --foreground: 195 24% 94%;
 
-    --card: 0 0% 13%;
-    --card-foreground: 0 0% 98%;
+    --card: 200 13% 13%;
+    --card-foreground: 195 24% 94%;
 
-    --popover: 0 0% 13%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 200 13% 13%;
+    --popover-foreground: 195 24% 94%;
 
-    --primary: 210 100% 65%;
-    --primary-foreground: 0 0% 5%;
+    --primary: 188 63% 58%;
+    --primary-foreground: 210 11% 7%;
 
-    --secondary: 0 0% 18%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 200 13% 16%;
+    --secondary-foreground: 195 24% 94%;
 
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 65%;
+    --muted: 200 10% 18%;
+    --muted-foreground: 195 9% 65%;
 
-    --accent: 210 100% 65%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 188 63% 58%;
+    --accent-foreground: 210 11% 7%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 22%;
-    --input: 0 0% 22%;
-    --ring: 210 100% 65%;
+    --border: 195 18% 22%;
+    --input: 195 16% 25%;
+    --ring: 188 63% 58%;
 
     --radius: 0.5rem;
+    --glass: 200 14% 15%;
+    --glass-border: 195 25% 28%;
+    --glass-highlight: 195 24% 94%;
+    --shadow-glass: 0 18px 45px -26px hsl(210 30% 2% / 0.85);
 
     --sidebar-background: 0 0% 10%;
     --sidebar-foreground: 0 0% 98%;
@@ -46,10 +48,10 @@
     --sidebar-ring: 210 100% 65%;
 
     /* Custom colors */
-    --link: 210 100% 70%;
-    --link-hover: 210 100% 80%;
-    --heading: 0 0% 100%;
-    --section-title: 210 100% 70%;
+    --link: 188 63% 63%;
+    --link-hover: 188 70% 76%;
+    --heading: 195 24% 94%;
+    --section-title: 188 63% 63%;
   }
 
   .dark {
@@ -90,10 +92,20 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    min-width: 320px;
+    background-image:
+      linear-gradient(hsl(var(--primary) / 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.025) 1px, transparent 1px);
+    background-size: 44px 44px;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
+    letter-spacing: 0;
+  }
+
+  ::selection {
+    @apply bg-primary/25 text-foreground;
   }
 }
 
@@ -103,7 +115,22 @@
   }
 
   .section-title {
-    @apply text-section-title font-display text-2xl font-semibold mb-4;
+    @apply text-section-title font-display text-xs font-semibold uppercase mb-4;
+    letter-spacing: 0.16em;
+  }
+
+  .glass-surface {
+    background: hsl(var(--glass) / 0.72);
+    border: 1px solid hsl(var(--glass-border) / 0.62);
+    box-shadow: var(--shadow-glass), inset 0 1px 0 hsl(var(--glass-highlight) / 0.045);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  .glass-subtle {
+    background: hsl(var(--glass) / 0.44);
+    border: 1px solid hsl(var(--glass-border) / 0.42);
+    box-shadow: inset 0 1px 0 hsl(var(--glass-highlight) / 0.035);
   }
 
   .fade-in {
@@ -128,6 +155,23 @@
   .fade-in-delay-4 {
     animation: fadeIn 0.6s ease-out 0.4s forwards;
     opacity: 0;
+  }
+}
+
+@media (max-width: 640px), (prefers-reduced-transparency: reduce) {
+  .glass-surface {
+    background: hsl(var(--card) / 0.96);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
