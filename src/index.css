@@ -55,25 +55,25 @@
   }
 
   .dark {
-    --background: 0 0% 11%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 13%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 13%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 210 100% 65%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 65%;
-    --accent: 210 100% 65%;
-    --accent-foreground: 0 0% 98%;
+    --background: 210 11% 7%;
+    --foreground: 195 24% 94%;
+    --card: 200 13% 13%;
+    --card-foreground: 195 24% 94%;
+    --popover: 200 13% 13%;
+    --popover-foreground: 195 24% 94%;
+    --primary: 188 63% 58%;
+    --primary-foreground: 210 11% 7%;
+    --secondary: 200 13% 16%;
+    --secondary-foreground: 195 24% 94%;
+    --muted: 200 10% 18%;
+    --muted-foreground: 195 9% 65%;
+    --accent: 188 63% 58%;
+    --accent-foreground: 210 11% 7%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 210 100% 65%;
+    --border: 195 18% 22%;
+    --input: 195 16% 25%;
+    --ring: 188 63% 58%;
     --sidebar-background: 0 0% 10%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 210 100% 65%;
@@ -88,6 +88,7 @@
 @layer base {
   * {
     @apply border-border;
+    letter-spacing: 0 !important;
   }
 
   body {
@@ -116,7 +117,6 @@
 
   .section-title {
     @apply text-section-title font-display text-xs font-semibold uppercase mb-4;
-    letter-spacing: 0.16em;
   }
 
   .glass-surface {

@@ -32,7 +32,7 @@ const Index = () => {
           {/* Hero Section */}
           <section className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-8 md:gap-12 mb-14 md:mb-20 fade-in" aria-label="Profil">
             <header className="flex-1">
-              <p className="text-primary text-xs font-semibold uppercase mb-4" style={{ letterSpacing: '0.16em' }}>Proof Print Operator</p>
+              <p className="text-primary text-xs font-semibold uppercase mb-4">Proof Print Operator</p>
               <h1 className="text-heading font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">Bayu Dwi Darmawan</h1>
               <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-5 sm:mb-6">
                 Proof Print Operator with over 7 years of experience in the flexible packaging industry. Skilled in operating the JM Headford Gravure Proof Press, color matching, proof printing, and color quality control to ensure print results meet customer standards prior to mass production. Accustomed to working towards production targets, maintaining print quality consistency, and collaborating with the production team to meet deadlines.
