@@ -115,7 +115,7 @@ export default function TagAutocomplete({ value, onChange, placeholder = 'Tambah
   return (
     <div ref={containerRef} className="relative">
       <div
-        className="flex flex-wrap items-center gap-1.5 min-h-[2.5rem] px-3 py-1.5 rounded-md border border-input bg-background text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-text transition-colors"
+        className="flex flex-wrap items-center gap-1.5 min-h-[2.5rem] px-3 py-1.5 rounded-md border border-input bg-card/55 text-sm ring-offset-background focus-within:border-primary/60 focus-within:ring-2 focus-within:ring-ring/30 cursor-text transition-colors"
         onClick={() => inputRef.current?.focus()}
       >
         {selectedTags.map((tag) => (

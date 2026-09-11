@@ -139,7 +139,7 @@ const MarkdownEditor = ({
 
 
   return (
-    <div className="rounded-lg border border-input bg-background overflow-hidden">
+    <div className="rounded-lg glass-subtle overflow-hidden">
       <div className="flex flex-wrap items-center gap-1 border-b border-input bg-muted/40 px-2 py-1.5">
         {tools.map((tool) => (
           <button
