@@ -415,7 +415,7 @@ const BlogPost = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <Navbar />
           <main className="py-6 sm:py-8">
             <div className="animate-pulse">
@@ -436,7 +436,7 @@ const BlogPost = () => {
   if (error || !post) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <Navbar />
           <main className="py-6 sm:py-8">
             <div className="text-center py-12">
@@ -533,10 +533,10 @@ const BlogPost = () => {
         })}</script>
       </Helmet>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <Navbar />
         
-        <main className="py-6 sm:py-8">
+        <main className="py-8 sm:py-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_16rem] gap-8 lg:gap-12">
             <div className="min-w-0">
               <Link 
@@ -549,7 +549,7 @@ const BlogPost = () => {
 
               <article className="fade-in">
             {post.cover_image && (
-              <figure className="relative w-full rounded-xl overflow-hidden border border-border mb-8 sm:mb-10">
+              <figure className="relative w-full rounded-lg overflow-hidden border border-border mb-8 sm:mb-10 shadow-lg">
                 {(() => {
                   const responsiveProps = getResponsiveImageProps(post.cover_image);
                   return (
@@ -577,7 +577,7 @@ const BlogPost = () => {
                   {post.category}
                 </Link>
               )}
-              <h1 className="text-heading font-display text-2xl sm:text-3xl md:text-4xl font-bold leading-tight tracking-tight mb-4">
+              <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4">
                 {displayTitle}
               </h1>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -611,7 +611,7 @@ const BlogPost = () => {
                   </button>
 
                   {showControls && (
-                    <div className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 z-20 bg-card border border-border rounded-xl shadow-lg p-4 w-[min(16rem,calc(100vw-3rem))] animate-in fade-in zoom-in-95 duration-150">
+                    <div className="absolute left-0 sm:left-auto sm:right-0 top-full mt-2 z-20 glass-surface rounded-lg p-4 w-[min(16rem,calc(100vw-3rem))] animate-in fade-in zoom-in-95 duration-150">
 
                       <div className="mb-4">
                         <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-2">
@@ -672,7 +672,7 @@ const BlogPost = () => {
             {showToc && (
               <nav
                 aria-label={t("tableOfContents")}
-                className="mb-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
+                className="mb-10 glass-subtle rounded-lg p-5 sm:p-6"
               >
                 <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
                   <List size={16} className="text-primary" />
@@ -731,7 +731,7 @@ const BlogPost = () => {
               {relatedPosts && relatedPosts.length > 0 && (
                 <aside
                   aria-label={t("readAlso")}
-                  className="not-prose my-10 rounded-xl border border-border bg-card/50 p-5 sm:p-6"
+                  className="not-prose my-10 glass-subtle rounded-lg p-5 sm:p-6"
                 >
                   <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
                     <LinkIcon size={16} className="text-primary" />
@@ -776,7 +776,7 @@ const BlogPost = () => {
                   {adjacentPosts?.prev ? (
                     <Link
                       to={`/blog/${adjacentPosts.prev.slug}`}
-                      className="group flex flex-col items-start gap-1 rounded-xl border border-border bg-card/50 p-4 hover:bg-card transition-colors sm:max-w-[50%]"
+                      className="group flex flex-col items-start gap-1 rounded-lg glass-subtle p-4 hover:border-primary/40 transition-colors sm:max-w-[50%]"
                     >
                       <span className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                         <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-0.5" />

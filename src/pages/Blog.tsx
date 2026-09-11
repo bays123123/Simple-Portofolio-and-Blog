@@ -225,10 +225,10 @@ const Blog = () => {
         <link rel="canonical" href="https://www.bayud.my.id/blog" />
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <Navbar />
 
-        <main className="py-6 sm:py-8">
+        <main className="py-8 sm:py-12">
           <section className="mb-8 sm:mb-10 fade-in">
             <div className="flex items-start justify-between gap-4 mb-4">
               <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold">
@@ -243,14 +243,14 @@ const Blog = () => {
           </section>
 
           <section className="mb-6 sm:mb-8 fade-in">
-            <div className="relative">
+            <div className="relative glass-subtle rounded-lg">
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
                 placeholder={t("searchPlaceholder")}
-                className="w-full rounded-lg border border-input bg-background pl-10 pr-9 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="w-full rounded-lg border-0 bg-transparent pl-10 pr-9 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30"
               />
               {searchQuery && (
                 <button
@@ -330,7 +330,7 @@ const Blog = () => {
               paginatedPosts.map((post, index) => (
                 <article
                   key={post.id}
-                  className={`group border-b border-border pb-6 sm:pb-8 last:border-0 fade-in-delay-${Math.min(index + 1, 4)}`}
+                  className={`group rounded-lg glass-subtle p-5 sm:p-6 hover:border-primary/40 transition-colors fade-in-delay-${Math.min(index + 1, 4)}`}
                 >
                   <Link to={`/blog/${post.slug}`} className="block touch-manipulation">
                     <div className="flex flex-col gap-2 mb-3">
@@ -440,7 +440,7 @@ const Blog = () => {
             </div>
 
             <aside className="lg:sticky lg:top-8 lg:self-start fade-in">
-              <div className="rounded-xl border border-border bg-card/40 p-4 sm:p-5">
+              <div className="glass-surface rounded-lg p-4 sm:p-5">
                 <div className="flex items-center gap-2 mb-4">
                   <Archive size={16} className="text-primary" />
                   <h2 className="font-display text-sm font-semibold uppercase tracking-wide text-heading">

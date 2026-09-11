@@ -102,9 +102,10 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-10">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
+          <div className="mx-auto mb-3 inline-flex size-11 items-center justify-center rounded-full border border-primary/35 bg-primary/10 font-display text-sm font-semibold text-primary">BD</div>
           <CardTitle className="text-2xl font-display">
             {isLogin ? 'Admin Login' : 'Registrasi'}
           </CardTitle>
