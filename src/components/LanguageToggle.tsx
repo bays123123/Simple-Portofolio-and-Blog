@@ -16,7 +16,7 @@ const LanguageToggle = ({ loading = false, className = "" }: Props) => {
       onClick={toggleLang}
       aria-label={label}
       title={label}
-      className={`inline-flex shrink-0 items-center gap-2 rounded-md glass-subtle px-3 py-1.5 text-xs font-semibold uppercase text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground ${className}`}
+      className={`inline-flex shrink-0 items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground ${className}`}
     >
       {loading ? <Loader2 size={14} className="animate-spin" /> : <Languages size={14} />}
       <span>{lang === "id" ? "EN" : "ID"}</span>

@@ -370,7 +370,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="max-w-5xl mx-auto px-4 py-6">
-        <header className="glass-surface rounded-lg flex items-center justify-between p-3 sm:p-4 mb-8">
+        <header className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" onClick={() => navigate('/')}>
               <ArrowLeft size={20} />
@@ -586,7 +586,7 @@ const Admin = () => {
                   {filteredPosts?.map((post) => (
                     <div
                       key={post.id}
-                     className="p-3 rounded-lg glass-subtle hover:border-primary/35 transition-colors"
+                      className="p-3 rounded-lg border border-border bg-card hover:bg-secondary/50 transition-colors"
                     >
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1 min-w-0">

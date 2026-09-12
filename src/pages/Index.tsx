@@ -25,15 +25,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Navbar />
         
-        <main className="py-8 sm:py-12">
+        <main className="py-6 sm:py-8">
           {/* Hero Section */}
-          <section className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-8 md:gap-12 mb-14 md:mb-20 fade-in" aria-label="Profil">
+          <section className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-6 md:gap-8 mb-10 md:mb-12 fade-in" aria-label="Profil">
             <header className="flex-1">
-              <p className="text-primary text-xs font-semibold uppercase mb-4">Proof Print Operator</p>
-              <h1 className="text-heading font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4 sm:mb-6">Bayu Dwi Darmawan</h1>
+              <h1 className="text-heading font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">Bayu Dwi Darmawan</h1>
               <p className="text-muted-foreground text-base sm:text-lg leading-relaxed mb-5 sm:mb-6">
                 Proof Print Operator with over 7 years of experience in the flexible packaging industry. Skilled in operating the JM Headford Gravure Proof Press, color matching, proof printing, and color quality control to ensure print results meet customer standards prior to mass production. Accustomed to working towards production targets, maintaining print quality consistency, and collaborating with the production team to meet deadlines.
               </p>
@@ -49,7 +48,7 @@ const Index = () => {
                 <a 
                   href="/resume.pdf" 
                   download 
-                  className="inline-flex items-center gap-2 px-4 py-2.5 sm:py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all font-medium text-sm touch-manipulation"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 sm:py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all font-medium text-sm touch-manipulation"
                 >
                   <Download size={16} />
                   Download Resume
@@ -60,7 +59,7 @@ const Index = () => {
               <img 
                 src={profilePhoto} 
                 alt="Bayu Dwi Darmawan - Proof Print Operator" 
-                className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full object-cover border border-primary/40 shadow-lg" 
+                className="w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-full object-cover border-2 border-border shadow-lg" 
                 loading="eager"
                 width={160}
                 height={160}
@@ -69,11 +68,11 @@ const Index = () => {
           </section>
 
           {/* Experience Section */}
-          <section className="mb-14 md:mb-20 fade-in-delay-1" aria-label="Pengalaman">
+          <section className="mb-10 md:mb-12 fade-in-delay-1" aria-label="Pengalaman">
             <h2 className="text-section-title font-display text-xl sm:text-2xl font-semibold mb-6 sm:mb-8">
               Experience
             </h2>
-            <div className="relative pl-5 sm:pl-6 border-l border-primary/25 space-y-8 sm:space-y-10">
+            <div className="relative pl-5 sm:pl-6 border-l border-border space-y-8 sm:space-y-10">
               {/* Experience 1 */}
               <article className="relative">
                 <div className="absolute -left-[21px] sm:-left-[25px] top-1 w-2 h-2 rounded-full bg-muted-foreground" />
@@ -113,12 +112,12 @@ const Index = () => {
           </section>
 
           {/* Projects Section */}
-          <section className="mb-14 md:mb-20 fade-in-delay-2" aria-label="Proyek">
+          <section className="mb-10 md:mb-12 fade-in-delay-2" aria-label="Proyek">
             <h2 className="text-section-title font-display text-xl sm:text-2xl font-semibold mb-5 sm:mb-6">
               Projects
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-              <article className="group p-5 rounded-lg glass-subtle hover:border-primary/50 active:border-primary/50 transition-colors touch-manipulation">
+              <article className="group p-4 rounded-lg border border-border bg-card hover:border-primary/50 active:border-primary/50 transition-colors touch-manipulation">
                 <a href="https://nusantaracode.id/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
                   Nusantara Code Website
                   <ExternalLink size={16} />
@@ -131,7 +130,7 @@ const Index = () => {
                   <span className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">Tailwind</span>
                 </div>
               </article>
-              <article className="group p-5 rounded-lg glass-subtle hover:border-primary/50 active:border-primary/50 transition-colors touch-manipulation">
+              <article className="group p-4 rounded-lg border border-border bg-card hover:border-primary/50 active:border-primary/50 transition-colors touch-manipulation">
                 <a href="https://www.bayud.my.id/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-foreground font-semibold mb-2 group-hover:text-primary transition-colors">
                   Personal Portfolio
                   <ExternalLink size={16} />
