@@ -5,8 +5,24 @@
     <link>https://www.bayud.my.id/blog</link>
     <description>Artikel seputar industri percetakan, cetak offset, dan kemasan.</description>
     <language>id</language>
-    <lastBuildDate>Wed, 09 Sep 2026 23:33:42 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 12 Sep 2026 20:29:01 GMT</lastBuildDate>
     <atom:link href="https://www.bayud.my.id/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mengenal Tinta Cetak: Jenis, Komposisi, dan Cara Memilihnya</title>
+      <link>https://www.bayud.my.id/blog/mengenal-tinta-cetak-jenis-komposisi-dan-cara-memilihnya</link>
+      <guid isPermaLink="true">https://www.bayud.my.id/blog/mengenal-tinta-cetak-jenis-komposisi-dan-cara-memilihnya</guid>
+      <description>Tinta adalah bahan paling menentukan dalam hasil cetak. Kenali jenis tinta offset, gravure, dan flexo, komposisi dasarnya, serta cara memilih tinta yang tepat untuk setiap media dan mesin.</description>
+      <category>Rotogravure</category>
+      <pubDate>Wed, 09 Sep 2026 23:35:35 GMT</pubDate>
+    </item>
+    <item>
+      <title>Mengenal Sablon: Proses, Jenis Tinta, dan Aplikasinya</title>
+      <link>https://www.bayud.my.id/blog/mengenal-sablon-proses-jenis-tinta-dan-aplikasinya</link>
+      <guid isPermaLink="true">https://www.bayud.my.id/blog/mengenal-sablon-proses-jenis-tinta-dan-aplikasinya</guid>
+      <description>Sablon atau screen printing adalah teknik cetak paling fleksibel: bisa mencetak di kaos, plastik, kaca, hingga logam. Pelajari prosesnya, jenis-jenis tintanya, dan kapan sablon menjadi pilihan terbaik.</description>
+      <category>Sablon</category>
+      <pubDate>Wed, 09 Sep 2026 23:35:35 GMT</pubDate>
+    </item>
     <item>
       <title>Mengapa Warna Hitam Disebut K dalam CMYK?</title>
       <link>https://www.bayud.my.id/blog/mengapa-warna-hitam-disebut-k-dalam-cmyk</link>
@@ -24,14 +40,6 @@
       <pubDate>Sun, 06 Sep 2026 02:14:05 GMT</pubDate>
     </item>
     <item>
-      <title>Teknik Color Matching pada Cetak Rotogravure</title>
-      <link>https://www.bayud.my.id/blog/teknik-color-matching-pada-cetak-rotogravure</link>
-      <guid isPermaLink="true">https://www.bayud.my.id/blog/teknik-color-matching-pada-cetak-rotogravure</guid>
-      <description>Panduan praktis mencocokkan warna pada cetak rotogravure: sumber variasi warna, peran viskositas tinta, urutan warna, pengaruh substrate, dan standar pengukuran Delta E.</description>
-      <category>Rotogravure</category>
-      <pubDate>Fri, 04 Sep 2026 01:50:15 GMT</pubDate>
-    </item>
-    <item>
       <title>Kontrol Kualitas Cetak: Dari Proof Hingga Mass Production</title>
       <link>https://www.bayud.my.id/blog/kontrol-kualitas-cetak-dari-proof-hingga-mass-production</link>
       <guid isPermaLink="true">https://www.bayud.my.id/blog/kontrol-kualitas-cetak-dari-proof-hingga-mass-production</guid>
@@ -45,6 +53,14 @@
       <guid isPermaLink="true">https://www.bayud.my.id/blog/7-tahun-sebagai-proof-print-operator-pelajaran-dari-lantai-produksi</guid>
       <description>Catatan pengalaman tujuh tahun bekerja sebagai proof print operator di industri flexible packaging: kebiasaan kerja, cara membaca warna, dan pelajaran dari kesalahan yang sering terulang.</description>
       <category>Pengalaman Kerja</category>
+      <pubDate>Fri, 04 Sep 2026 01:50:15 GMT</pubDate>
+    </item>
+    <item>
+      <title>Teknik Color Matching pada Cetak Rotogravure</title>
+      <link>https://www.bayud.my.id/blog/teknik-color-matching-pada-cetak-rotogravure</link>
+      <guid isPermaLink="true">https://www.bayud.my.id/blog/teknik-color-matching-pada-cetak-rotogravure</guid>
+      <description>Panduan praktis mencocokkan warna pada cetak rotogravure: sumber variasi warna, peran viskositas tinta, urutan warna, pengaruh substrate, dan standar pengukuran Delta E.</description>
+      <category>Rotogravure</category>
       <pubDate>Fri, 04 Sep 2026 01:50:15 GMT</pubDate>
     </item>
     <item>
