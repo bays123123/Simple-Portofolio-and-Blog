@@ -23,3 +23,6 @@ verify_jwt = false
 
 [functions.gsc-sitemap-ping]
 verify_jwt = false
+
+[functions.generate-cover-image]
+verify_jwt = true
