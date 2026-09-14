@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2, Search } from 'lucide-react';
+import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2, Search, ImagePlus } from 'lucide-react';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import TagAutocomplete from '@/components/TagAutocomplete';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
@@ -43,6 +43,7 @@ const Admin = () => {
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [aiTopic, setAiTopic] = useState('');
   const [isGenerating, setIsGenerating] = useState<'title' | 'excerpt' | 'content' | null>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -333,6 +334,33 @@ const Admin = () => {
     }
   };
 
+  const generateCoverImage = async () => {
+    const title = formData.title.trim() || aiTopic.trim();
+    if (!title) {
+      toast({ variant: 'destructive', title: 'Tulis judul artikel terlebih dahulu' });
+      return;
+    }
+
+    setIsGeneratingImage(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-cover-image', {
+        body: { title, category: formData.category, excerpt: formData.excerpt },
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      if (!data?.url) throw new Error('Gambar tidak diterima');
+
+      setFormData((prev) => ({ ...prev, cover_image: data.url }));
+      toast({ title: 'Gambar cover berhasil dibuat sesuai judul artikel' });
+    } catch (error: any) {
+      console.error('Cover image generation error:', error);
+      toast({ variant: 'destructive', title: 'Gagal membuat gambar', description: error.message });
+    } finally {
+      setIsGeneratingImage(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -509,12 +537,38 @@ const Admin = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="cover_image">Cover Image URL</Label>
-                  <Input
-                    id="cover_image"
-                    value={formData.cover_image}
-                    onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <Input
+                      id="cover_image"
+                      value={formData.cover_image}
+                      onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
+                      placeholder="https://example.com/image.jpg"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={generateCoverImage}
+                      disabled={isGeneratingImage}
+                      className="sm:w-auto"
+                    >
+                      {isGeneratingImage ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <ImagePlus className="mr-2 h-4 w-4" />
+                      )}
+                      Generate Gambar
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Gambar dibuat otomatis sesuai judul artikel yang sedang ditulis.
+                  </p>
+                  {formData.cover_image && (
+                    <img
+                      src={formData.cover_image}
+                      alt="Pratinjau cover artikel"
+                      className="mt-2 w-full max-w-md rounded-md border"
+                    />
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="read_time">Waktu Baca</Label>
