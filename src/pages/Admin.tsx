@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2, Search } from 'lucide-react';
+import { Pencil, Trash2, LogOut, ArrowLeft, Sparkles, Loader2, Search, ImagePlus } from 'lucide-react';
 import MarkdownEditor from '@/components/MarkdownEditor';
 import TagAutocomplete from '@/components/TagAutocomplete';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
@@ -43,6 +43,7 @@ const Admin = () => {
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [aiTopic, setAiTopic] = useState('');
   const [isGenerating, setIsGenerating] = useState<'title' | 'excerpt' | 'content' | null>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -330,6 +331,33 @@ const Admin = () => {
       toast({ variant: 'destructive', title: 'Gagal generate konten', description: error.message });
     } finally {
       setIsGenerating(null);
+    }
+  };
+
+  const generateCoverImage = async () => {
+    const title = formData.title.trim() || aiTopic.trim();
+    if (!title) {
+      toast({ variant: 'destructive', title: 'Tulis judul artikel terlebih dahulu' });
+      return;
+    }
+
+    setIsGeneratingImage(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-cover-image', {
+        body: { title, category: formData.category, excerpt: formData.excerpt },
+      });
+
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+      if (!data?.url) throw new Error('Gambar tidak diterima');
+
+      setFormData((prev) => ({ ...prev, cover_image: data.url }));
+      toast({ title: 'Gambar cover berhasil dibuat sesuai judul artikel' });
+    } catch (error: any) {
+      console.error('Cover image generation error:', error);
+      toast({ variant: 'destructive', title: 'Gagal membuat gambar', description: error.message });
+    } finally {
+      setIsGeneratingImage(false);
     }
   };
 
