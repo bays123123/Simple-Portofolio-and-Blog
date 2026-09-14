@@ -69,12 +69,15 @@ const extractHeadings = (md: string) => {
 const getResponsiveImageProps = (url: string) => {
   if (!url) return null;
   const isSupabaseStorage = url.includes('.supabase.co/storage/v1/');
-  const srcSet = isSupabaseStorage
+  // Signed URLs already carry a query string (?token=...); adding transform params
+  // breaks them, so only build a srcset for plain public storage URLs.
+  const canTransform = isSupabaseStorage && !url.includes('?');
+  const srcSet = canTransform
     ? `${url}?width=400&quality=80 400w, ${url}?width=800&quality=80 800w, ${url}?width=1200&quality=80 1200w`
     : undefined;
   return {
     srcSet,
-    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px',
+    sizes: srcSet ? '(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px' : undefined,
   };
 };
 
