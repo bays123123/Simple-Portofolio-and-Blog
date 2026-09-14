@@ -509,12 +509,38 @@ const Admin = () => {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="cover_image">Cover Image URL</Label>
-                  <Input
-                    id="cover_image"
-                    value={formData.cover_image}
-                    onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <div className="flex flex-col gap-2 sm:flex-row">
+                    <Input
+                      id="cover_image"
+                      value={formData.cover_image}
+                      onChange={(e) => setFormData({ ...formData, cover_image: e.target.value })}
+                      placeholder="https://example.com/image.jpg"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={generateCoverImage}
+                      disabled={isGeneratingImage}
+                      className="sm:w-auto"
+                    >
+                      {isGeneratingImage ? (
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        <ImagePlus className="mr-2 h-4 w-4" />
+                      )}
+                      Generate Gambar
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Gambar dibuat otomatis sesuai judul artikel yang sedang ditulis.
+                  </p>
+                  {formData.cover_image && (
+                    <img
+                      src={formData.cover_image}
+                      alt="Pratinjau cover artikel"
+                      className="mt-2 w-full max-w-md rounded-md border"
+                    />
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="read_time">Waktu Baca</Label>
