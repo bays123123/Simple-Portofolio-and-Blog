@@ -141,6 +141,19 @@
   line-height: var(--article-line-height, 1.8);
 }
 
+/* Make in-article links clearly stand out from body text */
+.article-content a {
+  color: hsl(var(--link));
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.article-content a:hover {
+  color: hsl(var(--link-hover));
+  text-decoration-thickness: 2px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
