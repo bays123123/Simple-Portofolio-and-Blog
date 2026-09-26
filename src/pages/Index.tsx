@@ -111,6 +111,30 @@ const Index = () => {
             </div>
           </section>
 
+          {/* Skills Section */}
+          <section className="mb-10 md:mb-12 fade-in-delay-2" aria-label="Keahlian">
+            <h2 className="text-section-title font-display text-xl sm:text-2xl font-semibold mb-5 sm:mb-6">
+              Skills
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {[
+                { title: "Printing Operation", items: ["JM Headford Gravure Proof Press", "Rotogravure Printing", "Sheet-fed Offset (Heidelberg SM 72)", "Machine Setup & Maintenance"] },
+                { title: "Color Management", items: ["Color Matching", "Ink Mixing & Formulation", "Color Reference Matching", "Delta E Evaluation"] },
+                { title: "Quality Control", items: ["Proof Print Approval", "Print Defect Inspection", "Registration Accuracy", "Print Consistency Monitoring"] },
+                { title: "Flexible Packaging", items: ["Substrate Knowledge (BOPP, PET, Metalized)", "Lamination & Coating Basics", "Pre-production Proofing", "Production Target Coordination"] },
+              ].map((group) => (
+                <article key={group.title} className="p-4 rounded-lg border border-border bg-card">
+                  <h3 className="text-foreground font-semibold mb-3">{group.title}</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {group.items.map((s) => (
+                      <span key={s} className="text-xs px-2 py-1 rounded bg-secondary text-secondary-foreground">{s}</span>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
           {/* Projects Section */}
           <section className="mb-10 md:mb-12 fade-in-delay-2" aria-label="Proyek">
             <h2 className="text-section-title font-display text-xl sm:text-2xl font-semibold mb-5 sm:mb-6">
